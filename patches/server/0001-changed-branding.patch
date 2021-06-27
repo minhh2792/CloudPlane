@@ -30,6 +30,18 @@ index 2dd45f1ae9e2f977321131401bad7fd65a193ff2..d8288fb99934ee36c222e4d4f1576242
              "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
+diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
+index b0a34df5b1114d2152e08197763551f5e9c03fe4..9375c8471539ab6a84dbdef8bdc9c50b9e50fe09 100644
+--- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
++++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
+@@ -96,6 +96,7 @@ public class PaperConfig {
+             MinecraftServer.getServer().server.getCommandMap().register(entry.getKey(), "Paper", entry.getValue());
+         }
+ 
++        if (false) // CloudPlane
+         if (!metricsStarted) {
+             Metrics.PaperMetrics.startMetrics();
+             metricsStarted = true;
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 index 5460f57f0473868b3fb09c526a1767f717a2740e..11b21e500d845f4b91a00b7fb5050508ee3621c1 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
