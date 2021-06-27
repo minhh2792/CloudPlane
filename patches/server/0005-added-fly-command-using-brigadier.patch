@@ -19,10 +19,10 @@ index 69e3fe58ab3b767b87a4301672da02a0c111f713..4151bb7272e06bfa40ba5d55df9b6834
  
 diff --git a/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java b/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..808bc005fb287a64af333b52a4a1c087818fbd20
+index 0000000000000000000000000000000000000000..34c9053ee9d198e520ce5acc69903dd9c11e45de
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java
-@@ -0,0 +1,53 @@
+@@ -0,0 +1,58 @@
 +package tk.booky.cloudplane.commands;
 +// Created by booky10 in CloudPlane (22:08 25.06.21)
 +
@@ -42,15 +42,20 @@ index 0000000000000000000000000000000000000000..808bc005fb287a64af333b52a4a1c087
 +    @Override
 +    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 +        dispatcher.register(Commands.literal("fly")
-+                .requires((listener) -> listener.hasPermission(2))
++                .requires((listener) -> listener.hasPermission(2, "bukkit.command.fly"))
 +                .executes((context) -> execute(context.getSource(), Collections.singleton(context.getSource().getPlayerOrException())))
-+                .then(Commands.argument("targets", EntityArgument.players())
-+                        .executes((context) -> execute(context.getSource(), EntityArgument.getPlayers(context, "targets")))
-+                        .then(Commands.argument("allow", BoolArgumentType.bool())
++                .then(Commands.argument("allow", BoolArgumentType.bool())
++                        .executes((context) -> execute(context.getSource(), Collections.singleton(context.getSource().getPlayerOrException()), BoolArgumentType.getBool(context, "allow")))
++                        .then(Commands.argument("targets", EntityArgument.players())
++                                .requires((listener) -> listener.hasPermission(3, "bukkit.command.fly.other"))
 +                                .executes((context) -> execute(context.getSource(), EntityArgument.getPlayers(context, "targets"), BoolArgumentType.getBool(context, "allow")))
 +                        )
 +                )
-+        ).setPermission("bukkit.command.fly");
++                .then(Commands.argument("targets", EntityArgument.players())
++                        .requires((listener) -> listener.hasPermission(3, "bukkit.command.fly.other"))
++                        .executes((context) -> execute(context.getSource(), EntityArgument.getPlayers(context, "targets")))
++                )
++        );
 +    }
 +
 +    private int execute(CommandSourceStack sender, Collection<ServerPlayer> targets, boolean allowFlight) {
