@@ -1,0 +1,37 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <github@booky.tk>
+Date: Sun, 27 Jun 2021 21:06:03 +0200
+Subject: [PATCH] added configurable sleeping over message
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index 2b6daef1e50b4bdf255894a216af18f3787116b1..ff6e000a22e64bd57eda25897a9b04ea24c97341 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -808,6 +808,11 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+             if (this.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE)) {
+                 this.stopWeather();
+             }
++            // CloudPlane start - configurable sleeping over message
++            if (!org.apache.commons.lang3.StringUtils.isEmpty(tk.booky.cloudplane.CloudPlaneConfig.sleepMessage)) {
++                Bukkit.broadcast(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(tk.booky.cloudplane.CloudPlaneConfig.sleepMessage));
++            }
++            // CloudPlane end
+         }
+ 
+         this.updateSkyBrightness();
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+index 4151bb7272e06bfa40ba5d55df9b683492d19f06..015ecf7b12896ddb0a0c882078eb08e14f89e93b 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+@@ -117,4 +117,9 @@ public class CloudPlaneConfig {
+         config.addDefault(path, def);
+         return config.getString(path, config.getString(path));
+     }
++
++    public static String sleepMessage = "The night has been skipped!";
++    private static void sleeping() {
++        sleepMessage = getString("settings.sleeping.message", sleepMessage);
++    }
+ }
+\ No newline at end of file
