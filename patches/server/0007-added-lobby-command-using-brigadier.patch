@@ -1,0 +1,80 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <github@booky.tk>
+Date: Sun, 27 Jun 2021 21:22:35 +0200
+Subject: [PATCH] added lobby command using brigadier
+
+
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+index 015ecf7b12896ddb0a0c882078eb08e14f89e93b..eab31b7249f310cbf4a72ea4d06ca790040fa2ee 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+@@ -61,6 +61,7 @@ public class CloudPlaneConfig {
+         commands.clear();
+ 
+         commands.add(new tk.booky.cloudplane.commands.FlyCommand());
++        commands.add(new tk.booky.cloudplane.commands.LobbyCommand());
+ 
+         commands.forEach(command -> command.register(dispatcher));
+     }
+diff --git a/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java b/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..b94706dca91cff474bb4d7131465ba1f4024011b
+--- /dev/null
++++ b/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java
+@@ -0,0 +1,55 @@
++package tk.booky.cloudplane.commands;
++// Created by booky10 in CloudPlane (21:06 27.06.21)
++
++import com.google.common.io.ByteArrayDataOutput;
++import com.google.common.io.ByteStreams;
++import com.mojang.brigadier.CommandDispatcher;
++import io.netty.buffer.Unpooled;
++import net.minecraft.commands.CommandSourceStack;
++import net.minecraft.commands.Commands;
++import net.minecraft.commands.arguments.EntityArgument;
++import net.minecraft.network.FriendlyByteBuf;
++import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
++import net.minecraft.resources.ResourceLocation;
++import net.minecraft.server.level.ServerPlayer;
++
++import java.util.Collection;
++import java.util.Collections;
++
++public class LobbyCommand implements CloudPlaneCommand {
++
++    private static final ClientboundCustomPayloadPacket PACKET;
++
++    static {
++        ByteArrayDataOutput output = ByteStreams.newDataOutput();
++
++        output.writeUTF("Connect");
++        output.writeUTF("lobby");
++
++        FriendlyByteBuf byteBuffer = new FriendlyByteBuf(Unpooled.wrappedBuffer(output.toByteArray()));
++        ResourceLocation channel = new ResourceLocation("bungeecord", "main");
++
++        PACKET = new ClientboundCustomPayloadPacket(channel, byteBuffer);
++    }
++
++    @Override
++    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
++        dispatcher.register(Commands.literal("lobby")
++                .requires((listener) -> listener.hasPermission(1, "bukkit.command.lobby"))
++                .executes((context) -> execute(context.getSource(), Collections.singleton(context.getSource().getPlayerOrException())))
++                .then(Commands.argument("targets", EntityArgument.players())
++                        .requires((listener) -> listener.hasPermission(2, "bukkit.command.lobby.other"))
++                        .executes((context) -> execute(context.getSource(), EntityArgument.getPlayers(context, "targets")))
++                )
++        );
++    }
++
++    private int execute(CommandSourceStack sender, Collection<ServerPlayer> targets) {
++        for (ServerPlayer player : targets) {
++            sender.sendSuccess("You have been send to the lobby!", true);
++            player.connection.send(PACKET);
++        }
++
++        return targets.size();
++    }
++}
+\ No newline at end of file
