@@ -4,6 +4,18 @@ Date: Sun, 27 Jun 2021 20:30:37 +0200
 Subject: [PATCH] cloudplane configuration
 
 
+diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
+index bef1f6ca54fc6c1741b54b8e071a90eb5e3a36f3..2420e844b749d4c4f38c7473a80604f60c6252e9 100644
+--- a/src/main/java/net/minecraft/commands/Commands.java
++++ b/src/main/java/net/minecraft/commands/Commands.java
+@@ -202,6 +202,7 @@ public class Commands {
+             net.pl3x.purpur.command.DemoCommand.register(this.dispatcher); // Purpur
+             net.pl3x.purpur.command.PingCommand.register(this.dispatcher); // Purpur
+             net.pl3x.purpur.command.TPSBarCommand.register(this.dispatcher); // Purpur
++            tk.booky.cloudplane.CloudPlaneConfig.registerCommands(this.dispatcher); // CloudPlane
+         }
+ 
+         if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 index 0cd39af26ef7f15c66cc41040da24b87d2c72b9f..2d91dfd0470d9fb1526142c29739c9e4e698c26d 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
@@ -91,7 +103,7 @@ index 2ac68e87ae16622bf1828b3a1c71b6a13c52bea4..361b9065e1019c6239523b405f874861
                          .withRequiredArg()
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..491322552ce4d0617a85489c2040cead2a8c27ce
+index 0000000000000000000000000000000000000000..69e3fe58ab3b767b87a4301672da02a0c111f713
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -0,0 +1,118 @@
@@ -120,7 +132,7 @@ index 0000000000000000000000000000000000000000..491322552ce4d0617a85489c2040cead
 +    private static File CONFIG_FILE;
 +    public static YamlConfiguration config;
 +
-+    private static Set<CloudPlaneCommand> commands;
++    private static final Set<CloudPlaneCommand> commands = new HashSet<>();
 +
 +    static int version;
 +    static boolean verbose;
@@ -140,8 +152,6 @@ index 0000000000000000000000000000000000000000..491322552ce4d0617a85489c2040cead
 +        config.options().copyDefaults(true);
 +        verbose = getBoolean("verbose", false);
 +
-+        commands = new HashSet<>();
-+
 +        version = getInt("config-version", 14);
 +        set("config-version", 14);
 +
@@ -157,6 +167,8 @@ index 0000000000000000000000000000000000000000..491322552ce4d0617a85489c2040cead
 +    }
 +
 +    public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
++        commands.clear();
++
 +        commands.forEach(command -> command.register(dispatcher));
 +    }
 +

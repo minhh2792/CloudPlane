@@ -4,24 +4,25 @@ Date: Fri, 25 Jun 2021 22:20:11 +0200
 Subject: [PATCH] added fly command using brigadier
 
 
-diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index bef1f6ca54fc6c1741b54b8e071a90eb5e3a36f3..5fbab336fd11837ed60909ace0b517e3e8b10b77 100644
---- a/src/main/java/net/minecraft/commands/Commands.java
-+++ b/src/main/java/net/minecraft/commands/Commands.java
-@@ -202,6 +202,7 @@ public class Commands {
-             net.pl3x.purpur.command.DemoCommand.register(this.dispatcher); // Purpur
-             net.pl3x.purpur.command.PingCommand.register(this.dispatcher); // Purpur
-             net.pl3x.purpur.command.TPSBarCommand.register(this.dispatcher); // Purpur
-+            tk.booky.cloudplane.commands.FlyCommand.register(this.dispatcher); // CloudPlane
-         }
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+index 69e3fe58ab3b767b87a4301672da02a0c111f713..4151bb7272e06bfa40ba5d55df9b683492d19f06 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+@@ -60,6 +60,8 @@ public class CloudPlaneConfig {
+     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
+         commands.clear();
  
-         if (environment.includeIntegrated) {
++        commands.add(new tk.booky.cloudplane.commands.FlyCommand());
++
+         commands.forEach(command -> command.register(dispatcher));
+     }
+ 
 diff --git a/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java b/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ff6a87aabef5b50610be53509afffb93d788bf72
+index 0000000000000000000000000000000000000000..808bc005fb287a64af333b52a4a1c087818fbd20
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java
-@@ -0,0 +1,52 @@
+@@ -0,0 +1,53 @@
 +package tk.booky.cloudplane.commands;
 +// Created by booky10 in CloudPlane (22:08 25.06.21)
 +
@@ -36,9 +37,10 @@ index 0000000000000000000000000000000000000000..ff6a87aabef5b50610be53509afffb93
 +import java.util.Collection;
 +import java.util.Collections;
 +
-+public class FlyCommand {
++public class FlyCommand implements CloudPlaneCommand {
 +
-+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
++    @Override
++    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 +        dispatcher.register(Commands.literal("fly")
 +                .requires((listener) -> listener.hasPermission(2))
 +                .executes((context) -> execute(context.getSource(), Collections.singleton(context.getSource().getPlayerOrException())))
@@ -51,7 +53,7 @@ index 0000000000000000000000000000000000000000..ff6a87aabef5b50610be53509afffb93
 +        ).setPermission("bukkit.command.fly");
 +    }
 +
-+    private static int execute(CommandSourceStack sender, Collection<ServerPlayer> targets, boolean allowFlight) {
++    private int execute(CommandSourceStack sender, Collection<ServerPlayer> targets, boolean allowFlight) {
 +        for (ServerPlayer player : targets) {
 +            Player bukkit = player.getBukkitEntity();
 +
@@ -62,7 +64,7 @@ index 0000000000000000000000000000000000000000..ff6a87aabef5b50610be53509afffb93
 +        return targets.size();
 +    }
 +
-+    private static int execute(CommandSourceStack sender, Collection<ServerPlayer> targets) {
++    private int execute(CommandSourceStack sender, Collection<ServerPlayer> targets) {
 +        for (ServerPlayer player : targets) {
 +            Player bukkit = player.getBukkitEntity();
 +            boolean allowFlight = !bukkit.getAllowFlight();
