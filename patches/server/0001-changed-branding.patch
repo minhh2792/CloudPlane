@@ -30,6 +30,21 @@ index 2dd45f1ae9e2f977321131401bad7fd65a193ff2..d8288fb99934ee36c222e4d4f1576242
              "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
+diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
+index 5460f57f0473868b3fb09c526a1767f717a2740e..11b21e500d845f4b91a00b7fb5050508ee3621c1 100644
+--- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
++++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
+@@ -29,8 +29,8 @@ public class PaperVersionFetcher implements VersionFetcher {
+     @Nonnull
+     @Override
+     public Component getVersionMessage(@Nonnull String serverVersion) {
+-        String[] parts = serverVersion.substring("git-Airplane-".length()).split("[-\\s]"); // Tuinity
+-        final Component updateMessage = getUpdateStatusMessage("TECHNOVE/Airplane", GITHUB_BRANCH_NAME, parts[0]); // Tuinity
++        String[] parts = serverVersion.substring("git-CloudPlane-".length()).split("[-\\s]"); // Tuinity // CloudPlane
++        final Component updateMessage = getUpdateStatusMessage("CloudCraftProjects/CloudPlane", GITHUB_BRANCH_NAME, parts[0]); // Tuinity // CloudPlane
+         final Component history = getHistory();
+ 
+         return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
 index b965a0b856b96203394158a91af3e4af1a4c4f76..5d695023c0752b7fea57b78b906c3cdd11e0d723 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
