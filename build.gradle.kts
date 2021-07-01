@@ -1,7 +1,7 @@
 plugins {
     java
     id("com.github.johnrengelman.shadow") version "7.0.0" apply false
-    id("io.papermc.paperweight.patcher") version "1.1.5"
+    id("io.papermc.paperweight.patcher") version "1.1.6"
 }
 
 repositories {
@@ -37,6 +37,7 @@ subprojects {
         maven("https://repo.aikar.co/content/groups/aikar")
         maven("https://repo.md-5.net/content/repositories/releases/")
         maven("https://hub.spigotmc.org/nexus/content/groups/public/")
+        maven("https://jitpack.io")
     }
 }
 

@@ -17,7 +17,7 @@ index bef1f6ca54fc6c1741b54b8e071a90eb5e3a36f3..2420e844b749d4c4f38c7473a80604f6
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 0cd39af26ef7f15c66cc41040da24b87d2c72b9f..2d91dfd0470d9fb1526142c29739c9e4e698c26d 100644
+index b58fc5c39d5cf3b88c61c0bfc55d2e98385bdaeb..1eed0e7f3e4d5ddd6fa366effef6b5d954c2e685 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -227,6 +227,14 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -36,7 +36,7 @@ index 0cd39af26ef7f15c66cc41040da24b87d2c72b9f..2d91dfd0470d9fb1526142c29739c9e4
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          io.papermc.paper.util.StacktraceDeobfuscator.INSTANCE.getClass(); // load mappings for stacktrace deobf
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index b9f60497e57f8591c1f45097beba216c24bd1250..08c63868a9224d909cdaba75a10d33e3dafe2dbe 100644
+index be84cb90d167c612d2f6c33f13f904d28c8624a8..d192aaf973ae6263c062153fc085dc0eabd0ef57 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -170,6 +170,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -51,13 +51,13 @@ index b9f60497e57f8591c1f45097beba216c24bd1250..08c63868a9224d909cdaba75a10d33e3
 @@ -354,6 +356,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), this.spigotConfig); // Paper
          this.tuinityConfig = new com.tuinity.tuinity.config.TuinityConfig.WorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData)worlddatamutable).getLevelName()); // Tuinity - Server Config
-         this.purpurConfig = new net.pl3x.purpur.PurpurWorldConfig((((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()), env); // Purpur
+         this.purpurConfig = new net.pl3x.purpur.PurpurWorldConfig((ServerLevel) this, ((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), env); // Purpur
 +        this.cloudplaneConfig = new tk.booky.cloudplane.CloudPlaneWorldConfig((((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()), env); // CloudPlane
          this.playerBreedingCooldowns = this.getNewBreedingCooldownCache(); // Purpur
          this.generator = gen;
          this.world = new CraftWorld((ServerLevel) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 88fb7cde2d8994b846617c0bdc993d52987478af..39f789aa3ea69870a97138d7973a83b65ed054b9 100644
+index 047f85c36e5b3d6145d96838453306123d7f43c8..ccf3bd936d4b6a3a55a4b5e62e6439f8adf3bcda 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -877,6 +877,7 @@ public final class CraftServer implements Server {
@@ -68,7 +68,7 @@ index 88fb7cde2d8994b846617c0bdc993d52987478af..39f789aa3ea69870a97138d7973a83b6
          for (ServerLevel world : this.console.getAllLevels()) {
              world.serverLevelData.setDifficulty(config.difficulty);
              world.setSpawnSettings(config.spawnMonsters, config.spawnAnimals);
-@@ -2389,6 +2390,13 @@ public final class CraftServer implements Server {
+@@ -2399,6 +2400,13 @@ public final class CraftServer implements Server {
              return net.pl3x.purpur.PurpurConfig.config;
          }
  
@@ -83,7 +83,7 @@ index 88fb7cde2d8994b846617c0bdc993d52987478af..39f789aa3ea69870a97138d7973a83b6
          public java.util.Properties getServerProperties() {
              return getProperties().properties;
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 2ac68e87ae16622bf1828b3a1c71b6a13c52bea4..361b9065e1019c6239523b405f874861edd0866b 100644
+index 01ca38ee35f2c1e5031ea4b8aca09a2a59c4a475..9084ffd416b4e9b520f8f85dc87d6617c18ad264 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -162,6 +162,14 @@ public class Main {

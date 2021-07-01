@@ -44,8 +44,8 @@ out/
 *~
 
 # other stuff
-Byof-Server
-Byof-API
+CloudPlane-Server
+CloudPlane-API
 mc-dev
 .idea
 testserver

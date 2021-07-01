@@ -5,10 +5,10 @@ Subject: [PATCH] added configurable sleeping over message
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 2b6daef1e50b4bdf255894a216af18f3787116b1..ff6e000a22e64bd57eda25897a9b04ea24c97341 100644
+index acae6ad67adc013eda3e69427fda7e53529cde59..e305e340c60c73865472f8048b2e3b91e6eb2c47 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -808,6 +808,11 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+@@ -795,6 +795,11 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
              if (this.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE)) {
                  this.stopWeather();
              }
