@@ -16,6 +16,18 @@ index bef1f6ca54fc6c1741b54b8e071a90eb5e3a36f3..2420e844b749d4c4f38c7473a80604f6
          }
  
          if (environment.includeIntegrated) {
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index fdb99baf68cb1d13d0258af6506b08d742b8d090..9d85176aa4e959c4ec909a3819d9d9e97a238006 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -712,6 +712,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         }
+         // Paper end
+ 
++        tk.booky.cloudplane.CloudPlaneConfig.registerRecipes(this.server); // CloudPlane
+         this.server.enablePlugins(org.bukkit.plugin.PluginLoadOrder.POSTWORLD);
+         this.server.getPluginManager().callEvent(new ServerLoadEvent(ServerLoadEvent.LoadType.STARTUP));
+         this.connection.acceptConnections();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 index b58fc5c39d5cf3b88c61c0bfc55d2e98385bdaeb..1eed0e7f3e4d5ddd6fa366effef6b5d954c2e685 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
@@ -103,18 +115,20 @@ index 01ca38ee35f2c1e5031ea4b8aca09a2a59c4a475..9084ffd416b4e9b520f8f85dc87d6617
                          .withRequiredArg()
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..69e3fe58ab3b767b87a4301672da02a0c111f713
+index 0000000000000000000000000000000000000000..016c408b78dfedddc4186b39d2dd6e675f7ac97d
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -0,0 +1,118 @@
+@@ -0,0 +1,127 @@
 +package tk.booky.cloudplane;
 +// Created by booky10 in CloudPlane (20:08 27.06.21)
 +
 +import com.mojang.brigadier.CommandDispatcher;
 +import net.minecraft.commands.CommandSourceStack;
 +import org.bukkit.Bukkit;
++import org.bukkit.Server;
 +import org.bukkit.configuration.InvalidConfigurationException;
 +import org.bukkit.configuration.file.YamlConfiguration;
++import org.bukkit.inventory.Recipe;
 +import tk.booky.cloudplane.commands.CloudPlaneCommand;
 +
 +import java.io.File;
@@ -133,6 +147,7 @@ index 0000000000000000000000000000000000000000..69e3fe58ab3b767b87a4301672da02a0
 +    public static YamlConfiguration config;
 +
 +    private static final Set<CloudPlaneCommand> commands = new HashSet<>();
++    private static final Set<Recipe> recipes = new HashSet<>();
 +
 +    static int version;
 +    static boolean verbose;
@@ -170,6 +185,12 @@ index 0000000000000000000000000000000000000000..69e3fe58ab3b767b87a4301672da02a0
 +        commands.clear();
 +
 +        commands.forEach(command -> command.register(dispatcher));
++    }
++
++    public static void registerRecipes(Server server) {
++        recipes.clear();
++
++        recipes.forEach(server::addRecipe);
 +    }
 +
 +    public static void readConfig(Class<?> clazz, Object instance) {
