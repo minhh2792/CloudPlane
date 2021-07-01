@@ -21,10 +21,10 @@ index acae6ad67adc013eda3e69427fda7e53529cde59..e305e340c60c73865472f8048b2e3b91
  
          this.updateSkyBrightness();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 4151bb7272e06bfa40ba5d55df9b683492d19f06..015ecf7b12896ddb0a0c882078eb08e14f89e93b 100644
+index 56ac9fc8121145290ffe43f37390679e959c3934..5f0e72bc977e25cb00f2732e6c744da4615b7748 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -117,4 +117,9 @@ public class CloudPlaneConfig {
+@@ -126,4 +126,9 @@ public class CloudPlaneConfig {
          config.addDefault(path, def);
          return config.getString(path, config.getString(path));
      }

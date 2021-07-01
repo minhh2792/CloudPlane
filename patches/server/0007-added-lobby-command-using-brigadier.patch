@@ -5,10 +5,10 @@ Subject: [PATCH] added lobby command using brigadier
 
 
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 015ecf7b12896ddb0a0c882078eb08e14f89e93b..eab31b7249f310cbf4a72ea4d06ca790040fa2ee 100644
+index 5f0e72bc977e25cb00f2732e6c744da4615b7748..acdf5ea416e60adfdc191572190ea398700fc660 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -61,6 +61,7 @@ public class CloudPlaneConfig {
+@@ -64,6 +64,7 @@ public class CloudPlaneConfig {
          commands.clear();
  
          commands.add(new tk.booky.cloudplane.commands.FlyCommand());

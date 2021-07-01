@@ -5,10 +5,10 @@ Subject: [PATCH] added fly command using brigadier
 
 
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 69e3fe58ab3b767b87a4301672da02a0c111f713..4151bb7272e06bfa40ba5d55df9b683492d19f06 100644
+index 016c408b78dfedddc4186b39d2dd6e675f7ac97d..56ac9fc8121145290ffe43f37390679e959c3934 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -60,6 +60,8 @@ public class CloudPlaneConfig {
+@@ -63,6 +63,8 @@ public class CloudPlaneConfig {
      public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
          commands.clear();
  
