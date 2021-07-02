@@ -18,7 +18,7 @@ index f34973be478de4f088a0593b45bd89e558a13609..b157bf6af3d2d366a48a5991c14e335d
      protected final SoundType soundType;
      protected final float friction;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ccf3bd936d4b6a3a55a4b5e62e6439f8adf3bcda..38e5e29e02bd94774a6c3276fed773a1f4af579c 100644
+index ccf3bd936d4b6a3a55a4b5e62e6439f8adf3bcda..ecdf5f2017786dc5ae7a4719257573c11bf0b83c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -2579,4 +2579,16 @@ public final class CraftServer implements Server {
@@ -29,12 +29,12 @@ index ccf3bd936d4b6a3a55a4b5e62e6439f8adf3bcda..38e5e29e02bd94774a6c3276fed773a1
 +    // CloudPlane start
 +    @Override
 +    public float getExplosionResistance(org.bukkit.Material material) {
-+        return ((CraftBlockData) material.createBlockData()).getState().getBlock().getExplosionResistance();
++        return CraftMagicNumbers.getBlock(material).explosionResistance;
 +    }
 +
 +    @Override
 +    public void setExplosionResistance(org.bukkit.Material material, float explosionResistance) {
-+        ((CraftBlockData) material.createBlockData()).getState().getBlock().explosionResistance = explosionResistance;
++        CraftMagicNumbers.getBlock(material).explosionResistance = explosionResistance;
 +    }
 +    // CloudPlane end
  }
