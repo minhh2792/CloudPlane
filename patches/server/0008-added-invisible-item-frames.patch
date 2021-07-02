@@ -5,14 +5,18 @@ Subject: [PATCH] added invisible item frames
 
 
 diff --git a/src/main/java/net/minecraft/world/item/HangingEntityItem.java b/src/main/java/net/minecraft/world/item/HangingEntityItem.java
-index ddd50db8bb92c147d7c1eef4d1df3ac53e2d3e4b..3e2f1c26cfa1be28236a3a8f940cf36e59faa2da 100644
+index ddd50db8bb92c147d7c1eef4d1df3ac53e2d3e4b..ffad816ea70b272aa6b9fae1cfa0f0133d89fb93 100644
 --- a/src/main/java/net/minecraft/world/item/HangingEntityItem.java
 +++ b/src/main/java/net/minecraft/world/item/HangingEntityItem.java
-@@ -46,6 +46,7 @@ public class HangingEntityItem extends Item {
+@@ -46,6 +46,11 @@ public class HangingEntityItem extends Item {
                  object = new Painting(world, blockposition1, enumdirection);
              } else if (this.type == EntityType.ITEM_FRAME) {
                  object = new ItemFrame(world, blockposition1, enumdirection);
-+                object.setInvisible(!itemstack.getDisplayName().getStyle().isItalic()); // CloudPlane
++                // CloudPlane start - invisible item frames
++                if (itemstack.tag != null && !itemstack.tag.isEmpty()) {
++                    object.setInvisible(itemstack.tag.getInt("CustomModelData") == 1);
++                }
++                // CloudPlane end
              } else {
                  if (this.type != EntityType.GLOW_ITEM_FRAME) {
                      return InteractionResult.sidedSuccess(world.isClientSide);
@@ -31,10 +35,10 @@ index acdf5ea416e60adfdc191572190ea398700fc660..8d1128fb029ac686513a0f25fe86f707
  
 diff --git a/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java b/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..3ab7949dc40e5cab1132bb55d9386bb4091bf6ee
+index 0000000000000000000000000000000000000000..b6ea11001e70bb4a931d7d761fa7050192717c10
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java
-@@ -0,0 +1,25 @@
+@@ -0,0 +1,29 @@
 +package tk.booky.cloudplane.recipes;
 +// Created by booky10 in CloudPlane (21:50 01.07.21)
 +
@@ -49,15 +53,19 @@ index 0000000000000000000000000000000000000000..3ab7949dc40e5cab1132bb55d9386bb4
 +
 +public class InvisibleItemFrameRecipe {
 +
++    private static final Component NAME = Component.text("Invisible Item Frame").decoration(TextDecoration.ITALIC, false);
++    private static final NamespacedKey KEY = NamespacedKey.minecraft("invisible_item_frame");
++    private static final String[] SHAPE = new String[]{"###", "#+#", "###"};
++
 +    public static Recipe get() {
-+        NamespacedKey key = NamespacedKey.minecraft("invisible_item_frame");
 +        ItemStack item = new ItemStack(Material.ITEM_FRAME);
-+
 +        ItemMeta meta = item.getItemMeta();
-+        meta.displayName(Component.text("Invisible Item Frame").decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE));
-+        item.setItemMeta(meta);
 +
-+        return new ShapedRecipe(key, item).shape("###", "#+#", "###").setIngredient('#', Material.GLASS_PANE).setIngredient('+', Material.ITEM_FRAME);
++        meta.setCustomModelData(1);
++        meta.displayName(NAME);
++
++        item.setItemMeta(meta);
++        return new ShapedRecipe(KEY, item).shape(SHAPE).setIngredient('#', Material.GLASS_PANE).setIngredient('+', Material.ITEM_FRAME);
 +    }
 +}
 \ No newline at end of file
