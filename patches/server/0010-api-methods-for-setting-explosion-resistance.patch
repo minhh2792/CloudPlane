@@ -1,0 +1,40 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <github@booky.tk>
+Date: Fri, 2 Jul 2021 13:49:01 +0200
+Subject: [PATCH] api methods for setting explosion resistance
+
+
+diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
+index f34973be478de4f088a0593b45bd89e558a13609..b157bf6af3d2d366a48a5991c14e335d6da7954f 100644
+--- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
++++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
+@@ -72,7 +72,7 @@ public abstract class BlockBehaviour {
+     protected static final Direction[] UPDATE_SHAPE_ORDER = new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.DOWN, Direction.UP};
+     public final Material material; // Purpur - protected -> public
+     protected final boolean hasCollision;
+-    protected final float explosionResistance;
++    public float explosionResistance; // CloudPlane - protected final -> public
+     protected final boolean isRandomlyTicking;
+     protected final SoundType soundType;
+     protected final float friction;
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index ccf3bd936d4b6a3a55a4b5e62e6439f8adf3bcda..38e5e29e02bd94774a6c3276fed773a1f4af579c 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -2579,4 +2579,16 @@ public final class CraftServer implements Server {
+         return getServer().lagging;
+     }
+     // Purpur end
++
++    // CloudPlane start
++    @Override
++    public float getExplosionResistance(org.bukkit.Material material) {
++        return ((CraftBlockData) material.createBlockData()).getState().getBlock().getExplosionResistance();
++    }
++
++    @Override
++    public void setExplosionResistance(org.bukkit.Material material, float explosionResistance) {
++        ((CraftBlockData) material.createBlockData()).getState().getBlock().explosionResistance = explosionResistance;
++    }
++    // CloudPlane end
+ }

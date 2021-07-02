@@ -1,0 +1,40 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <github@booky.tk>
+Date: Fri, 2 Jul 2021 13:49:02 +0200
+Subject: [PATCH] api methods for setting explosion resistance
+
+
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index 82978d66cc7d6214cf84f566918bfaf6bcbe1118..1a76cec42f3b0c47f609f12edd2452945a79b22b 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -2026,4 +2026,14 @@ public final class Bukkit {
+         return server.isLagging();
+     }
+     // Purpur end
++
++    // CloudPlane start
++    public static float getExplosionResistance(Material material) {
++        return server.getExplosionResistance(material);
++    }
++
++    public static void setExplosionResistance(Material material, float explosionResistance) {
++        server.setExplosionResistance(material, explosionResistance);
++    }
++    // CloudPlane end
+ }
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index b303cbac65048ca6af2b7b17a0dd19db2fe42843..6829a0c9435963089714b07f3c4e89f3a9b88dd5 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -1782,4 +1782,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+      */
+     boolean isLagging();
+     // Purpur end
++
++    // CloudPlane start
++    float getExplosionResistance(Material material);
++
++    void setExplosionResistance(Material material, float explosionResistance);
++    // CloudPlane end
+ }
