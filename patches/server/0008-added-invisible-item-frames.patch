@@ -4,17 +4,51 @@ Date: Thu, 1 Jul 2021 21:58:19 +0200
 Subject: [PATCH] added invisible item frames
 
 
+diff --git a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
+index 90f1ecd97eef93316f61bf5d761d33c313e1a077..ad980468495e0135b0d297ae17f29e77b4cbd574 100644
+--- a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
++++ b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
+@@ -187,6 +187,12 @@ public class ItemFrame extends HangingEntity {
+                 // CraftBukkit end
+                 this.dropItem(source.getEntity(), false);
+                 this.playSound(this.getRemoveItemSound(), 1.0F, 1.0F);
++                // CloudPlane start - invisible item frames
++                if (noCulling) {
++                    setInvisible(false);
++                    setGlowingTag(true);
++                }
++                // CloudPlane end
+             }
+ 
+             return true;
+@@ -434,6 +440,13 @@ public class ItemFrame extends HangingEntity {
+                         }
+                     }
+ 
++                    // CloudPlane start - invisible item frames
++                    if (noCulling) {
++                        System.out.println(1);
++                        setGlowingTag(false);
++                        setInvisible(true);
++                    }
++                    // CloudPlane end
+                     this.setItem(itemstack);
+                     if (!player.getAbilities().instabuild) {
+                         itemstack.shrink(1);
 diff --git a/src/main/java/net/minecraft/world/item/HangingEntityItem.java b/src/main/java/net/minecraft/world/item/HangingEntityItem.java
-index ddd50db8bb92c147d7c1eef4d1df3ac53e2d3e4b..ffad816ea70b272aa6b9fae1cfa0f0133d89fb93 100644
+index ddd50db8bb92c147d7c1eef4d1df3ac53e2d3e4b..f52f760fc08393cda56a6a0626f8c8631688fb41 100644
 --- a/src/main/java/net/minecraft/world/item/HangingEntityItem.java
 +++ b/src/main/java/net/minecraft/world/item/HangingEntityItem.java
-@@ -46,6 +46,11 @@ public class HangingEntityItem extends Item {
+@@ -46,6 +46,14 @@ public class HangingEntityItem extends Item {
                  object = new Painting(world, blockposition1, enumdirection);
              } else if (this.type == EntityType.ITEM_FRAME) {
                  object = new ItemFrame(world, blockposition1, enumdirection);
 +                // CloudPlane start - invisible item frames
 +                if (itemstack.tag != null && !itemstack.tag.isEmpty()) {
-+                    object.setInvisible(itemstack.tag.getInt("CustomModelData") == 1);
++                    if (itemstack.tag.getInt("CustomModelData") == 1) {
++                        object.setGlowingTag(true);
++                        object.noCulling = true;
++                    }
 +                }
 +                // CloudPlane end
              } else {
