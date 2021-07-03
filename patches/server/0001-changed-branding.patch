@@ -54,10 +54,10 @@ index 5460f57f0473868b3fb09c526a1767f717a2740e..11b21e500d845f4b91a00b7fb5050508
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a1bad83459618b00774c47a2317637bf36abdfe9..fdb99baf68cb1d13d0258af6506b08d742b8d090 100644
+index 69b298a85770b9e6caac374e521cf25a7a14bbd2..28ea7e305c0625dc024e918661d29ca188a18d4a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1730,7 +1730,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1731,7 +1731,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      @DontObfuscate
      public String getServerModName() {
          String purpurName = net.pl3x.purpur.PurpurConfig.serverModName;

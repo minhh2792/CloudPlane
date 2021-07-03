@@ -5,7 +5,7 @@ Subject: [PATCH] better configuration default options
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 9375c8471539ab6a84dbdef8bdc9c50b9e50fe09..68f5f97825c102bddf5ce350469275ae8a325450 100644
+index 9375c8471539ab6a84dbdef8bdc9c50b9e50fe09..92dea2ff93213c813202807bbce2b03f0bd8b691 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -207,7 +207,7 @@ public class PaperConfig {
@@ -18,10 +18,10 @@ index 9375c8471539ab6a84dbdef8bdc9c50b9e50fe09..68f5f97825c102bddf5ce350469275ae
          boolean reallyEnableTimings = getBoolean("timings.really-enabled", false);
          if (timings && !reallyEnableTimings) {
 diff --git a/src/main/java/net/pl3x/purpur/PurpurConfig.java b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-index eaa0fcff033d59189475f7c04c5a3f2fc5421469..0d222595aca7ca185e2b15496b1936c8f4713491 100644
+index 9592a9e6743e7fe0250de16680dd0d3e2e5e7776..879e5480a5b75bf5e14e604aebd8fed47973704b 100644
 --- a/src/main/java/net/pl3x/purpur/PurpurConfig.java
 +++ b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-@@ -312,8 +312,8 @@ public class PurpurConfig {
+@@ -344,8 +344,8 @@ public class PurpurConfig {
          disableGiveCommandDrops = getBoolean("settings.disable-give-dropping", disableGiveCommandDrops);
      }
  
@@ -29,6 +29,6 @@ index eaa0fcff033d59189475f7c04c5a3f2fc5421469..0d222595aca7ca185e2b15496b1936c8
 -    public static boolean hideHiddenPlayersFromEntitySelector = false;
 +    public static boolean commandGamemodeRequiresPermission = true; // CloudPlane - better default option for gamemode requires specific permission
 +    public static boolean hideHiddenPlayersFromEntitySelector = true; // CloudPlane - hidden players should not be accessible via entity selector
-     private static void commandSettings() {
-         commandGamemodeRequiresPermission = getBoolean("settings.command.gamemode.requires-specific-permission", commandGamemodeRequiresPermission);
-         hideHiddenPlayersFromEntitySelector = getBoolean("settings.command.hide-hidden-players-from-entity-selector", hideHiddenPlayersFromEntitySelector);
+     public static String uptimeFormat = "<days><hours><minutes><seconds>";
+     public static String uptimeDay = "%02d day, ";
+     public static String uptimeDays = "%02d days, ";

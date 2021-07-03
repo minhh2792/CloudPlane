@@ -5,22 +5,22 @@ Subject: [PATCH] cloudplane configuration
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index bef1f6ca54fc6c1741b54b8e071a90eb5e3a36f3..2420e844b749d4c4f38c7473a80604f60c6252e9 100644
+index 84c970ed188509127cd5b4d268a5fa1f9e7eda0b..c629b20907661d9dbe4c063d3ac4bc282f8c1d8c 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
-@@ -202,6 +202,7 @@ public class Commands {
-             net.pl3x.purpur.command.DemoCommand.register(this.dispatcher); // Purpur
+@@ -203,6 +203,7 @@ public class Commands {
              net.pl3x.purpur.command.PingCommand.register(this.dispatcher); // Purpur
+             net.pl3x.purpur.command.UptimeCommand.register(this.dispatcher); // Purpur
              net.pl3x.purpur.command.TPSBarCommand.register(this.dispatcher); // Purpur
 +            tk.booky.cloudplane.CloudPlaneConfig.registerCommands(this.dispatcher); // CloudPlane
          }
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index fdb99baf68cb1d13d0258af6506b08d742b8d090..9d85176aa4e959c4ec909a3819d9d9e97a238006 100644
+index 28ea7e305c0625dc024e918661d29ca188a18d4a..c3a3d8521015d10604c56dc6e413d9bc34bb203b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -712,6 +712,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -713,6 +713,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
          // Paper end
  
@@ -48,7 +48,7 @@ index b58fc5c39d5cf3b88c61c0bfc55d2e98385bdaeb..1eed0e7f3e4d5ddd6fa366effef6b5d9
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          io.papermc.paper.util.StacktraceDeobfuscator.INSTANCE.getClass(); // load mappings for stacktrace deobf
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index be84cb90d167c612d2f6c33f13f904d28c8624a8..d192aaf973ae6263c062153fc085dc0eabd0ef57 100644
+index 150b763c0367369cab64e0e70902ad18b2f4bda4..fa12719c73dc4295cdfbbbedc52003e853381bb6 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -170,6 +170,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -60,7 +60,7 @@ index be84cb90d167c612d2f6c33f13f904d28c8624a8..d192aaf973ae6263c062153fc085dc0e
      public final co.aikar.timings.WorldTimingsHandler timings; // Paper
      public static BlockPos lastPhysicsProblem; // Spigot
      private org.spigotmc.TickLimiter entityLimiter;
-@@ -354,6 +356,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -363,6 +365,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), this.spigotConfig); // Paper
          this.tuinityConfig = new com.tuinity.tuinity.config.TuinityConfig.WorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData)worlddatamutable).getLevelName()); // Tuinity - Server Config
          this.purpurConfig = new net.pl3x.purpur.PurpurWorldConfig((ServerLevel) this, ((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), env); // Purpur

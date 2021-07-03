@@ -22,13 +22,13 @@ index 1326e7d09e25b19b6f8a3911b3a3944514d77173..ac1c3687193406864adbd36c2143a45f
  
          return targets.size();
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 810e02b890f053a75b6cdc9afb1f3d9acd5e6736..8d9972c6956e0203e27c165ec390ab2f6aa80e36 100644
+index 4f256b1904b760d25d4a66fb27f2c930f9d2a285..56cae400d055a04866c88bb151d523fb6147d46d 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -184,6 +184,7 @@ public abstract class Player extends LivingEntity {
-     // Paper end
+@@ -185,6 +185,7 @@ public abstract class Player extends LivingEntity {
      public boolean isCritical = false; // Purpur
      public boolean flyingFallDamage = false; // Purpur
+     public boolean canPortalInstant = false; // Purpur
 +    public Player replyTarget; // CloudPlane - reply command
  
      // CraftBukkit start
