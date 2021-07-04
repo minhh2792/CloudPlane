@@ -27,6 +27,11 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('build.gradle.kts', 'gradle.properties', 'gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: ${{ runner.os }}-gradle-
 
+      - name: Set Git Identity
+        run: |
+          git config --global user.email "cloudplane.github-actions@cloudcraftmc.de"
+          git config --global user.name "CloudPlane GitHub Actions"
+
       - name: Apply CloudPlane Patches
         run: ./gradlew applyPatches -Dpaperweight.debug=true
 
