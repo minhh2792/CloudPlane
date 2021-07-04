@@ -47,9 +47,9 @@ jobs:
 
   notify:
     runs-on: ubuntu-20.04
-    needs: [ build ]
+    if: always()
 
-    if: always() && needs.build.result != 'skipped'
+    needs: [ build ]
     steps:
       - name: Send Webhook
         run: |
