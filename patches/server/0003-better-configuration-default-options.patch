@@ -5,7 +5,7 @@ Subject: [PATCH] better configuration default options
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 9375c8471539ab6a84dbdef8bdc9c50b9e50fe09..92dea2ff93213c813202807bbce2b03f0bd8b691 100644
+index 9375c8471539ab6a84dbdef8bdc9c50b9e50fe09..68f5f97825c102bddf5ce350469275ae8a325450 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -207,7 +207,7 @@ public class PaperConfig {
@@ -18,10 +18,10 @@ index 9375c8471539ab6a84dbdef8bdc9c50b9e50fe09..92dea2ff93213c813202807bbce2b03f
          boolean reallyEnableTimings = getBoolean("timings.really-enabled", false);
          if (timings && !reallyEnableTimings) {
 diff --git a/src/main/java/net/pl3x/purpur/PurpurConfig.java b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-index 9592a9e6743e7fe0250de16680dd0d3e2e5e7776..879e5480a5b75bf5e14e604aebd8fed47973704b 100644
+index 209ddb614b98edcf340b49c1f12331bf169f8058..7a766e2cb92ead59dc94d4584a4fdc5301d1fe0f 100644
 --- a/src/main/java/net/pl3x/purpur/PurpurConfig.java
 +++ b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-@@ -344,8 +344,8 @@ public class PurpurConfig {
+@@ -348,8 +348,8 @@ public class PurpurConfig {
          disableGiveCommandDrops = getBoolean("settings.disable-give-dropping", disableGiveCommandDrops);
      }
  
