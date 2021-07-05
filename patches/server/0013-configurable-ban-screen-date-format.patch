@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <github@booky.tk>
 Date: Mon, 5 Jul 2021 19:58:07 +0200
-Subject: [PATCH] configurable ban date format
+Subject: [PATCH] configurable ban-screen date format
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 75ea35574ad999fd7f6cce4b794017ebc9d0f218..daf3f8faab1cc7ce8e21070f44eb51d60e073d1b 100644
+index 75ea35574ad999fd7f6cce4b794017ebc9d0f218..b97a62accf812d39bd0b0630a27f40400faa52d5 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -127,7 +127,7 @@ public abstract class PlayerList {
@@ -22,7 +22,7 @@ index 75ea35574ad999fd7f6cce4b794017ebc9d0f218..daf3f8faab1cc7ce8e21070f44eb51d6
              chatmessage = new TranslatableComponent("multiplayer.disconnect.banned.reason", new Object[]{gameprofilebanentry.getReason()});
              if (gameprofilebanentry.getExpires() != null) {
 -                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", new Object[]{PlayerList.BAN_DATE_FORMAT.format(gameprofilebanentry.getExpires())}));
-+                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", new Object[]{tk.booky.cloudplane.CloudPlaneConfig.alternateDateFormat.format(gameprofilebanentry.getExpires())})); // CloudPlane - configurable date format
++                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", new Object[]{tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(gameprofilebanentry.getExpires())})); // CloudPlane - configurable date format
              }
  
              // return chatmessage;
@@ -31,12 +31,12 @@ index 75ea35574ad999fd7f6cce4b794017ebc9d0f218..daf3f8faab1cc7ce8e21070f44eb51d6
              chatmessage = new TranslatableComponent("multiplayer.disconnect.banned_ip.reason", new Object[]{ipbanentry.getReason()});
              if (ipbanentry.getExpires() != null) {
 -                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned_ip.expiration", new Object[]{PlayerList.BAN_DATE_FORMAT.format(ipbanentry.getExpires())}));
-+                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned_ip.expiration", new Object[]{tk.booky.cloudplane.CloudPlaneConfig.alternateDateFormat.format(ipbanentry.getExpires())})); // CloudPlane - configurable date format
++                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned_ip.expiration", new Object[]{tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(ipbanentry.getExpires())})); // CloudPlane - configurable date format
              }
  
              // return chatmessage;
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 0f1970328fdaa665348f62d72456f1568498412d..f203c7b8869a071ff2891ce8fcddeedcb5010534 100644
+index 0f1970328fdaa665348f62d72456f1568498412d..f07c53e49880c52299260f6e28b67be72272af02 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -136,4 +136,9 @@ public class CloudPlaneConfig {
@@ -44,8 +44,8 @@ index 0f1970328fdaa665348f62d72456f1568498412d..f203c7b8869a071ff2891ce8fcddeedc
          sleepMessage = getString("settings.sleeping.message", sleepMessage);
      }
 +
-+    public static java.text.SimpleDateFormat alternateDateFormat = (java.text.SimpleDateFormat) net.minecraft.server.players.PlayerList.BAN_DATE_FORMAT.clone();
-+    private static void alternate() {
-+        alternateDateFormat = new java.text.SimpleDateFormat(getString("settings.alternate.date-format", alternateDateFormat.toPattern()));
++    public static java.text.SimpleDateFormat expireDateFormat = (java.text.SimpleDateFormat) net.minecraft.server.players.PlayerList.BAN_DATE_FORMAT.clone();
++    private static void banning() {
++        expireDateFormat = new java.text.SimpleDateFormat(getString("settings.banning.date-format", expireDateFormat.toPattern()));
 +    }
  }
