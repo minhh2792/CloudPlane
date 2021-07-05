@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <github@booky.tk>
+Date: Sun, 4 Jul 2021 22:58:51 +0200
+Subject: [PATCH] use 1.17 mojang api
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 028ba742f1d581b47bef1f7ab08b5bc51f793ac5..58dd0843bda536e6abc5699473bab921f9f66678 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -37,7 +37,7 @@ repositories {
+ 
+ dependencies {
+     implementation(project(":CloudPlane-API")) // CloudPlane // Airplane // Tuinity
+-    implementation("com.destroystokyo.paper:paper-mojangapi:1.16.5-R0.1-SNAPSHOT") // Tuinity
++    implementation("io.papermc.paper:paper-mojangapi:1.17-R0.1-SNAPSHOT") // CloudPlane - use 1.17 mojang api // Tuinity
+     // Paper start
+     implementation("org.jline:jline-terminal-jansi:3.12.1")
+     implementation("net.minecrell:terminalconsoleappender:1.2.0")
