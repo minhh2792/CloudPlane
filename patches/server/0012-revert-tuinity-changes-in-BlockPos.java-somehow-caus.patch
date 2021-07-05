@@ -1,0 +1,47 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <github@booky.tk>
+Date: Sun, 4 Jul 2021 23:15:59 +0200
+Subject: [PATCH] revert tuinity changes in BlockPos.java, somehow causes
+ errors
+
+
+diff --git a/src/main/java/net/minecraft/core/BlockPos.java b/src/main/java/net/minecraft/core/BlockPos.java
+index 30a4b80eacf76ad7f0a48b79bcf01b752c0af48a..684e6df62840248b87a4facbd97150d608e19e43 100644
+--- a/src/main/java/net/minecraft/core/BlockPos.java
++++ b/src/main/java/net/minecraft/core/BlockPos.java
+@@ -484,9 +484,9 @@ public class BlockPos extends Vec3i {
+         }
+ 
+         public BlockPos.MutableBlockPos set(int x, int y, int z) {
+-            this.x = x; // Tuinity - force inline
+-            this.y = y; // Tuinity - force inline
+-            this.z = z; // Tuinity - force inline
++            this.setX(x); // Tuinity - force inline // CloudPlane - Revert
++            this.setY(y); // Tuinity - force inline // CloudPlane - Revert
++            this.setZ(z); // Tuinity - force inline // CloudPlane - Revert
+             return this;
+         }
+ 
+@@ -550,19 +550,19 @@ public class BlockPos extends Vec3i {
+         // Paper start - comment out useless overrides @Override - TODO figure out why this is suddenly important to keep
+         @Override
+         public BlockPos.MutableBlockPos setX(int i) {
+-            this.x = i; // Tuinity
++            super.setX(i); // Tuinity // CloudPlane - Revert
+             return this;
+         }
+ 
+         @Override
+         public BlockPos.MutableBlockPos setY(int i) {
+-            this.y = i; // Tuinity
++            super.setY(i); // Tuinity // CloudPlane - Revert
+             return this;
+         }
+ 
+         @Override
+         public BlockPos.MutableBlockPos setZ(int i) {
+-            this.z = i; // Tuinity
++            super.setZ(i); // Tuinity // CloudPlane - Revert
+             return this;
+         }
+         // Paper end
