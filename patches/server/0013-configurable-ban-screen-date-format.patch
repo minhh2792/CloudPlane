@@ -5,18 +5,9 @@ Subject: [PATCH] configurable ban-screen date format
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 75ea35574ad999fd7f6cce4b794017ebc9d0f218..b97a62accf812d39bd0b0630a27f40400faa52d5 100644
+index 4e40e40257ceb98895777eaf7fb013722aa765a5..b97a62accf812d39bd0b0630a27f40400faa52d5 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -127,7 +127,7 @@ public abstract class PlayerList {
-     public static final File WHITELIST_FILE = new File("whitelist.json");
-     private static final Logger LOGGER = LogManager.getLogger();
-     private static final int SEND_PLAYER_INFO_INTERVAL = 600;
--    private static final SimpleDateFormat BAN_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-+    public static final SimpleDateFormat BAN_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z"); // CloudPlane - private --> public
-     private final MinecraftServer server;
-     public final List<ServerPlayer> players = new java.util.concurrent.CopyOnWriteArrayList(); // CraftBukkit - ArrayList -> CopyOnWriteArrayList: Iterator safety
-     private final Map<UUID, ServerPlayer> playersByUUID = Maps.newHashMap();
 @@ -737,7 +737,7 @@ public abstract class PlayerList {
  
              chatmessage = new TranslatableComponent("multiplayer.disconnect.banned.reason", new Object[]{gameprofilebanentry.getReason()});
@@ -36,7 +27,7 @@ index 75ea35574ad999fd7f6cce4b794017ebc9d0f218..b97a62accf812d39bd0b0630a27f4040
  
              // return chatmessage;
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 0f1970328fdaa665348f62d72456f1568498412d..f07c53e49880c52299260f6e28b67be72272af02 100644
+index e437153fabb826421b76efc712eaf2baae25addf..c38f6f76ca2520e67599c5e55dea03783af184f1 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -136,4 +136,9 @@ public class CloudPlaneConfig {
@@ -49,3 +40,16 @@ index 0f1970328fdaa665348f62d72456f1568498412d..f07c53e49880c52299260f6e28b67be7
 +        expireDateFormat = new java.text.SimpleDateFormat(getString("settings.banning.date-format", expireDateFormat.toPattern()));
 +    }
  }
+diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
+index 61f6dbeade34e7762aed930b358a9f51b41186aa..9339a3f8db6838d38cfef203e17cd2133c7c9eb2 100644
+--- a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
++++ b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
+@@ -66,7 +66,7 @@ public class TempBanCommand implements CloudPlaneCommand {
+             ServerPlayer target = source.getServer().getPlayerList().getPlayer(profile.getId());
+ 
+             if (target == null) continue;
+-            target.connection.disconnect(new TranslatableComponent("multiplayer.disconnect.banned").append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", PlayerList.BAN_DATE_FORMAT.format(expirationDate))), PlayerKickEvent.Cause.BANNED);
++            target.connection.disconnect(new TranslatableComponent("multiplayer.disconnect.banned").append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(expirationDate))), PlayerKickEvent.Cause.BANNED);
+         }
+ 
+         if (profiles.size() == 0) {
