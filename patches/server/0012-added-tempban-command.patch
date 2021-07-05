@@ -1,0 +1,168 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <github@booky.tk>
+Date: Mon, 5 Jul 2021 19:52:09 +0200
+Subject: [PATCH] added tempban command
+
+
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+index 2ea863c3d6a70022e145e61340de63b1acc79bbb..0f1970328fdaa665348f62d72456f1568498412d 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+@@ -66,6 +66,7 @@ public class CloudPlaneConfig {
+         commands.add(new tk.booky.cloudplane.commands.FlyCommand());
+         commands.add(new tk.booky.cloudplane.commands.LobbyCommand());
+         commands.add(new tk.booky.cloudplane.commands.ReplyCommand());
++        commands.add(new tk.booky.cloudplane.commands.TempBanCommand());
+ 
+         commands.forEach(command -> command.register(dispatcher));
+     }
+@@ -135,4 +136,4 @@ public class CloudPlaneConfig {
+     private static void sleeping() {
+         sleepMessage = getString("settings.sleeping.message", sleepMessage);
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..10c409c04140076da925e38b0ddbf77de3b20548
+--- /dev/null
++++ b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
+@@ -0,0 +1,76 @@
++package tk.booky.cloudplane.commands;
++// Created by booky10 in CloudPlane (18:28 05.07.21)
++
++import com.mojang.authlib.GameProfile;
++import com.mojang.brigadier.CommandDispatcher;
++import com.mojang.brigadier.arguments.StringArgumentType;
++import com.mojang.brigadier.context.CommandContext;
++import com.mojang.brigadier.exceptions.CommandSyntaxException;
++import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
++import net.minecraft.commands.CommandSourceStack;
++import net.minecraft.commands.Commands;
++import net.minecraft.commands.arguments.GameProfileArgument;
++import net.minecraft.commands.arguments.MessageArgument;
++import net.minecraft.network.chat.Component;
++import net.minecraft.network.chat.ComponentUtils;
++import net.minecraft.network.chat.TranslatableComponent;
++import net.minecraft.server.level.ServerPlayer;
++import net.minecraft.server.players.UserBanList;
++import net.minecraft.server.players.UserBanListEntry;
++import org.bukkit.event.player.PlayerKickEvent;
++import tk.booky.cloudplane.parser.DurationParser;
++
++import javax.annotation.Nullable;
++import java.util.ArrayList;
++import java.util.Collection;
++import java.util.Date;
++import java.util.List;
++
++public class TempBanCommand implements CloudPlaneCommand {
++
++    private static final SimpleCommandExceptionType ERROR_ALREADY_BANNED = new SimpleCommandExceptionType(new TranslatableComponent("commands.ban.failed"));
++
++    @Override
++    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
++        dispatcher.register(Commands.literal("tempban")
++                .requires((source) -> source.hasPermission(3, "bukkit.command.tempban"))
++                .then(Commands.argument("targets", GameProfileArgument.gameProfile())
++                        .then(Commands.argument("duration", StringArgumentType.string())
++                                .executes(TempBanCommand::executeContext)
++                                .then(Commands.argument("reason", MessageArgument.message())
++                                        .executes(TempBanCommand::executeContextReason)))));
++    }
++
++    private static int executeContext(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
++        return tempBanPlayers(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), StringArgumentType.getString(context, "duration"), null);
++    }
++
++    private static int executeContextReason(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
++        return tempBanPlayers(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), StringArgumentType.getString(context, "duration"), MessageArgument.getMessage(context, "reason"));
++    }
++
++    private static int tempBanPlayers(CommandSourceStack source, Collection<GameProfile> targets, String time, @Nullable Component reason) throws CommandSyntaxException {
++        UserBanList banlist = source.getServer().getPlayerList().getBans();
++        long expire = DurationParser.parse(time);
++
++        List<GameProfile> profiles = new ArrayList<>(targets);
++        profiles.removeIf(banlist::isBanned);
++
++        for (GameProfile profile : profiles) {
++            UserBanListEntry entry = new UserBanListEntry(profile, null, source.getTextName(), new Date(System.currentTimeMillis() + expire), reason == null ? null : reason.getString());
++            banlist.add(entry);
++
++            source.sendSuccess(new TranslatableComponent("commands.ban.success", ComponentUtils.getDisplayName(profile), entry.getReason()), true);
++            ServerPlayer target = source.getServer().getPlayerList().getPlayer(profile.getId());
++
++            if (target == null) continue;
++            target.connection.disconnect(new TranslatableComponent("multiplayer.disconnect.banned"), PlayerKickEvent.Cause.BANNED);
++        }
++
++        if (profiles.size() == 0) {
++            throw ERROR_ALREADY_BANNED.create();
++        } else {
++            return profiles.size();
++        }
++    }
++}
+diff --git a/src/main/java/tk/booky/cloudplane/parser/DurationParser.java b/src/main/java/tk/booky/cloudplane/parser/DurationParser.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..4ec033696d592008e646f9063d6d1e03571f404b
+--- /dev/null
++++ b/src/main/java/tk/booky/cloudplane/parser/DurationParser.java
+@@ -0,0 +1,55 @@
++package tk.booky.cloudplane.parser;
++// Created by booky10 in CloudPlane (18:42 05.07.21)
++
++import com.mojang.brigadier.LiteralMessage;
++import com.mojang.brigadier.exceptions.CommandSyntaxException;
++import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
++import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
++import it.unimi.dsi.fastutil.objects.Object2LongMap;
++import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
++import net.minecraft.network.chat.TranslatableComponent;
++
++public class DurationParser {
++
++    private static final Object2LongMap<String> UNITS = new Object2LongOpenHashMap<>();
++
++    private static final SimpleCommandExceptionType ERROR_EXPECTED_LONG = new SimpleCommandExceptionType((new LiteralMessage("Expected long")));
++    private static final SimpleCommandExceptionType ERROR_INVALID_UNIT = new SimpleCommandExceptionType(new TranslatableComponent("argument.time.invalid_unit"));
++    private static final DynamicCommandExceptionType ERROR_INVALID_TICK_COUNT = new DynamicCommandExceptionType((object) -> new TranslatableComponent("argument.time.invalid_tick_count", object));
++
++    static {
++        UNITS.put("s", 1000L);
++        UNITS.put("m", 1000L * 60);
++        UNITS.put("h", 1000L * 60 * 60);
++        UNITS.put("d", 1000L * 60 * 60 * 24);
++        UNITS.put("w", 1000L * 60 * 60 * 24 * 7);
++        UNITS.put("y", 1000L * 60 * 60 * 24 * 365);
++    }
++
++    public static long parse(String input) throws CommandSyntaxException {
++        if (input.length() >= 2) {
++            String unit = input.substring(input.length() - 1);
++
++            try {
++                long entered = Long.parseLong(input.substring(0, input.length() - 1));
++                long millisPerUnit = UNITS.getOrDefault(unit, 0);
++
++                if (millisPerUnit == 0) {
++                    throw ERROR_INVALID_UNIT.create();
++                } else {
++                    long calculated = entered * millisPerUnit;
++
++                    if (calculated < 0) {
++                        throw ERROR_INVALID_TICK_COUNT.create(calculated);
++                    } else {
++                        return calculated;
++                    }
++                }
++            } catch (NumberFormatException exception) {
++                throw ERROR_EXPECTED_LONG.create();
++            }
++        } else {
++            throw ERROR_INVALID_UNIT.create();
++        }
++    }
++}
