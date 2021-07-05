@@ -41,15 +41,15 @@ index e437153fabb826421b76efc712eaf2baae25addf..c38f6f76ca2520e67599c5e55dea0378
 +    }
  }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
-index 61f6dbeade34e7762aed930b358a9f51b41186aa..9339a3f8db6838d38cfef203e17cd2133c7c9eb2 100644
+index 7a68603c55ab2f0d91ec3fbbd28d4ab577f9fc14..0466574e70fb6be6cb95207a147e8eb1a02398eb 100644
 --- a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
 +++ b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
-@@ -66,7 +66,7 @@ public class TempBanCommand implements CloudPlaneCommand {
-             ServerPlayer target = source.getServer().getPlayerList().getPlayer(profile.getId());
+@@ -68,7 +68,7 @@ public class TempBanCommand implements CloudPlaneCommand {
  
              if (target == null) continue;
--            target.connection.disconnect(new TranslatableComponent("multiplayer.disconnect.banned").append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", PlayerList.BAN_DATE_FORMAT.format(expirationDate))), PlayerKickEvent.Cause.BANNED);
-+            target.connection.disconnect(new TranslatableComponent("multiplayer.disconnect.banned").append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(expirationDate))), PlayerKickEvent.Cause.BANNED);
+             BaseComponent component = new TranslatableComponent("multiplayer.disconnect.banned");
+-            component.append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", PlayerList.BAN_DATE_FORMAT.format(expirationDate)));
++            component.append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(expirationDate))); // CloudPlane - configurable date format
+             target.connection.disconnect(component, PlayerKickEvent.Cause.BANNED);
          }
  
-         if (profiles.size() == 0) {

@@ -38,10 +38,10 @@ index 70183114a3a4954be1c03dc8a066506ec0bc8e53..e437153fabb826421b76efc712eaf2ba
 +}
 diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..61f6dbeade34e7762aed930b358a9f51b41186aa
+index 0000000000000000000000000000000000000000..7a68603c55ab2f0d91ec3fbbd28d4ab577f9fc14
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
-@@ -0,0 +1,78 @@
+@@ -0,0 +1,81 @@
 +package tk.booky.cloudplane.commands;
 +// Created by booky10 in CloudPlane (18:28 05.07.21)
 +
@@ -55,6 +55,7 @@ index 0000000000000000000000000000000000000000..61f6dbeade34e7762aed930b358a9f51
 +import net.minecraft.commands.Commands;
 +import net.minecraft.commands.arguments.GameProfileArgument;
 +import net.minecraft.commands.arguments.MessageArgument;
++import net.minecraft.network.chat.BaseComponent;
 +import net.minecraft.network.chat.Component;
 +import net.minecraft.network.chat.ComponentUtils;
 +import net.minecraft.network.chat.TranslatableComponent;
@@ -110,7 +111,9 @@ index 0000000000000000000000000000000000000000..61f6dbeade34e7762aed930b358a9f51
 +            ServerPlayer target = source.getServer().getPlayerList().getPlayer(profile.getId());
 +
 +            if (target == null) continue;
-+            target.connection.disconnect(new TranslatableComponent("multiplayer.disconnect.banned").append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", PlayerList.BAN_DATE_FORMAT.format(expirationDate))), PlayerKickEvent.Cause.BANNED);
++            BaseComponent component = new TranslatableComponent("multiplayer.disconnect.banned");
++            component.append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", PlayerList.BAN_DATE_FORMAT.format(expirationDate)));
++            target.connection.disconnect(component, PlayerKickEvent.Cause.BANNED);
 +        }
 +
 +        if (profiles.size() == 0) {
