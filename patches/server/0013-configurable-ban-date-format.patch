@@ -1,0 +1,51 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <github@booky.tk>
+Date: Mon, 5 Jul 2021 19:58:07 +0200
+Subject: [PATCH] configurable ban date format
+
+
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index 75ea35574ad999fd7f6cce4b794017ebc9d0f218..daf3f8faab1cc7ce8e21070f44eb51d60e073d1b 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -127,7 +127,7 @@ public abstract class PlayerList {
+     public static final File WHITELIST_FILE = new File("whitelist.json");
+     private static final Logger LOGGER = LogManager.getLogger();
+     private static final int SEND_PLAYER_INFO_INTERVAL = 600;
+-    private static final SimpleDateFormat BAN_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
++    public static final SimpleDateFormat BAN_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z"); // CloudPlane - private --> public
+     private final MinecraftServer server;
+     public final List<ServerPlayer> players = new java.util.concurrent.CopyOnWriteArrayList(); // CraftBukkit - ArrayList -> CopyOnWriteArrayList: Iterator safety
+     private final Map<UUID, ServerPlayer> playersByUUID = Maps.newHashMap();
+@@ -737,7 +737,7 @@ public abstract class PlayerList {
+ 
+             chatmessage = new TranslatableComponent("multiplayer.disconnect.banned.reason", new Object[]{gameprofilebanentry.getReason()});
+             if (gameprofilebanentry.getExpires() != null) {
+-                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", new Object[]{PlayerList.BAN_DATE_FORMAT.format(gameprofilebanentry.getExpires())}));
++                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", new Object[]{tk.booky.cloudplane.CloudPlaneConfig.alternateDateFormat.format(gameprofilebanentry.getExpires())})); // CloudPlane - configurable date format
+             }
+ 
+             // return chatmessage;
+@@ -750,7 +750,7 @@ public abstract class PlayerList {
+ 
+             chatmessage = new TranslatableComponent("multiplayer.disconnect.banned_ip.reason", new Object[]{ipbanentry.getReason()});
+             if (ipbanentry.getExpires() != null) {
+-                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned_ip.expiration", new Object[]{PlayerList.BAN_DATE_FORMAT.format(ipbanentry.getExpires())}));
++                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned_ip.expiration", new Object[]{tk.booky.cloudplane.CloudPlaneConfig.alternateDateFormat.format(ipbanentry.getExpires())})); // CloudPlane - configurable date format
+             }
+ 
+             // return chatmessage;
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+index 0f1970328fdaa665348f62d72456f1568498412d..f203c7b8869a071ff2891ce8fcddeedcb5010534 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+@@ -136,4 +136,9 @@ public class CloudPlaneConfig {
+     private static void sleeping() {
+         sleepMessage = getString("settings.sleeping.message", sleepMessage);
+     }
++
++    public static java.text.SimpleDateFormat alternateDateFormat = (java.text.SimpleDateFormat) net.minecraft.server.players.PlayerList.BAN_DATE_FORMAT.clone();
++    private static void alternate() {
++        alternateDateFormat = new java.text.SimpleDateFormat(getString("settings.alternate.date-format", alternateDateFormat.toPattern()));
++    }
+ }
