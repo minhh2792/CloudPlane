@@ -48,7 +48,7 @@ index b58fc5c39d5cf3b88c61c0bfc55d2e98385bdaeb..1eed0e7f3e4d5ddd6fa366effef6b5d9
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          io.papermc.paper.util.StacktraceDeobfuscator.INSTANCE.getClass(); // load mappings for stacktrace deobf
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 150b763c0367369cab64e0e70902ad18b2f4bda4..fa12719c73dc4295cdfbbbedc52003e853381bb6 100644
+index 60ed79b333c46ddb6685301d5037f37384f7decb..bb9d7b3d72f24adf40817a1b4acea4ce0caaa40f 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -170,6 +170,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -115,7 +115,7 @@ index 01ca38ee35f2c1e5031ea4b8aca09a2a59c4a475..9084ffd416b4e9b520f8f85dc87d6617
                          .withRequiredArg()
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..016c408b78dfedddc4186b39d2dd6e675f7ac97d
+index 0000000000000000000000000000000000000000..8936591af7fa72a3a8f7756a2adae7bfb394da79
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -0,0 +1,127 @@
@@ -149,7 +149,7 @@ index 0000000000000000000000000000000000000000..016c408b78dfedddc4186b39d2dd6e67
 +    private static final Set<CloudPlaneCommand> commands = new HashSet<>();
 +    private static final Set<Recipe> recipes = new HashSet<>();
 +
-+    static int version;
++    static int version, currentVersion = 1;
 +    static boolean verbose;
 +
 +    public static void init(File configFile) {
@@ -167,8 +167,8 @@ index 0000000000000000000000000000000000000000..016c408b78dfedddc4186b39d2dd6e67
 +        config.options().copyDefaults(true);
 +        verbose = getBoolean("verbose", false);
 +
-+        version = getInt("config-version", 14);
-+        set("config-version", 14);
++        version = getInt("config-version", currentVersion);
++        set("config-version", currentVersion);
 +
 +        readConfig(CloudPlaneConfig.class, null);
 +    }
