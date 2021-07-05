@@ -1,0 +1,123 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <github@booky.tk>
+Date: Mon, 5 Jul 2021 20:42:46 +0200
+Subject: [PATCH] customizable ban messages
+
+
+diff --git a/src/main/java/net/minecraft/server/commands/BanIpCommands.java b/src/main/java/net/minecraft/server/commands/BanIpCommands.java
+index 9f63d38853657cb01a4be0f1f7b613b2377a33ad..2c7861b442c5f3765bc83aa05f075eadd963c5f2 100644
+--- a/src/main/java/net/minecraft/server/commands/BanIpCommands.java
++++ b/src/main/java/net/minecraft/server/commands/BanIpCommands.java
+@@ -61,8 +61,9 @@ public class BanIpCommands {
+                 source.sendSuccess(new TranslatableComponent("commands.banip.info", list.size(), EntitySelector.joinNames(list)), true);
+             }
+ 
++            Component component = tk.booky.cloudplane.CloudPlaneConfig.ipBannedKicked.equals("default") ? new TranslatableComponent("multiplayer.disconnect.ip_banned") : io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.get().parse(tk.booky.cloudplane.CloudPlaneConfig.ipBannedKicked, net.kyori.adventure.text.minimessage.Template.of("source", ipBanListEntry.getSource()), net.kyori.adventure.text.minimessage.Template.of("reason", ipBanListEntry.getReason()), net.kyori.adventure.text.minimessage.Template.of("created", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(ipBanListEntry.getCreated())), net.kyori.adventure.text.minimessage.Template.of("expires", ipBanListEntry.getExpires() == null ? "-" : tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(ipBanListEntry.getExpires())))); // CloudPlane - customizable ban messages
+             for(ServerPlayer serverPlayer : list) {
+-                serverPlayer.connection.disconnect(new TranslatableComponent("multiplayer.disconnect.ip_banned"), org.bukkit.event.player.PlayerKickEvent.Cause.IP_BANNED); // Paper - kick event cause
++                serverPlayer.connection.disconnect(component, org.bukkit.event.player.PlayerKickEvent.Cause.IP_BANNED); // Paper - kick event cause // CloudPlane - customizable ban messages
+             }
+ 
+             return list.size();
+diff --git a/src/main/java/net/minecraft/server/commands/BanPlayerCommands.java b/src/main/java/net/minecraft/server/commands/BanPlayerCommands.java
+index b6eb53d5647600963c038cf2ef1301aba66f524d..60d26c7366189794311622be7d57f55c477c7916 100644
+--- a/src/main/java/net/minecraft/server/commands/BanPlayerCommands.java
++++ b/src/main/java/net/minecraft/server/commands/BanPlayerCommands.java
+@@ -43,7 +43,8 @@ public class BanPlayerCommands {
+                 source.sendSuccess(new TranslatableComponent("commands.ban.success", ComponentUtils.getDisplayName(gameProfile), userBanListEntry.getReason()), true);
+                 ServerPlayer serverPlayer = source.getServer().getPlayerList().getPlayer(gameProfile.getId());
+                 if (serverPlayer != null) {
+-                    serverPlayer.connection.disconnect(new TranslatableComponent("multiplayer.disconnect.banned"), org.bukkit.event.player.PlayerKickEvent.Cause.BANNED); // Paper - kick event cause
++                    Component component = tk.booky.cloudplane.CloudPlaneConfig.bannedKicked.equals("default") ? new TranslatableComponent("multiplayer.disconnect.banned") : io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.get().parse(tk.booky.cloudplane.CloudPlaneConfig.bannedKicked, net.kyori.adventure.text.minimessage.Template.of("source", userBanListEntry.getSource()), net.kyori.adventure.text.minimessage.Template.of("reason", userBanListEntry.getReason()), net.kyori.adventure.text.minimessage.Template.of("created", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(userBanListEntry.getCreated())), net.kyori.adventure.text.minimessage.Template.of("expires", userBanListEntry.getExpires() == null ? "-" : tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(userBanListEntry.getExpires())))); // CloudPlane - customizable ban messages
++                    serverPlayer.connection.disconnect(component, org.bukkit.event.player.PlayerKickEvent.Cause.BANNED); // Paper - kick event cause // CloudPlane - customizable ban messages
+                 }
+             }
+         }
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index b97a62accf812d39bd0b0630a27f40400faa52d5..937fb4f7ddf34c41cd2aef720f058040601aa9d3 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -690,7 +690,7 @@ public abstract class PlayerList {
+ 
+     // CraftBukkit start - Whole method, SocketAddress to LoginListener, added hostname to signature, return EntityPlayer
+     public ServerPlayer attemptLogin(ServerLoginPacketListenerImpl loginlistener, GameProfile gameprofile, String hostname) {
+-        TranslatableComponent chatmessage;
++        net.minecraft.network.chat.BaseComponent chatmessage; // CloudPlane - TranslatableComponent --> BaseComponent
+ 
+         // Moved from processLogin
+         UUID uuid = net.minecraft.world.entity.player.Player.createPlayerUUID(gameprofile);
+@@ -735,9 +735,13 @@ public abstract class PlayerList {
+         if (getBans().isBanned(gameprofile) && (gameprofilebanentry = getBans().get(gameprofile)) != null) {
+             // Paper end
+ 
+-            chatmessage = new TranslatableComponent("multiplayer.disconnect.banned.reason", new Object[]{gameprofilebanentry.getReason()});
++            // CloudPlane start - customizable ban messages
++            boolean dontModify = tk.booky.cloudplane.CloudPlaneConfig.bannedReason.equals("default");
++            chatmessage = dontModify ? new TranslatableComponent("multiplayer.disconnect.banned.reason", new Object[]{gameprofilebanentry.getReason()}) : new net.minecraft.network.chat.TextComponent("");
++            if (!dontModify) chatmessage.append(io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.get().parse(tk.booky.cloudplane.CloudPlaneConfig.bannedReason, net.kyori.adventure.text.minimessage.Template.of("source", gameprofilebanentry.getSource()), net.kyori.adventure.text.minimessage.Template.of("reason", gameprofilebanentry.getReason()), net.kyori.adventure.text.minimessage.Template.of("created", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(gameprofilebanentry.getCreated())), net.kyori.adventure.text.minimessage.Template.of("expires", gameprofilebanentry.getExpires() == null ? "-" : tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(gameprofilebanentry.getExpires())))));
+             if (gameprofilebanentry.getExpires() != null) {
+-                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", new Object[]{tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(gameprofilebanentry.getExpires())})); // CloudPlane - configurable date format
++                chatmessage.append(tk.booky.cloudplane.CloudPlaneConfig.bannedExpiration.equals("default") ? new TranslatableComponent("multiplayer.disconnect.banned.expiration", new Object[]{tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(gameprofilebanentry.getExpires())}) : io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.get().parse(tk.booky.cloudplane.CloudPlaneConfig.bannedExpiration, net.kyori.adventure.text.minimessage.Template.of("source", gameprofilebanentry.getSource()), net.kyori.adventure.text.minimessage.Template.of("reason", gameprofilebanentry.getReason()), net.kyori.adventure.text.minimessage.Template.of("created", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(gameprofilebanentry.getCreated())), net.kyori.adventure.text.minimessage.Template.of("expires", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(gameprofilebanentry.getExpires()))))); // CloudPlane - configurable date format
++                // CloudPlane end
+             }
+ 
+             // return chatmessage;
+@@ -748,9 +752,13 @@ public abstract class PlayerList {
+         } else if (this.getIpBans().isBanned(socketaddress) && getIpBans().get(socketaddress) != null && !this.getIpBans().get(socketaddress).hasExpired()) { // Paper - fix NPE with temp ip bans
+             IpBanListEntry ipbanentry = this.ipBans.get(socketaddress);
+ 
+-            chatmessage = new TranslatableComponent("multiplayer.disconnect.banned_ip.reason", new Object[]{ipbanentry.getReason()});
++            // CloudPlane start - customizable ban messages
++            boolean dontModify = tk.booky.cloudplane.CloudPlaneConfig.ipBannedReason.equals("default");
++            chatmessage = dontModify ? new TranslatableComponent("multiplayer.disconnect.banned_ip.reason", new Object[]{ipbanentry.getReason()}) : new net.minecraft.network.chat.TextComponent("");
++            if (!dontModify) io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.get().parse(tk.booky.cloudplane.CloudPlaneConfig.ipBannedReason, net.kyori.adventure.text.minimessage.Template.of("source", ipbanentry.getSource()), net.kyori.adventure.text.minimessage.Template.of("reason", ipbanentry.getReason()), net.kyori.adventure.text.minimessage.Template.of("created", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(ipbanentry.getCreated())), net.kyori.adventure.text.minimessage.Template.of("expires", ipbanentry.getExpires() == null ? "-" : tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(ipbanentry.getExpires()))));
+             if (ipbanentry.getExpires() != null) {
+-                chatmessage.append(new TranslatableComponent("multiplayer.disconnect.banned_ip.expiration", new Object[]{tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(ipbanentry.getExpires())})); // CloudPlane - configurable date format
++                chatmessage.append(tk.booky.cloudplane.CloudPlaneConfig.ipBannedExpiration.equals("default") ? new TranslatableComponent("multiplayer.disconnect.banned_ip.expiration", new Object[]{tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(ipbanentry.getExpires())}) : io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.get().parse(tk.booky.cloudplane.CloudPlaneConfig.ipBannedExpiration, net.kyori.adventure.text.minimessage.Template.of("source", ipbanentry.getSource()), net.kyori.adventure.text.minimessage.Template.of("reason", ipbanentry.getReason()), net.kyori.adventure.text.minimessage.Template.of("created", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(ipbanentry.getCreated())), net.kyori.adventure.text.minimessage.Template.of("expires", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(ipbanentry.getExpires()))))); // CloudPlane - configurable date format
++                // CloudPlane end
+             }
+ 
+             // return chatmessage;
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+index c38f6f76ca2520e67599c5e55dea03783af184f1..50ccfe5cc68113f77a90b73bcb3f8c3eecad3678 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+@@ -138,7 +138,19 @@ public class CloudPlaneConfig {
+     }
+ 
+     public static java.text.SimpleDateFormat expireDateFormat = (java.text.SimpleDateFormat) net.minecraft.server.players.PlayerList.BAN_DATE_FORMAT.clone();
++    public static String bannedKicked = "default";
++    public static String bannedReason = "default";
++    public static String bannedExpiration = "default";
++    public static String ipBannedKicked = "default";
++    public static String ipBannedReason = "default";
++    public static String ipBannedExpiration = "default";
+     private static void banning() {
+         expireDateFormat = new java.text.SimpleDateFormat(getString("settings.banning.date-format", expireDateFormat.toPattern()));
++        bannedKicked = getString("settings.banning.messages.banned.kicked", bannedKicked);
++        bannedReason = getString("settings.banning.messages.banned.reason", bannedReason);
++        bannedExpiration = getString("settings.banning.messages.banned.expiration", bannedExpiration);
++        ipBannedKicked = getString("settings.banning.messages.ip-banned.kicked", ipBannedKicked);
++        ipBannedReason = getString("settings.banning.messages.ip-banned.reason", ipBannedReason);
++        ipBannedExpiration = getString("settings.banning.messages.ip-banned.expiration", ipBannedExpiration);
+     }
+ }
+diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
+index 0466574e70fb6be6cb95207a147e8eb1a02398eb..bea857daaddbc4fb51ba3b9d2118f1dcafa4bc8f 100644
+--- a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
++++ b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
+@@ -67,8 +67,12 @@ public class TempBanCommand implements CloudPlaneCommand {
+             ServerPlayer target = source.getServer().getPlayerList().getPlayer(profile.getId());
+ 
+             if (target == null) continue;
+-            BaseComponent component = new TranslatableComponent("multiplayer.disconnect.banned");
+-            component.append(new TranslatableComponent("multiplayer.disconnect.banned.expiration", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(expirationDate))); // CloudPlane - configurable date format
++            // CloudPlane start - customizable ban messages
++            boolean dontModify = tk.booky.cloudplane.CloudPlaneConfig.bannedKicked.equals("default");
++            BaseComponent component = dontModify ? new TranslatableComponent("multiplayer.disconnect.banned") : new net.minecraft.network.chat.TextComponent("");
++            if (!dontModify) component.append(io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.get().parse(tk.booky.cloudplane.CloudPlaneConfig.bannedKicked, net.kyori.adventure.text.minimessage.Template.of("source", entry.getSource()), net.kyori.adventure.text.minimessage.Template.of("reason", entry.getReason()), net.kyori.adventure.text.minimessage.Template.of("created", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(entry.getCreated())), net.kyori.adventure.text.minimessage.Template.of("expires", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(entry.getExpires())))));
++            component.append(tk.booky.cloudplane.CloudPlaneConfig.bannedExpiration.equals("default") ? new TranslatableComponent("multiplayer.disconnect.banned.expiration", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(expirationDate)) : io.papermc.paper.adventure.PaperAdventure.asVanilla(net.kyori.adventure.text.minimessage.MiniMessage.get().parse(tk.booky.cloudplane.CloudPlaneConfig.bannedExpiration, net.kyori.adventure.text.minimessage.Template.of("source", entry.getSource()), net.kyori.adventure.text.minimessage.Template.of("reason", entry.getReason()), net.kyori.adventure.text.minimessage.Template.of("created", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(entry.getCreated())), net.kyori.adventure.text.minimessage.Template.of("expires", tk.booky.cloudplane.CloudPlaneConfig.expireDateFormat.format(entry.getExpires()))))); // CloudPlane - configurable date format
++            // CloudPlane end
+             target.connection.disconnect(component, PlayerKickEvent.Cause.BANNED);
+         }
+ 
