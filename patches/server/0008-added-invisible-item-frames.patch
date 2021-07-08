@@ -5,7 +5,7 @@ Subject: [PATCH] added invisible item frames
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
-index 90f1ecd97eef93316f61bf5d761d33c313e1a077..ad980468495e0135b0d297ae17f29e77b4cbd574 100644
+index 90f1ecd97eef93316f61bf5d761d33c313e1a077..917c2ca3c32ff548afe05853346dce16f9ccca42 100644
 --- a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
 +++ b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
 @@ -187,6 +187,12 @@ public class ItemFrame extends HangingEntity {
@@ -21,13 +21,12 @@ index 90f1ecd97eef93316f61bf5d761d33c313e1a077..ad980468495e0135b0d297ae17f29e77
              }
  
              return true;
-@@ -434,6 +440,13 @@ public class ItemFrame extends HangingEntity {
+@@ -434,6 +440,12 @@ public class ItemFrame extends HangingEntity {
                          }
                      }
  
 +                    // CloudPlane start - invisible item frames
 +                    if (noCulling) {
-+                        System.out.println(1);
 +                        setGlowingTag(false);
 +                        setInvisible(true);
 +                    }
@@ -55,7 +54,7 @@ index ddd50db8bb92c147d7c1eef4d1df3ac53e2d3e4b..f52f760fc08393cda56a6a0626f8c863
                  if (this.type != EntityType.GLOW_ITEM_FRAME) {
                      return InteractionResult.sidedSuccess(world.isClientSide);
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index acdf5ea416e60adfdc191572190ea398700fc660..8d1128fb029ac686513a0f25fe86f7071269afb8 100644
+index 1bb84a382a02b6930f9fd503cb52ddde068f6ffb..f96454e69349fd10c8bdde04fe826160a318fd36 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -72,6 +72,8 @@ public class CloudPlaneConfig {
