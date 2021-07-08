@@ -5,10 +5,10 @@ Subject: [PATCH] added tempban command
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 75ea35574ad999fd7f6cce4b794017ebc9d0f218..4e40e40257ceb98895777eaf7fb013722aa765a5 100644
+index 602b96d5dfbeb9a24072a8c80db3547a2af2ae6f..36dabd2427dd7cbd4a66e7a6ff24a406b32cd885 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -127,7 +127,7 @@ public abstract class PlayerList {
+@@ -129,7 +129,7 @@ public abstract class PlayerList {
      public static final File WHITELIST_FILE = new File("whitelist.json");
      private static final Logger LOGGER = LogManager.getLogger();
      private static final int SEND_PLAYER_INFO_INTERVAL = 600;
@@ -18,7 +18,7 @@ index 75ea35574ad999fd7f6cce4b794017ebc9d0f218..4e40e40257ceb98895777eaf7fb01372
      public final List<ServerPlayer> players = new java.util.concurrent.CopyOnWriteArrayList(); // CraftBukkit - ArrayList -> CopyOnWriteArrayList: Iterator safety
      private final Map<UUID, ServerPlayer> playersByUUID = Maps.newHashMap();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 70183114a3a4954be1c03dc8a066506ec0bc8e53..e437153fabb826421b76efc712eaf2baae25addf 100644
+index e00fea8118098b615659272a446ee97a91af54c9..e437153fabb826421b76efc712eaf2baae25addf 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -66,6 +66,7 @@ public class CloudPlaneConfig {
@@ -29,13 +29,6 @@ index 70183114a3a4954be1c03dc8a066506ec0bc8e53..e437153fabb826421b76efc712eaf2ba
  
          commands.forEach(command -> command.register(dispatcher));
      }
-@@ -135,4 +136,4 @@ public class CloudPlaneConfig {
-     private static void sleeping() {
-         sleepMessage = getString("settings.sleeping.message", sleepMessage);
-     }
--}
-\ No newline at end of file
-+}
 diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..7a68603c55ab2f0d91ec3fbbd28d4ab577f9fc14

@@ -5,7 +5,7 @@ Subject: [PATCH] added configurable sleeping over message
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 76fb88b8d7995466e49312a0d33dba95a5e43664..5c9e1227aa948b45974c836de9707d41706f1ea6 100644
+index 4caa8a065d33247e13baa2eea633cd69ce83caf7..589f02230b7442535eaf992aa1d4bb16d32a9cae 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -800,6 +800,11 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
@@ -21,7 +21,7 @@ index 76fb88b8d7995466e49312a0d33dba95a5e43664..5c9e1227aa948b45974c836de9707d41
  
          this.updateSkyBrightness();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 56ac9fc8121145290ffe43f37390679e959c3934..5f0e72bc977e25cb00f2732e6c744da4615b7748 100644
+index 972c1c1c73d147b56e6cf6b509086370aa81fcea..d9955a86ba2b6a5015e95f5b07258f1995d8f834 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -126,4 +126,9 @@ public class CloudPlaneConfig {
@@ -34,4 +34,3 @@ index 56ac9fc8121145290ffe43f37390679e959c3934..5f0e72bc977e25cb00f2732e6c744da4
 +        sleepMessage = getString("settings.sleeping.message", sleepMessage);
 +    }
  }
-\ No newline at end of file

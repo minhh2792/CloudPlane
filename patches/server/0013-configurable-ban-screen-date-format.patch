@@ -5,10 +5,10 @@ Subject: [PATCH] configurable ban-screen date format
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 4e40e40257ceb98895777eaf7fb013722aa765a5..b97a62accf812d39bd0b0630a27f40400faa52d5 100644
+index 36dabd2427dd7cbd4a66e7a6ff24a406b32cd885..9d1f4e06294d43cc98cbf907b7abc0e5a5442ab9 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -737,7 +737,7 @@ public abstract class PlayerList {
+@@ -739,7 +739,7 @@ public abstract class PlayerList {
  
              chatmessage = new TranslatableComponent("multiplayer.disconnect.banned.reason", new Object[]{gameprofilebanentry.getReason()});
              if (gameprofilebanentry.getExpires() != null) {
@@ -17,7 +17,7 @@ index 4e40e40257ceb98895777eaf7fb013722aa765a5..b97a62accf812d39bd0b0630a27f4040
              }
  
              // return chatmessage;
-@@ -750,7 +750,7 @@ public abstract class PlayerList {
+@@ -752,7 +752,7 @@ public abstract class PlayerList {
  
              chatmessage = new TranslatableComponent("multiplayer.disconnect.banned_ip.reason", new Object[]{ipbanentry.getReason()});
              if (ipbanentry.getExpires() != null) {
