@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <github@booky.tk>
+Date: Fri, 9 Jul 2021 13:02:30 +0200
+Subject: [PATCH] added allowPvP gamerule
+
+
+diff --git a/src/main/java/org/bukkit/GameRule.java b/src/main/java/org/bukkit/GameRule.java
+index 442db40bc6ea2cfd2f724807544a080bb62bd8c5..2b265c5b5bb7099d43244ac6932b4392aa8f9bc0 100644
+--- a/src/main/java/org/bukkit/GameRule.java
++++ b/src/main/java/org/bukkit/GameRule.java
+@@ -173,6 +173,13 @@ public final class GameRule<T> {
+      */
+     public static final GameRule<Boolean> UNIVERSAL_ANGER = new GameRule<>("universalAnger", Boolean.class);
+ 
++    // CloudPlane start - added allowPvP gamerule
++    /**
++     * Enables or disables player damage by other players in the world.
++     */
++    public static final GameRule<Boolean> ALLOW_PVP = new GameRule<>("allowPvP", Boolean.class);
++    // CloudPlane end
++
+     // Numerical rules
+     /**
+      * How often a random block tick occurs (such as plant growth, leaf decay,
