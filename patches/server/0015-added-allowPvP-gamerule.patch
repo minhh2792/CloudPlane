@@ -5,7 +5,7 @@ Subject: [PATCH] added allowPvP gamerule
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 19af848a119217084b4a2e6c1b72158a5fdae372..6cd5ebaa8298d33b5925d2b0caa4fa3c17ca4a32 100644
+index 19af848a119217084b4a2e6c1b72158a5fdae372..b046de151cec011da981cba10bd6655251c7b746 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -3159,7 +3159,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
@@ -13,7 +13,7 @@ index 19af848a119217084b4a2e6c1b72158a5fdae372..6cd5ebaa8298d33b5925d2b0caa4fa3c
  
      public boolean isInvulnerableTo(DamageSource damageSource) {
 -        return this.isRemoved() || this.invulnerable && damageSource != DamageSource.OUT_OF_WORLD && !damageSource.isCreativePlayer();
-+        return (this.isRemoved() || this.invulnerable && damageSource != DamageSource.OUT_OF_WORLD && !damageSource.isCreativePlayer()) || (damageSource.getEntity() instanceof Player && !level.getGameRules().getBoolean(GameRules.RULE_ALLOW_PVP)); // CloudPlane - added allowPvP gamerule
++        return (this.isRemoved() || this.invulnerable && damageSource != DamageSource.OUT_OF_WORLD && !damageSource.isCreativePlayer()) || (this instanceof Player && damageSource.getEntity() instanceof Player && !level.getGameRules().getBoolean(GameRules.RULE_ALLOW_PVP)); // CloudPlane - added allowPvP gamerule
      }
  
      public boolean isInvulnerable() {
