@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <github@booky.tk>
+Date: Fri, 9 Jul 2021 11:28:12 +0200
+Subject: [PATCH] added allowPvP gamerule
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index 19af848a119217084b4a2e6c1b72158a5fdae372..6cd5ebaa8298d33b5925d2b0caa4fa3c17ca4a32 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -3159,7 +3159,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+     }
+ 
+     public boolean isInvulnerableTo(DamageSource damageSource) {
+-        return this.isRemoved() || this.invulnerable && damageSource != DamageSource.OUT_OF_WORLD && !damageSource.isCreativePlayer();
++        return (this.isRemoved() || this.invulnerable && damageSource != DamageSource.OUT_OF_WORLD && !damageSource.isCreativePlayer()) || (damageSource.getEntity() instanceof Player && !level.getGameRules().getBoolean(GameRules.RULE_ALLOW_PVP)); // CloudPlane - added allowPvP gamerule
+     }
+ 
+     public boolean isInvulnerable() {
+diff --git a/src/main/java/net/minecraft/world/level/GameRules.java b/src/main/java/net/minecraft/world/level/GameRules.java
+index 833ad6fbedfc275b3fde640b0e873f23e61acc3b..3fbab1e7b08f1d2a0278ab0b1cc22a6d28dc4bb2 100644
+--- a/src/main/java/net/minecraft/world/level/GameRules.java
++++ b/src/main/java/net/minecraft/world/level/GameRules.java
+@@ -89,6 +89,7 @@ public class GameRules {
+     public static final GameRules.Key<GameRules.BooleanValue> RULE_FORGIVE_DEAD_PLAYERS = GameRules.register("forgiveDeadPlayers", GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
+     public static final GameRules.Key<GameRules.BooleanValue> RULE_UNIVERSAL_ANGER = GameRules.register("universalAnger", GameRules.Category.MOBS, GameRules.BooleanValue.create(false));
+     public static final GameRules.Key<GameRules.IntegerValue> RULE_PLAYERS_SLEEPING_PERCENTAGE = GameRules.register("playersSleepingPercentage", GameRules.Category.PLAYER, GameRules.IntegerValue.create(100));
++    public static final GameRules.Key<GameRules.BooleanValue> RULE_ALLOW_PVP = GameRules.register("allowPvP", Category.PLAYER, GameRules.BooleanValue.create(true)); // CloudPlane - added allowPvP gamerule
+     private final Map<GameRules.Key<?>, GameRules.Value<?>> rules;
+     private final GameRules.Value<?>[] gameruleArray;
+ 
