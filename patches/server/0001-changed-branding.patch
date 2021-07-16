@@ -5,10 +5,10 @@ Subject: [PATCH] changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 9414a05bdd2581b6cd21805958f58ddb0d130046..ccf4f4f10b6db3bdb09e02e2e28e60b53d88eb0d 100644
+index dff7c7aaf363c4446202b3680c0bbe69a66aa6a5..68dd75f20bfb127fdd450f182c6fde8843b4caa1 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -35,7 +35,7 @@ repositories {
+@@ -36,7 +36,7 @@ repositories {
  }
  
  dependencies {
@@ -23,11 +23,11 @@ index 9414a05bdd2581b6cd21805958f58ddb0d130046..ccf4f4f10b6db3bdb09e02e2e28e60b5
              "Implementation-Title" to "CraftBukkit",
 -            "Implementation-Version" to "git-AirplanePurpur-$implementationVersion", // Airplane // Tuinity
 +            "Implementation-Version" to "git-CloudPlane-$implementationVersion", // CloudPlane // Airplane // Tuinity
-             "Implementation-Vendor" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(Date()), // Paper
+             "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 06fbfe810ac7080b8babe12241da0a6d56d091dd..f5d61d46b65860b6ec7813c226e38c2ab31c4f61 100644
+index 6a79f329a99539d0413c207e4beaac13dabd6bd3..f812f369e76fb4f46b20aeaac886032fbc1812e7 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -96,6 +96,7 @@ public class PaperConfig {
@@ -67,7 +67,7 @@ index 0fafc2d6967cad3574f79b8eab1cfad093b564b9..928b3756a668dc367539789603a429d4
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 93413e7c4a59b87393c80621c7709d10540588a6..713aa997435a82461762b92f2590d51a9f06e390 100644
+index cc7ccda063f5caabcd518c1bf8764eb73396a83f..961d77373fc54ee703dc5b8131036f357613adca 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper
