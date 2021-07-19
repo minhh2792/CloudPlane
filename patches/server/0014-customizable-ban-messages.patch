@@ -34,10 +34,10 @@ index b6eb53d5647600963c038cf2ef1301aba66f524d..60d26c7366189794311622be7d57f55c
              }
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 911f23ac2fd4846a0df6159b2adf8f54c43d6e0c..97c41ec7f4dfe234996f1f54f16412978b7a769a 100644
+index ceed603531947b1cc5757f86f0602c2dd0d28268..0c3a9fb5ff36fc54a2102536fd4e9f1a6e6551f8 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -697,7 +697,7 @@ public abstract class PlayerList {
+@@ -698,7 +698,7 @@ public abstract class PlayerList {
  
      // CraftBukkit start - Whole method, SocketAddress to LoginListener, added hostname to signature, return EntityPlayer
      public ServerPlayer attemptLogin(ServerLoginPacketListenerImpl loginlistener, GameProfile gameprofile, String hostname) {
@@ -46,7 +46,7 @@ index 911f23ac2fd4846a0df6159b2adf8f54c43d6e0c..97c41ec7f4dfe234996f1f54f1641297
  
          // Moved from processLogin
          UUID uuid = net.minecraft.world.entity.player.Player.createPlayerUUID(gameprofile);
-@@ -742,9 +742,13 @@ public abstract class PlayerList {
+@@ -743,9 +743,13 @@ public abstract class PlayerList {
          if (getBans().isBanned(gameprofile) && (gameprofilebanentry = getBans().get(gameprofile)) != null) {
              // Paper end
  
@@ -62,7 +62,7 @@ index 911f23ac2fd4846a0df6159b2adf8f54c43d6e0c..97c41ec7f4dfe234996f1f54f1641297
              }
  
              // return chatmessage;
-@@ -755,9 +759,13 @@ public abstract class PlayerList {
+@@ -756,9 +760,13 @@ public abstract class PlayerList {
          } else if (this.getIpBans().isBanned(socketaddress) && getIpBans().get(socketaddress) != null && !this.getIpBans().get(socketaddress).hasExpired()) { // Paper - fix NPE with temp ip bans
              IpBanListEntry ipbanentry = this.ipBans.get(socketaddress);
  

@@ -5,10 +5,10 @@ Subject: [PATCH] use 1.17 mojang api
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 68dd75f20bfb127fdd450f182c6fde8843b4caa1..9f8e980a542ffe4568261d3bbc57f62f1f3dbe8c 100644
+index 1bd26e1b7dc90dad31512e5115d66a1f5218eb5f..1fb22e20ab5e39e4f0a0dd6604f5b18ba5503d10 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -37,7 +37,7 @@ repositories {
+@@ -36,7 +36,7 @@ repositories {
  
  dependencies {
      implementation(project(":CloudPlane-API")) // CloudPlane // Airplane // Tuinity

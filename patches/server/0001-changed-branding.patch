@@ -5,10 +5,10 @@ Subject: [PATCH] changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index dff7c7aaf363c4446202b3680c0bbe69a66aa6a5..68dd75f20bfb127fdd450f182c6fde8843b4caa1 100644
+index 8f57361ecb47c531804563fc6ff9311e05b2a17f..1bd26e1b7dc90dad31512e5115d66a1f5218eb5f 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -36,7 +36,7 @@ repositories {
+@@ -35,7 +35,7 @@ repositories {
  }
  
  dependencies {
@@ -17,11 +17,11 @@ index dff7c7aaf363c4446202b3680c0bbe69a66aa6a5..68dd75f20bfb127fdd450f182c6fde88
      implementation("com.destroystokyo.paper:paper-mojangapi:1.16.5-R0.1-SNAPSHOT") // Tuinity
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
-@@ -91,7 +91,7 @@ tasks.jar {
+@@ -90,7 +90,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
--            "Implementation-Version" to "git-AirplanePurpur-$implementationVersion", // Airplane // Tuinity
+-            "Implementation-Version" to "git-Airplane-$implementationVersion", // Airplane // Tuinity
 +            "Implementation-Version" to "git-CloudPlane-$implementationVersion", // CloudPlane // Airplane // Tuinity
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
@@ -39,30 +39,30 @@ index 6a79f329a99539d0413c207e4beaac13dabd6bd3..f812f369e76fb4f46b20aeaac886032f
              Metrics.PaperMetrics.startMetrics();
              metricsStarted = true;
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index 5460f57f0473868b3fb09c526a1767f717a2740e..11b21e500d845f4b91a00b7fb5050508ee3621c1 100644
+index e58226afcbf9d43248243ee4b7a2f5fe8e03f18b..c0012a1fc46ed6aa8466e40e82f73f0a6345bf5d 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-@@ -29,8 +29,8 @@ public class PaperVersionFetcher implements VersionFetcher {
+@@ -28,8 +28,8 @@ public class PaperVersionFetcher implements VersionFetcher {
      @Nonnull
      @Override
      public Component getVersionMessage(@Nonnull String serverVersion) {
 -        String[] parts = serverVersion.substring("git-Airplane-".length()).split("[-\\s]"); // Tuinity
--        final Component updateMessage = getUpdateStatusMessage("TECHNOVE/Airplane", GITHUB_BRANCH_NAME, parts[0]); // Tuinity
+-        final Component updateMessage = getUpdateStatusMessage("TECHNOVE/Airplane", "master", parts[0]); // Tuinity
 +        String[] parts = serverVersion.substring("git-CloudPlane-".length()).split("[-\\s]"); // Tuinity // CloudPlane
-+        final Component updateMessage = getUpdateStatusMessage("CloudCraftProjects/CloudPlane", GITHUB_BRANCH_NAME, parts[0]); // Tuinity // CloudPlane
++        final Component updateMessage = getUpdateStatusMessage("CloudCraftProjects/CloudPlane", "master", parts[0]); // Tuinity // CloudPlane
          final Component history = getHistory();
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 0fafc2d6967cad3574f79b8eab1cfad093b564b9..928b3756a668dc367539789603a429d4781c476a 100644
+index 3f9111ea2680dfbc2a2fc709ba0b08179e542478..46a5316e1f98d1e4f3b3396c6b604c427f5842ec 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1733,7 +1733,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      @DontObfuscate
      public String getServerModName() {
          String purpurName = net.pl3x.purpur.PurpurConfig.serverModName;
--        return purpurName.equals("Purpur") ? "AirplanePurpur" : purpurName; // Airplane // Purpur // Tuinity // Paper // Spigot // CraftBukkit
-+        return purpurName.equals("Purpur") ? "CloudPlane" : purpurName; // CloudPlane // Airplane // Purpur // Tuinity // Paper // Spigot // CraftBukkit
+-        return purpurName.equals("Purpur") ? "AirplanePurpur" : purpurName; // Airplane // Tuinity - Tuinity > //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
++        return purpurName.equals("Purpur") ? "CloudPlane" : purpurName; // CloudPlane // Airplane // Tuinity - Tuinity > //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
      }
  
      public SystemReport fillSystemReport(SystemReport details) {
@@ -79,19 +79,6 @@ index cc7ccda063f5caabcd518c1bf8764eb73396a83f..961d77373fc54ee703dc5b8131036f35
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
-diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index a84d3f474711a87897fdc29a2ec1569306562941..59c2f43adc55318138906d0ef8bcb3d428c44bff 100644
---- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-+++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -395,7 +395,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
- 
-     @Override
-     public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {
--        return new net.pl3x.purpur.PurpurVersionFetcher(); // Purpur
-+        return new com.destroystokyo.paper.PaperVersionFetcher(); // Purpur // CloudPlane
-     }
- 
-     @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 index 1788d79ea489e446d3d9f541693d4ba3dfc26015..8c663a51fda6dc53d98f546aaaf723a75be85f54 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
