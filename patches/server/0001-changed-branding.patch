@@ -39,7 +39,7 @@ index 6a79f329a99539d0413c207e4beaac13dabd6bd3..f812f369e76fb4f46b20aeaac886032f
              Metrics.PaperMetrics.startMetrics();
              metricsStarted = true;
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index e58226afcbf9d43248243ee4b7a2f5fe8e03f18b..c0012a1fc46ed6aa8466e40e82f73f0a6345bf5d 100644
+index e58226afcbf9d43248243ee4b7a2f5fe8e03f18b..64d6b891701825bb46495f9b3842505e1600f9cd 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 @@ -28,8 +28,8 @@ public class PaperVersionFetcher implements VersionFetcher {
@@ -53,6 +53,30 @@ index e58226afcbf9d43248243ee4b7a2f5fe8e03f18b..c0012a1fc46ed6aa8466e40e82f73f0a
          final Component history = getHistory();
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
+@@ -54,20 +54,20 @@ public class PaperVersionFetcher implements VersionFetcher {
+     private static Component getUpdateStatusMessage(@Nonnull String repo, @Nonnull String branch, @Nonnull String versionInfo) {
+         // Airplane start - revert this some other time
+         int distance = -1;
+-        /*
++        // /* // CloudPlane - changed branding
+         // Purpur start - put this back...
+         try {
+             int build = Integer.parseInt(versionInfo);
+             distance = fetchDistanceFromSiteApi(build, getMinecraftVersion());
+             if (distance < 0) {
+-                distance = fetchDistanceFromJenkins(build);
++                // distance = fetchDistanceFromJenkins(build); // CloudPlane - changed branding
+             }
+         } catch (NumberFormatException ignored) {
+             versionInfo = versionInfo.replace("\"", "");
+             distance = fetchDistanceFromGitHub(repo, branch, versionInfo);
+         }
+         // Purpur end
+-         */
++        // */ // CloudPlane - changed branding
+         // Airplane end
+ 
+         switch (distance) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
 index 3f9111ea2680dfbc2a2fc709ba0b08179e542478..46a5316e1f98d1e4f3b3396c6b604c427f5842ec 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
