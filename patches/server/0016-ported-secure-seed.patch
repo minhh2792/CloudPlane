@@ -254,7 +254,7 @@ index 43efd756dec0dddcbcb18bcc2c48972f236ffda9..408487d25708312b0f66c8f141e34682
              simplexNoise = new SimplexNoise(worldgenRandom2);
          } else {
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java b/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
-index 57b12ba5a24e68b0a0420d692946fe5e83974db4..95607c98ee091e4fac25c69877313dfa35a7dd32 100644
+index 57b12ba5a24e68b0a0420d692946fe5e83974db4..407b3e6611b115a20c5eb599c2ba956a24c0ef97 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
 @@ -43,10 +43,27 @@ public class WorldGenSettings {
@@ -282,7 +282,7 @@ index 57b12ba5a24e68b0a0420d692946fe5e83974db4..95607c98ee091e4fac25c69877313dfa
      private static final Logger LOGGER = LogManager.getLogger();
 -    private final long seed;
 +    private long seed; // private final --> private
-+    private long[] secureSeed; public final long[] getSecureSeed() { return secureSeed; } public final WorldGenSettings setSecureSeed(@javax.annotation.Nullable long[] seed) { secureSeed = seed; if (seed != null && tk.booky.cloudplane.CloudPlaneConfig.secureSeed) this.seed = seed[0]; return this; }
++    private long[] secureSeed; public final @javax.annotation.Nullable long[] getSecureSeed() { return secureSeed; } public final WorldGenSettings setSecureSeed(@javax.annotation.Nullable long[] seed) { secureSeed = seed; if (seed != null && tk.booky.cloudplane.CloudPlaneConfig.secureSeed) this.seed = seed[0]; return this; }
 +    // CloudPlane end
      private final boolean generateFeatures;
      private final boolean generateBonusChest;
@@ -758,14 +758,15 @@ index 50ccfe5cc68113f77a90b73bcb3f8c3eecad3678..799b18b3c629a1825d875775a96ef96f
  }
 diff --git a/src/main/java/tk/booky/cloudplane/secureseed/Globals.java b/src/main/java/tk/booky/cloudplane/secureseed/Globals.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..eba57e091c84f9e6f4bc3b10f231aea763a975ff
+index 0000000000000000000000000000000000000000..779064c323406c2f723997ddb33eb1394e631f3a
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/secureseed/Globals.java
-@@ -0,0 +1,102 @@
+@@ -0,0 +1,110 @@
 +package tk.booky.cloudplane.secureseed;
 +
 +import com.google.common.collect.Iterables;
 +import net.minecraft.server.level.ServerLevel;
++import net.minecraft.world.level.levelgen.WorldGenSettings;
 +
 +import java.math.BigInteger;
 +import java.security.SecureRandom;
@@ -807,7 +808,14 @@ index 0000000000000000000000000000000000000000..eba57e091c84f9e6f4bc3b10f231aea7
 +    public static final int SURFACE_BUILDER_SALT = 21;
 +
 +    public static void setupGlobals(ServerLevel level) {
-+        long[] seed = level.getServer().getWorldData().worldGenSettings().getSecureSeed();
++        WorldGenSettings settings = level.getServer().getWorldData().worldGenSettings();
++        long[] seed = settings.getSecureSeed();
++        if (seed == null) {
++            seed = new long[WORLD_SEED_LONGS];
++            seed[0] = settings.seed();
++            settings.setSecureSeed(seed);
++        }
++
 +        System.arraycopy(seed, 0, worldSeed, 0, WORLD_SEED_LONGS);
 +
 +        int worldIndex = Iterables.indexOf(level.getServer().levelKeys(), it -> it == level.dimension());
