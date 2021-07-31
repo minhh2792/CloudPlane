@@ -5,17 +5,17 @@ Subject: [PATCH] ported secure seed
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index bd3e606ea9336088b5f4c3486acf4c0382e23dfc..0c416a3bea746f790313def0e853b7de5671a597 100644
+index bd3e606ea9336088b5f4c3486acf4c0382e23dfc..9bf35fbe0a63c6a1a5743754be220814786a663b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -760,8 +760,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              ChunkGenerator chunkgenerator = world.getChunkSource().getGenerator();
              // Paper start - moved down
              // CraftBukkit start
-+            tk.booky.cloudplane.secureseed.Globals.setupGlobals(world); // CloudPlane - port secure seed
++            if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) tk.booky.cloudplane.secureseed.Globals.setupGlobals(world); // CloudPlane - port secure seed
              if (world.generator != null) {
 -                Random rand = new Random(world.getSeed());
-+                Random rand = new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SPAWN_POINT_SALT, 0); // CloudPlane - port secure seed
++                Random rand = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new Random(world.getSeed()) : new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SPAWN_POINT_SALT, 0); // CloudPlane - port secure seed
                  org.bukkit.Location spawn = world.generator.getFixedSpawnLocation(world.getWorld(), rand);
  
                  if (spawn != null) {
@@ -24,12 +24,12 @@ index bd3e606ea9336088b5f4c3486acf4c0382e23dfc..0c416a3bea746f790313def0e853b7de
              // only do it if the generator did not
              BiomeSource worldchunkmanager = chunkgenerator.getBiomeSource();
 -            Random random = new Random(world.getSeed());
-+            Random random = new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SPAWN_POINT_SALT, 0); // CloudPlane - port secure seed
++            Random random = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new Random(world.getSeed()) : new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SPAWN_POINT_SALT, 0); // CloudPlane - port secure seed
              BlockPos blockposition = worldchunkmanager.findBiomeHorizontal(0, world.getSeaLevel(), 0, 256, (biomebase) -> {
                  return biomebase.getMobSettings().playerSpawnFriendly();
              }, random);
 diff --git a/src/main/java/net/minecraft/server/commands/SeedCommand.java b/src/main/java/net/minecraft/server/commands/SeedCommand.java
-index 6f4aa3fce42a53883db1485731e03822887cadc0..f01cbda41e2e2abc85620de291a85bc541e3c682 100644
+index 6f4aa3fce42a53883db1485731e03822887cadc0..6387fe3bb7c7f673f16b621d9834dac2aa9e07ad 100644
 --- a/src/main/java/net/minecraft/server/commands/SeedCommand.java
 +++ b/src/main/java/net/minecraft/server/commands/SeedCommand.java
 @@ -16,12 +16,13 @@ public class SeedCommand {
@@ -37,43 +37,43 @@ index 6f4aa3fce42a53883db1485731e03822887cadc0..f01cbda41e2e2abc85620de291a85bc5
              return !dedicated || source.hasPermission(2);
          }).executes((context) -> {
 -            long l = context.getSource().getLevel().getSeed();
-+            tk.booky.cloudplane.secureseed.Globals.setupGlobals(context.getSource().getLevel()); // CloudPlane - port secure seed
-+            String l = tk.booky.cloudplane.secureseed.Globals.seedToString(tk.booky.cloudplane.secureseed.Globals.worldSeed); // CloudPlane - port secure seed
++            if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) tk.booky.cloudplane.secureseed.Globals.setupGlobals(context.getSource().getLevel()); // CloudPlane - port secure seed
++            String l = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? Long.toString(context.getSource().getLevel().getSeed()) : tk.booky.cloudplane.secureseed.Globals.seedToString(tk.booky.cloudplane.secureseed.Globals.worldSeed); // CloudPlane - port secure seed
              Component component = ComponentUtils.wrapInSquareBrackets((new TextComponent(String.valueOf(l))).withStyle((style) -> {
                  return style.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(l))).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("chat.copy.click"))).withInsertion(String.valueOf(l));
              }));
              context.getSource().sendSuccess(new TranslatableComponent("commands.seed.success", component), false);
 -            return (int)l;
-+            return (int) tk.booky.cloudplane.secureseed.Globals.worldSeed[0]; // CloudPlane - port secure seed
++            return (int) (!tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? Long.parseLong(l) : tk.booky.cloudplane.secureseed.Globals.worldSeed[0]); // CloudPlane - port secure seed
          }));
      }
  }
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index e557651034e948cec7a2e9695e452756cf262ceb..379ddbf10b71cb7beac259a8b2403bb407789f71 100644
+index e557651034e948cec7a2e9695e452756cf262ceb..dfecff819aa6a1fc4e78c19e06a2a60211223bcf 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 @@ -1097,6 +1097,7 @@ public class ServerChunkCache extends ChunkSource {
      }
  
      public ChunkGenerator getGenerator() {
-+        tk.booky.cloudplane.secureseed.Globals.setupGlobals(level); // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) tk.booky.cloudplane.secureseed.Globals.setupGlobals(level); // CloudPlane - port secure seed
          return this.generator;
      }
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index df68b8fea1ec98c42a53884e883314a7a26e3131..2af0a087b5c76dbaaeb7c5be3d916901a70425b2 100644
+index df68b8fea1ec98c42a53884e883314a7a26e3131..bc9f1fbd05c3b09ab9b68815e90b79511c7b9317 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -512,6 +512,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          this.dragonParts = new Int2ObjectOpenHashMap();
          this.tickTime = flag1;
          this.server = minecraftserver;
-+        tk.booky.cloudplane.secureseed.Globals.setupGlobals(this); // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) tk.booky.cloudplane.secureseed.Globals.setupGlobals(this); // CloudPlane - port secure seed
          // Purpur start - enable/disable MobSpawners per world
          this.customSpawners = Lists.newArrayList();
          if (purpurConfig.phantomSpawning) {
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Slime.java b/src/main/java/net/minecraft/world/entity/monster/Slime.java
-index 7a9654a365a968592d706a13fb46615effcc2399..bde7ed0b314e16998c4d1618e611dbf4a5708bd3 100644
+index 7a9654a365a968592d706a13fb46615effcc2399..686f42358dc50b5f85eab1e9b6b1085ff54bdc8b 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Slime.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Slime.java
 @@ -391,7 +391,7 @@ public class Slime extends Mob implements Enemy {
@@ -81,7 +81,7 @@ index 7a9654a365a968592d706a13fb46615effcc2399..bde7ed0b314e16998c4d1618e611dbf4
  
              ChunkPos chunkcoordintpair = new ChunkPos(pos);
 -            boolean flag = world.getMinecraftWorld().paperConfig.allChunksAreSlimeChunks || WorldgenRandom.seedSlimeChunk(chunkcoordintpair.x, chunkcoordintpair.z, ((WorldGenLevel) world).getSeed(), world.getMinecraftWorld().spigotConfig.slimeSeed).nextInt(10) == 0; // Spigot // Paper
-+            boolean flag = world.getMinecraftWorld().paperConfig.allChunksAreSlimeChunks || ((net.minecraft.world.level.chunk.LevelChunk) world.getChunk(chunkcoordintpair.x, chunkcoordintpair.z)).isSecureSeedSlimeChunk(); // Spigot // Paper // CloudPlane - port secure seed
++            boolean flag = world.getMinecraftWorld().paperConfig.allChunksAreSlimeChunks || !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? (WorldgenRandom.seedSlimeChunk(chunkcoordintpair.x, chunkcoordintpair.z, ((WorldGenLevel) world).getSeed(), world.getMinecraftWorld().spigotConfig.slimeSeed).nextInt(10) == 0) : (((net.minecraft.world.level.chunk.LevelChunk) world.getChunk(chunkcoordintpair.x, chunkcoordintpair.z)).isSecureSeedSlimeChunk()); // Spigot // Paper // CloudPlane - port secure seed
  
              if (random.nextInt(10) == 0 && flag && pos.getY() < 40) {
                  return checkMobSpawnRules(type, world, spawnReason, pos, random);
@@ -103,7 +103,7 @@ index e298097d2b29cd9a625154ec1a67372c496afd8e..6333f95bfbc0bc8d4d32a66923c1d074
      private final Biome.ClimateSettings climateSettings;
      private final BiomeGenerationSettings generationSettings;
 diff --git a/src/main/java/net/minecraft/world/level/biome/MultiNoiseBiomeSource.java b/src/main/java/net/minecraft/world/level/biome/MultiNoiseBiomeSource.java
-index fda06f945e153aa558b000f63106ccb1e13cae65..ff1867f4c2d4541fd44ecb9a5216ed97e6c8e15c 100644
+index fda06f945e153aa558b000f63106ccb1e13cae65..cb0afabc76c59c96b93f63e5d612f5f7f82f5d57 100644
 --- a/src/main/java/net/minecraft/world/level/biome/MultiNoiseBiomeSource.java
 +++ b/src/main/java/net/minecraft/world/level/biome/MultiNoiseBiomeSource.java
 @@ -27,13 +27,13 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
@@ -130,10 +130,10 @@ index fda06f945e153aa558b000f63106ccb1e13cae65..ff1867f4c2d4541fd44ecb9a5216ed97
 -        this.humidityNoise = NormalNoise.create(new WorldgenRandom(seed + 1L), humidityNoiseParameters.firstOctave(), humidityNoiseParameters.amplitudes());
 -        this.altitudeNoise = NormalNoise.create(new WorldgenRandom(seed + 2L), altitudeNoiseParameters.firstOctave(), altitudeNoiseParameters.amplitudes());
 -        this.weirdnessNoise = NormalNoise.create(new WorldgenRandom(seed + 3L), weirdnessNoiseParameters.firstOctave(), weirdnessNoiseParameters.amplitudes());
-+        this.temperatureNoise = NormalNoise.create(new WorldgenRandom(seed).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.MULTI_NOISE_BIOME_SALT, 0), temperatureNoiseParameters.firstOctave(), temperatureNoiseParameters.amplitudes()); // CloudPlane - port secure seed
-+        this.humidityNoise = NormalNoise.create(new WorldgenRandom(seed + 1L).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.MULTI_NOISE_BIOME_SALT, 1), humidityNoiseParameters.firstOctave(), humidityNoiseParameters.amplitudes()); // CloudPlane - port secure seed
-+        this.altitudeNoise = NormalNoise.create(new WorldgenRandom(seed + 2L).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.MULTI_NOISE_BIOME_SALT, 2), altitudeNoiseParameters.firstOctave(), altitudeNoiseParameters.amplitudes()); // CloudPlane - port secure seed
-+        this.weirdnessNoise = NormalNoise.create(new WorldgenRandom(seed + 3L).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.MULTI_NOISE_BIOME_SALT, 3), weirdnessNoiseParameters.firstOctave(), weirdnessNoiseParameters.amplitudes()); // CloudPlane - port secure seed
++        this.temperatureNoise = NormalNoise.create(!tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : (new WorldgenRandom(seed).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.MULTI_NOISE_BIOME_SALT, 0)), temperatureNoiseParameters.firstOctave(), temperatureNoiseParameters.amplitudes()); // CloudPlane - port secure seed
++        this.humidityNoise = NormalNoise.create(!tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed + 1L) : (new WorldgenRandom(seed + 1L).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.MULTI_NOISE_BIOME_SALT, 1)), humidityNoiseParameters.firstOctave(), humidityNoiseParameters.amplitudes()); // CloudPlane - port secure seed
++        this.altitudeNoise = NormalNoise.create(!tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed + 2L) : (new WorldgenRandom(seed + 2L).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.MULTI_NOISE_BIOME_SALT, 2)), altitudeNoiseParameters.firstOctave(), altitudeNoiseParameters.amplitudes()); // CloudPlane - port secure seed
++        this.weirdnessNoise = NormalNoise.create(!tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed + 3L) : (new WorldgenRandom(seed + 3L).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.MULTI_NOISE_BIOME_SALT, 3)), weirdnessNoiseParameters.firstOctave(), weirdnessNoiseParameters.amplitudes()); // CloudPlane - port secure seed
          this.parameters = biomePoints;
          this.useY = false;
      }
@@ -161,7 +161,7 @@ index fda06f945e153aa558b000f63106ccb1e13cae65..ff1867f4c2d4541fd44ecb9a5216ed97
  
      static class NoiseParameters {
 diff --git a/src/main/java/net/minecraft/world/level/biome/TheEndBiomeSource.java b/src/main/java/net/minecraft/world/level/biome/TheEndBiomeSource.java
-index 3f7c4e0938933705ac1bcb8dd676d018088a831a..495cccaaba1c68fa977a4ed380e552a77148c494 100644
+index 3f7c4e0938933705ac1bcb8dd676d018088a831a..3effacf5a15add05356dc8fee3b6c65ea42a383e 100644
 --- a/src/main/java/net/minecraft/world/level/biome/TheEndBiomeSource.java
 +++ b/src/main/java/net/minecraft/world/level/biome/TheEndBiomeSource.java
 @@ -52,7 +52,7 @@ public class TheEndBiomeSource extends BiomeSource {
@@ -169,12 +169,12 @@ index 3f7c4e0938933705ac1bcb8dd676d018088a831a..495cccaaba1c68fa977a4ed380e552a7
          this.islands = smallIslandsBiome;
          this.barrens = barrensBiome;
 -        WorldgenRandom worldgenRandom = new WorldgenRandom(seed);
-+        WorldgenRandom worldgenRandom = new WorldgenRandom(seed).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.END_BIOME_NOISE_SALT, 0); // CloudPlane - port secure seed
++        WorldgenRandom worldgenRandom = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : (new WorldgenRandom(seed).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.END_BIOME_NOISE_SALT, 0)); // CloudPlane - port secure seed
          worldgenRandom.consumeCount(17292);
          this.islandNoise = new SimplexNoise(worldgenRandom);
      }
 diff --git a/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java b/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
-index 77948e19dd99b6f30bf294c9d5308228a271929b..705347548b975cc84b33418dbc9dc0d01ae09a77 100644
+index 77948e19dd99b6f30bf294c9d5308228a271929b..9a8c9e86abc08c9892d029ca175e58b40ef1df45 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
 @@ -100,7 +100,7 @@ public abstract class ChunkGenerator {
@@ -182,19 +182,19 @@ index 77948e19dd99b6f30bf294c9d5308228a271929b..705347548b975cc84b33418dbc9dc0d0
                  int j = structuresettingsstronghold.count();
                  int k = structuresettingsstronghold.spread();
 -                Random random = new Random();
-+                Random random = new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.STRONGHOLD_LOCATION_SALT, 0); if (false) // CloudPlane - port secure seed
++                Random random = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new Random() : (new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.STRONGHOLD_LOCATION_SALT, 0)); if (!tk.booky.cloudplane.CloudPlaneConfig.secureSeed) // CloudPlane - port secure seed
  
                  random.setSeed(this.strongholdSeed);
                  double d0 = random.nextDouble() * 3.141592653589793D * 2.0D;
 diff --git a/src/main/java/net/minecraft/world/level/chunk/ChunkStatus.java b/src/main/java/net/minecraft/world/level/chunk/ChunkStatus.java
-index 1c7b18db0053bca6e7750225a79f7d95843edabe..aaf55031137eecb204a44912ddd01536774b09bf 100644
+index 1c7b18db0053bca6e7750225a79f7d95843edabe..78465a3d09b6030fb606bfa56fb59e132b7ebb0b 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/ChunkStatus.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/ChunkStatus.java
 @@ -209,6 +209,7 @@ public class ChunkStatus {
      }
  
      public CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>> generate(Executor executor, ServerLevel world, ChunkGenerator chunkgenerator, StructureManager structureManager, ThreadedLevelLightEngine lightingProvider, Function<ChunkAccess, CompletableFuture<Either<ChunkAccess, ChunkHolder.ChunkLoadingFailure>>> function, List<ChunkAccess> list) {
-+        tk.booky.cloudplane.secureseed.Globals.setupGlobals(world); // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) tk.booky.cloudplane.secureseed.Globals.setupGlobals(world); // CloudPlane - port secure seed
          return this.generationTask.doWork(this, executor, world, chunkgenerator, structureManager, lightingProvider, function, list, (ChunkAccess) list.get(list.size() / 2));
      }
  
@@ -220,7 +220,7 @@ index b2e71a78424dbe1ce87b982b073d8534de890181..5369c2527c89c2016baf363a128c8e74
      // Tuinity start - rewrite light engine
      protected volatile SWMRNibbleArray[] blockNibbles;
 diff --git a/src/main/java/net/minecraft/world/level/dimension/end/EndDragonFight.java b/src/main/java/net/minecraft/world/level/dimension/end/EndDragonFight.java
-index 93dd5a2d0b550b0373cbf59376a04e9fd6146e92..f403ab0f408c4a9f9653afbd2ed4bada95c4ed15 100644
+index 93dd5a2d0b550b0373cbf59376a04e9fd6146e92..d6760dac2facacce6149425c03b8290150986818 100644
 --- a/src/main/java/net/minecraft/world/level/dimension/end/EndDragonFight.java
 +++ b/src/main/java/net/minecraft/world/level/dimension/end/EndDragonFight.java
 @@ -120,7 +120,7 @@ public class EndDragonFight {
@@ -228,12 +228,12 @@ index 93dd5a2d0b550b0373cbf59376a04e9fd6146e92..f403ab0f408c4a9f9653afbd2ed4bada
          } else {
              this.gateways.addAll(ContiguousSet.create(Range.closedOpen(0, 20), DiscreteDomain.integers()));
 -            Collections.shuffle(this.gateways, new Random(gatewaysSeed));
-+            Collections.shuffle(this.gateways, new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.END_GATEWAY_ORDER_SALT, 0)); // CloudPlane - port secure seed
++            Collections.shuffle(this.gateways, !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new Random(gatewaysSeed) : (new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.END_GATEWAY_ORDER_SALT, 0))); // CloudPlane - port secure seed
          }
  
          this.exitPortalPattern = BlockPatternBuilder.start().aisle("       ", "       ", "       ", "   #   ", "       ", "       ", "       ").aisle("       ", "       ", "       ", "   #   ", "       ", "       ", "       ").aisle("       ", "       ", "       ", "   #   ", "       ", "       ", "       ").aisle("  ###  ", " #   # ", "#     #", "#  #  #", "#     #", " #   # ", "  ###  ").aisle("       ", "  ###  ", " ##### ", " ##### ", " ##### ", "  ###  ", "       ").where('#', BlockInWorld.hasState(BlockPredicate.forBlock(Blocks.BEDROCK))).build();
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
-index 43efd756dec0dddcbcb18bcc2c48972f236ffda9..f088afa3174892bb9eb2785e37128a5f584ce0f4 100644
+index 43efd756dec0dddcbcb18bcc2c48972f236ffda9..408487d25708312b0f66c8f141e34682308663d7 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
 @@ -96,14 +96,14 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {
@@ -241,7 +241,7 @@ index 43efd756dec0dddcbcb18bcc2c48972f236ffda9..f088afa3174892bb9eb2785e37128a5f
          this.cellCountY = noiseSettings.height() / this.cellHeight;
          this.cellCountZ = 16 / this.cellWidth;
 -        WorldgenRandom worldgenRandom = new WorldgenRandom(seed);
-+        WorldgenRandom worldgenRandom = new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.TERRAIN_NOISE_SALT, 0); // CloudPlane - port secure seed
++        WorldgenRandom worldgenRandom = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : (new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.TERRAIN_NOISE_SALT, 0)); // CloudPlane - port secure seed
          BlendedNoise blendedNoise = new BlendedNoise(worldgenRandom);
          this.surfaceNoise = (SurfaceNoise)(noiseSettings.useSimplexSurfaceNoise() ? new PerlinSimplexNoise(worldgenRandom, IntStream.rangeClosed(-3, 0)) : new PerlinNoise(worldgenRandom, IntStream.rangeClosed(-3, 0)));
          worldgenRandom.consumeCount(2620);
@@ -249,12 +249,12 @@ index 43efd756dec0dddcbcb18bcc2c48972f236ffda9..f088afa3174892bb9eb2785e37128a5f
          SimplexNoise simplexNoise;
          if (noiseSettings.islandNoiseOverride()) {
 -            WorldgenRandom worldgenRandom2 = new WorldgenRandom(seed);
-+            WorldgenRandom worldgenRandom2 = new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.TERRAIN_NOISE_SALT, 1); // CloudPlane - port secure seed
++            WorldgenRandom worldgenRandom2 = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : (new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.TERRAIN_NOISE_SALT, 1)); // CloudPlane - port secure seed
              worldgenRandom2.consumeCount(17292);
              simplexNoise = new SimplexNoise(worldgenRandom2);
          } else {
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java b/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
-index 57b12ba5a24e68b0a0420d692946fe5e83974db4..acad674d7f4ff4983432df144c03bb7a8cc81d62 100644
+index 57b12ba5a24e68b0a0420d692946fe5e83974db4..95607c98ee091e4fac25c69877313dfa35a7dd32 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
 @@ -43,10 +43,27 @@ public class WorldGenSettings {
@@ -282,7 +282,7 @@ index 57b12ba5a24e68b0a0420d692946fe5e83974db4..acad674d7f4ff4983432df144c03bb7a
      private static final Logger LOGGER = LogManager.getLogger();
 -    private final long seed;
 +    private long seed; // private final --> private
-+    private long[] secureSeed; public final long[] getSecureSeed() { return secureSeed; } public final WorldGenSettings setSecureSeed(@javax.annotation.Nullable long[] seed) { secureSeed = seed; if (seed != null) this.seed = seed[0]; return this; }
++    private long[] secureSeed; public final long[] getSecureSeed() { return secureSeed; } public final WorldGenSettings setSecureSeed(@javax.annotation.Nullable long[] seed) { secureSeed = seed; if (seed != null && tk.booky.cloudplane.CloudPlaneConfig.secureSeed) this.seed = seed[0]; return this; }
 +    // CloudPlane end
      private final boolean generateFeatures;
      private final boolean generateBonusChest;
@@ -332,7 +332,7 @@ index 57b12ba5a24e68b0a0420d692946fe5e83974db4..acad674d7f4ff4983432df144c03bb7a
      }
  
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/WorldgenRandom.java b/src/main/java/net/minecraft/world/level/levelgen/WorldgenRandom.java
-index 9cbf16a6d45688c8b1f1f31470b9c6bd2330cc8b..4908f24d8a6294216343b2dbe37db55855b78c93 100644
+index 9cbf16a6d45688c8b1f1f31470b9c6bd2330cc8b..2bb2e98c128310b94257c5a55f1d118c5312a9b7 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/WorldgenRandom.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/WorldgenRandom.java
 @@ -3,6 +3,26 @@ package net.minecraft.world.level.levelgen;
@@ -354,7 +354,7 @@ index 9cbf16a6d45688c8b1f1f31470b9c6bd2330cc8b..4908f24d8a6294216343b2dbe37db558
 +    private final long[] randomBits = new long[8];
 +    private final long[] message = new long[16];
 +    private boolean secureSeeded = false; // sanity check
-+    private boolean secure = true; public final WorldgenRandom setInsecure() { secure = false; return this; }
++    private boolean secure = tk.booky.cloudplane.CloudPlaneConfig.secureSeed; public final WorldgenRandom setInsecure() { secure = false; return this; }
 +    private int randomBitIndex;
 +    private long insecureSeed; public final long getInsecureSeed() { return insecureSeed; }
 +    private long counter = 0;
@@ -483,14 +483,14 @@ index 9cbf16a6d45688c8b1f1f31470b9c6bd2330cc8b..4908f24d8a6294216343b2dbe37db558
      }
  
      public long setBaseChunkSeed(int chunkX, int chunkZ) {
-+        if (true) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, chunkX, chunkZ, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.TERRAIN_SALT, 0); return 0; } // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, chunkX, chunkZ, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.TERRAIN_SALT, 0); return 0; } // CloudPlane - port secure seed
          long l = (long)chunkX * 341873128712L + (long)chunkZ * 132897987541L;
          this.setSeed(l);
          return l;
      }
  
      public long setDecorationSeed(long worldSeed, int blockX, int blockZ) {
-+        if (true) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, blockX, blockZ, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.POPULATION_SALT, 0); return ((long) blockX << 32) | ((long) blockZ & 0xffffffffL); } // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, blockX, blockZ, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.POPULATION_SALT, 0); return ((long) blockX << 32) | ((long) blockZ & 0xffffffffL); } // CloudPlane - port secure seed
          this.setSeed(worldSeed);
          long l = this.nextLong() | 1L;
          long m = this.nextLong() | 1L;
@@ -498,14 +498,14 @@ index 9cbf16a6d45688c8b1f1f31470b9c6bd2330cc8b..4908f24d8a6294216343b2dbe37db558
      }
  
      public long setFeatureSeed(long populationSeed, int index, int step) {
-+        if (true) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, (int) (populationSeed >> 32), (int) populationSeed, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.DECORATION_SALT, index + 10000L * step); return 0; } // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, (int) (populationSeed >> 32), (int) populationSeed, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.DECORATION_SALT, index + 10000L * step); return 0; } // CloudPlane - port secure seed
          long l = populationSeed + (long)index + (long)(10000 * step);
          this.setSeed(l);
          return l;
      }
  
      public long setLargeFeatureSeed(long worldSeed, int chunkX, int chunkZ) {
-+        if (true) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, chunkX, chunkZ, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.CARVER_SALT, 0); return 0; }; // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, chunkX, chunkZ, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.CARVER_SALT, 0); return 0; }; // CloudPlane - port secure seed
          this.setSeed(worldSeed);
          long l = this.nextLong();
          long m = this.nextLong();
@@ -513,7 +513,7 @@ index 9cbf16a6d45688c8b1f1f31470b9c6bd2330cc8b..4908f24d8a6294216343b2dbe37db558
      }
  
      public long setBaseStoneSeed(long worldSeed, int x, int y, int z) {
-+        if (true) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, x, z, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.BASE_SALT, 0); return 0; } // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, x, z, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.BASE_SALT, 0); return 0; } // CloudPlane - port secure seed
          this.setSeed(worldSeed);
          long l = this.nextLong();
          long m = this.nextLong();
@@ -521,19 +521,19 @@ index 9cbf16a6d45688c8b1f1f31470b9c6bd2330cc8b..4908f24d8a6294216343b2dbe37db558
      }
  
      public long setLargeFeatureWithSalt(long worldSeed, int regionX, int regionZ, int salt) {
-+        if (true) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, regionX, regionZ, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.REGION_SALT, salt); return 0; } // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) { setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, regionX, regionZ, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.REGION_SALT, salt); return 0; } // CloudPlane - port secure seed
          long l = (long)regionX * 341873128712L + (long)regionZ * 132897987541L + worldSeed + (long)salt;
          this.setSeed(l);
          return l;
      }
  
      public static Random seedSlimeChunk(int chunkX, int chunkZ, long worldSeed, long scrambler) {
-+        if (true) return new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, chunkX, chunkZ, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SLIME_CHUNK_SALT, 0); // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) return new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, chunkX, chunkZ, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SLIME_CHUNK_SALT, 0); // CloudPlane - port secure seed
          return new Random(worldSeed + (long)(chunkX * chunkX * 4987142) + (long)(chunkX * 5947611) + (long)(chunkZ * chunkZ) * 4392871L + (long)(chunkZ * 389711) ^ scrambler);
      }
  }
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/carver/CanyonWorldCarver.java b/src/main/java/net/minecraft/world/level/levelgen/carver/CanyonWorldCarver.java
-index c1ea5072072dbef223f6d30ddbd305a919c2eb4f..0b9e64c9b3b663efd2e82e2b6110e31979d701a0 100644
+index c1ea5072072dbef223f6d30ddbd305a919c2eb4f..9aeec8ebcf7755b2373899070478149e886ec66c 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/carver/CanyonWorldCarver.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/carver/CanyonWorldCarver.java
 @@ -42,7 +42,7 @@ public class CanyonWorldCarver extends WorldCarver<CanyonCarverConfiguration> {
@@ -541,12 +541,12 @@ index c1ea5072072dbef223f6d30ddbd305a919c2eb4f..0b9e64c9b3b663efd2e82e2b6110e319
  
      private void doCarve(CarvingContext context, CanyonCarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Biome> posToBiome, long seed, Aquifer aquifer, double x, double y, double z, float width, float yaw, float pitch, int branchStartIndex, int branchCount, double yawPitchRatio, BitSet carvingMask) {
 -        Random random = new Random(seed);
-+        Random random = new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.RAVINE_CARVER_SALT, seed); // CloudPlane - port secure seed
++        Random random = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new Random(seed) : new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.RAVINE_CARVER_SALT, seed); // CloudPlane - port secure seed
          float[] fs = this.initWidthFactors(context, config, random);
          float f = 0.0F;
          float g = 0.0F;
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/carver/CaveWorldCarver.java b/src/main/java/net/minecraft/world/level/levelgen/carver/CaveWorldCarver.java
-index 950c5a7be188e30f2908097ecbbf4a191a3e6cf1..8afa241fa584905b144ba2da1c0e4198ac45cb60 100644
+index 950c5a7be188e30f2908097ecbbf4a191a3e6cf1..9cd8a85197e630baf406dfdab7fb9654c294ed60 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/carver/CaveWorldCarver.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/carver/CaveWorldCarver.java
 @@ -82,7 +82,7 @@ public class CaveWorldCarver extends WorldCarver<CaveCarverConfiguration> {
@@ -554,12 +554,12 @@ index 950c5a7be188e30f2908097ecbbf4a191a3e6cf1..8afa241fa584905b144ba2da1c0e4198
  
      protected void createTunnel(CarvingContext context, CaveCarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Biome> posToBiome, long seed, Aquifer aquifer, double x, double y, double z, double horizontalScale, double verticalScale, float width, float yaw, float pitch, int branchStartIndex, int branchCount, double yawPitchRatio, BitSet carvingMask, WorldCarver.CarveSkipChecker skipPredicate) {
 -        Random random = new Random(seed);
-+        Random random = new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.CAVE_CARVER_SALT, seed); // CloudPlane - port secure seed
++        Random random = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new Random(seed) : new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.CAVE_CARVER_SALT, seed); // CloudPlane - port secure seed
          int i = random.nextInt(branchCount / 2) + branchCount / 4;
          boolean bl = random.nextInt(6) == 0;
          float f = 0.0F;
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/carver/WorldCarver.java b/src/main/java/net/minecraft/world/level/levelgen/carver/WorldCarver.java
-index 97458bfc0fa59b89e460d2f668e0dfae00068d24..a3402383aba3a74b46f48c21e9214694d72b78b1 100644
+index 97458bfc0fa59b89e460d2f668e0dfae00068d24..d00d145eb9ff08e2ccb2822b5710f7e84ee21f22 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/carver/WorldCarver.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/carver/WorldCarver.java
 @@ -66,7 +66,7 @@ public abstract class WorldCarver<C extends CarverConfiguration> {
@@ -567,24 +567,24 @@ index 97458bfc0fa59b89e460d2f668e0dfae00068d24..a3402383aba3a74b46f48c21e9214694
          int i = chunkPos.x;
          int j = chunkPos.z;
 -        Random random = new Random(seed + (long)i + (long)j);
-+        Random random = new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, chunkPos.x, chunkPos.z, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.REGION_CARVER_SALT, 0); // CloudPlane - port secure seed
++        Random random = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new Random(seed + (long)i + (long)j) : new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, chunkPos.x, chunkPos.z, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.REGION_CARVER_SALT, 0); // CloudPlane - port secure seed
          double d = (double)chunkPos.getMiddleBlockX();
          double e = (double)chunkPos.getMiddleBlockZ();
          double f = 16.0D + horizontalScale * 2.0D;
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/PillagerOutpostFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/PillagerOutpostFeature.java
-index c7d158e390cf7164edb9623339fcf42e768c9696..cdc250d3079f84842ebd9ea7c3b8a650567d8b75 100644
+index c7d158e390cf7164edb9623339fcf42e768c9696..8dbf3a86ad731adf57fb367c713129e03da6d5b4 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/feature/PillagerOutpostFeature.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/feature/PillagerOutpostFeature.java
 @@ -29,6 +29,7 @@ public class PillagerOutpostFeature extends JigsawFeature {
      protected boolean isFeatureChunk(ChunkGenerator chunkGenerator, BiomeSource biomeSource, long worldSeed, WorldgenRandom random, ChunkPos pos, Biome biome, ChunkPos chunkPos, JigsawConfiguration config, LevelHeightAccessor world) {
          int i = pos.x >> 4;
          int j = pos.z >> 4;
-+        random.setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, chunkPos.x >> 4, chunkPos.z >> 4, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.PILLAGER_OUTPOST_SALT, 0); if (false) // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) random.setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, chunkPos.x >> 4, chunkPos.z >> 4, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.PILLAGER_OUTPOST_SALT, 0); if (!tk.booky.cloudplane.CloudPlaneConfig.secureSeed) // CloudPlane - port secure seed
          random.setSeed((long)(i ^ j << 4) ^ worldSeed);
          random.nextInt();
          if (random.nextInt(5) != 0) {
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
-index 5ad051dd62968fb861a4ed2ad5426d6429184173..a89287dda408b87610a633fd37edd54c28ef6549 100644
+index 5ad051dd62968fb861a4ed2ad5426d6429184173..2da5295d0065334418753330feee6dfa61f5c7f6 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
 @@ -37,7 +37,8 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
@@ -592,13 +592,13 @@ index 5ad051dd62968fb861a4ed2ad5426d6429184173..a89287dda408b87610a633fd37edd54c
      public static List<SpikeFeature.EndSpike> getSpikesForLevel(WorldGenLevel world) {
          int seed = net.pl3x.purpur.PurpurConfig.seedFeatureEndSpike; // Purpur
 -        Random random = new Random(seed == -1 ? world.getSeed() : seed); // Purpur
-+        if (world instanceof net.minecraft.server.level.ServerLevel) tk.booky.cloudplane.secureseed.Globals.setupGlobals((net.minecraft.server.level.ServerLevel) world); // CloudPlane - port secure seed
-+        Random random = new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.END_PILLAR_SALT, 0); // Purpur // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed && world instanceof net.minecraft.server.level.ServerLevel) tk.booky.cloudplane.secureseed.Globals.setupGlobals((net.minecraft.server.level.ServerLevel) world); // CloudPlane - port secure seed
++        Random random = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ?  new Random(seed == -1 ? world.getSeed() : seed) : new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.END_PILLAR_SALT, 0); // Purpur // CloudPlane - port secure seed
          long l = random.nextLong() & 65535L;
          return SPIKE_CACHE.getUnchecked(l);
      }
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/BadlandsSurfaceBuilder.java b/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/BadlandsSurfaceBuilder.java
-index 62f558b7d0244707bf3ffebd368ba91bf30d11b0..32f9584359c015b5e8afa4a869ff8030024db5c8 100644
+index 62f558b7d0244707bf3ffebd368ba91bf30d11b0..098679acce4e906cc58599e8ba00404a1caa6ddf 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/BadlandsSurfaceBuilder.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/BadlandsSurfaceBuilder.java
 @@ -117,7 +117,7 @@ public class BadlandsSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderBaseCon
@@ -606,7 +606,7 @@ index 62f558b7d0244707bf3ffebd368ba91bf30d11b0..32f9584359c015b5e8afa4a869ff8030
  
          if (this.seed != seed || this.pillarNoise == null || this.pillarRoofNoise == null) {
 -            WorldgenRandom worldgenRandom = new WorldgenRandom(seed);
-+            WorldgenRandom worldgenRandom = new WorldgenRandom(seed).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 0); // CloudPlane - port secure seed
++            WorldgenRandom worldgenRandom = new WorldgenRandom(seed); if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) worldgenRandom.setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 0); // CloudPlane - port secure seed
              this.pillarNoise = new PerlinSimplexNoise(worldgenRandom, IntStream.rangeClosed(-3, 0));
              this.pillarRoofNoise = new PerlinSimplexNoise(worldgenRandom, ImmutableList.of(0));
          }
@@ -615,12 +615,12 @@ index 62f558b7d0244707bf3ffebd368ba91bf30d11b0..32f9584359c015b5e8afa4a869ff8030
          this.clayBands = new BlockState[64];
          Arrays.fill(this.clayBands, TERRACOTTA);
 -        WorldgenRandom worldgenRandom = new WorldgenRandom(seed);
-+        WorldgenRandom worldgenRandom = new WorldgenRandom(seed).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 1); // CloudPlane - port secure seed
++        WorldgenRandom worldgenRandom = new WorldgenRandom(seed); if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) worldgenRandom.setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 1); // CloudPlane - port secure seed
          this.clayBandsOffsetNoise = new PerlinSimplexNoise(worldgenRandom, ImmutableList.of(0));
  
          for(int i = 0; i < 64; ++i) {
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/FrozenOceanSurfaceBuilder.java b/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/FrozenOceanSurfaceBuilder.java
-index a6fb6176ad0d5dc8a312174a469c923f3f8b3895..1a67c489a2d83fd3083ba443513518af8e234c0b 100644
+index a6fb6176ad0d5dc8a312174a469c923f3f8b3895..1a48d0612fab7b3b6bbc97f08b3a02d7f279d6b7 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/FrozenOceanSurfaceBuilder.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/FrozenOceanSurfaceBuilder.java
 @@ -126,7 +126,7 @@ public class FrozenOceanSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderBase
@@ -628,12 +628,12 @@ index a6fb6176ad0d5dc8a312174a469c923f3f8b3895..1a67c489a2d83fd3083ba443513518af
      public void initNoise(long seed) {
          if (this.seed != seed || this.icebergNoise == null || this.icebergRoofNoise == null) {
 -            WorldgenRandom worldgenRandom = new WorldgenRandom(seed);
-+            WorldgenRandom worldgenRandom = new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 0); // CloudPlane - port secure seed
++            WorldgenRandom worldgenRandom = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 0); // CloudPlane - port secure seed
              this.icebergNoise = new PerlinSimplexNoise(worldgenRandom, IntStream.rangeClosed(-3, 0));
              this.icebergRoofNoise = new PerlinSimplexNoise(worldgenRandom, ImmutableList.of(0));
          }
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherCappedSurfaceBuilder.java b/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherCappedSurfaceBuilder.java
-index e4013f241a5e9aeb334dadde8b55c7e6ca32233c..7fef48612467aa6ebcc0e485a2d9ca4d76ea2cae 100644
+index e4013f241a5e9aeb334dadde8b55c7e6ca32233c..d6e2ae7b0bb810982e4158ef46a19dff0e2fb848 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherCappedSurfaceBuilder.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherCappedSurfaceBuilder.java
 @@ -78,9 +78,9 @@ public abstract class NetherCappedSurfaceBuilder extends SurfaceBuilder<SurfaceB
@@ -641,10 +641,10 @@ index e4013f241a5e9aeb334dadde8b55c7e6ca32233c..7fef48612467aa6ebcc0e485a2d9ca4d
      public void initNoise(long seed) {
          if (this.seed != seed || this.patchNoise == null || this.floorNoises.isEmpty() || this.ceilingNoises.isEmpty()) {
 -            this.floorNoises = initPerlinNoises(this.getFloorBlockStates(), seed);
-+            this.floorNoises = initPerlinNoises(this.getFloorBlockStates(), 0); // CloudPlane - port secure seed
++            this.floorNoises = initPerlinNoises(this.getFloorBlockStates(), !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? seed : 0); // CloudPlane - port secure seed
              this.ceilingNoises = initPerlinNoises(this.getCeilingBlockStates(), seed + (long)this.floorNoises.size());
 -            this.patchNoise = new PerlinNoise(new WorldgenRandom(seed + (long)this.floorNoises.size() + (long)this.ceilingNoises.size()), ImmutableList.of(0));
-+            this.patchNoise = new PerlinNoise(new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, seed), ImmutableList.of(0)); // CloudPlane - port secure seed
++            this.patchNoise = new PerlinNoise((!tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed + (long)this.floorNoises.size() + (long)this.ceilingNoises.size()) : new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, seed)), ImmutableList.of(0)); // CloudPlane - port secure seed
          }
  
          this.seed = seed;
@@ -653,12 +653,12 @@ index e4013f241a5e9aeb334dadde8b55c7e6ca32233c..7fef48612467aa6ebcc0e485a2d9ca4d
  
          for(BlockState blockState : states) {
 -            builder.put(blockState, new PerlinNoise(new WorldgenRandom(seed), ImmutableList.of(-4)));
-+            builder.put(blockState, new PerlinNoise(new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 0), ImmutableList.of(-4))); // CloudPlane - port secure seed
++            builder.put(blockState, new PerlinNoise(!tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 0), ImmutableList.of(-4))); // CloudPlane - port secure seed
              ++seed;
          }
  
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherForestSurfaceBuilder.java b/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherForestSurfaceBuilder.java
-index aa6be90ac272c7e1186d177768230b7f52371e68..3f7d44bd97c040fc169527607a92e6cd4dcdc938 100644
+index aa6be90ac272c7e1186d177768230b7f52371e68..cb8b9b1547000fa42a765869a3938040af6a2219 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherForestSurfaceBuilder.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherForestSurfaceBuilder.java
 @@ -76,7 +76,7 @@ public class NetherForestSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderBas
@@ -666,12 +666,12 @@ index aa6be90ac272c7e1186d177768230b7f52371e68..3f7d44bd97c040fc169527607a92e6cd
      public void initNoise(long seed) {
          if (this.seed != seed || this.decorationNoise == null) {
 -            this.decorationNoise = new PerlinNoise(new WorldgenRandom(seed), ImmutableList.of(0));
-+            this.decorationNoise = new PerlinNoise(new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 0), ImmutableList.of(0)); // CloudPlane - port secure seed
++            this.decorationNoise = new PerlinNoise(!tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 0), ImmutableList.of(0)); // CloudPlane - port secure seed
          }
  
          this.seed = seed;
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherSurfaceBuilder.java b/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherSurfaceBuilder.java
-index 206f74305a01604892ff98ece0c8344cc5582d14..277646d0a8a7884436a8a0db1247847360efa435 100644
+index 206f74305a01604892ff98ece0c8344cc5582d14..bebbaa3228dd76a00976abb56f287d548c278433 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherSurfaceBuilder.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/surfacebuilders/NetherSurfaceBuilder.java
 @@ -83,7 +83,7 @@ public class NetherSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderBaseConfi
@@ -679,36 +679,36 @@ index 206f74305a01604892ff98ece0c8344cc5582d14..277646d0a8a7884436a8a0db12478473
      public void initNoise(long seed) {
          if (this.seed != seed || this.decorationNoise == null) {
 -            this.decorationNoise = new PerlinNoise(new WorldgenRandom(seed), IntStream.rangeClosed(-3, 0));
-+            this.decorationNoise = new PerlinNoise(new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 0), IntStream.rangeClosed(-3, 0)); // CloudPlane - port secure seed
++            this.decorationNoise = new PerlinNoise(!tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.SURFACE_BUILDER_SALT, 0), IntStream.rangeClosed(-3, 0)); // CloudPlane - port secure seed
          }
  
          this.seed = seed;
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
-index 34e6708224250bb4054d38aaa9421b6411e767f7..bc1211b3b5ab329ed2ba5d2dd33cf54f1ac615fe 100644
+index 34e6708224250bb4054d38aaa9421b6411e767f7..0ec10c82a94d6d3d502d3ec0f5183387f0d6d2bb 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
 @@ -74,6 +74,7 @@ public class PerlinNoise implements SurfaceNoise {
      }
  
      protected PerlinNoise(RandomSource random, Pair<Integer, DoubleList> octaves, LongFunction<RandomSource> randomFunction) {
-+        if (random instanceof WorldgenRandom) ((WorldgenRandom) random).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.OCTAVE_NOISE_SALT, ((WorldgenRandom) random).getInsecureSeed()); // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed && random instanceof WorldgenRandom) ((WorldgenRandom) random).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.OCTAVE_NOISE_SALT, ((WorldgenRandom) random).getInsecureSeed()); // CloudPlane - port secure seed
          int i = octaves.getFirst();
          this.amplitudes = octaves.getSecond();
          ImprovedNoise improvedNoise = new ImprovedNoise(random);
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinSimplexNoise.java b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinSimplexNoise.java
-index 3eec5ac1f0762a6d268c5b292c8572e32251563d..f94b327adaceb585c6e9df25834ff4ddb9c4350b 100644
+index 3eec5ac1f0762a6d268c5b292c8572e32251563d..45ac643bbab13148c6071579ab0b04dc342c0b27 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinSimplexNoise.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinSimplexNoise.java
 @@ -22,6 +22,7 @@ public class PerlinSimplexNoise implements SurfaceNoise {
      }
  
      private PerlinSimplexNoise(RandomSource random, IntSortedSet octaves) {
-+        if (random instanceof WorldgenRandom) ((WorldgenRandom) random).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.OCTAVE_SIMPLEX_NOISE_SALT, ((WorldgenRandom) random).getInsecureSeed()); // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed && random instanceof WorldgenRandom) ((WorldgenRandom) random).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.OCTAVE_SIMPLEX_NOISE_SALT, ((WorldgenRandom) random).getInsecureSeed()); // CloudPlane - port secure seed
          if (octaves.isEmpty()) {
              throw new IllegalArgumentException("Need some octaves!");
          } else {
 diff --git a/src/main/java/net/minecraft/world/level/newbiome/context/LazyAreaContext.java b/src/main/java/net/minecraft/world/level/newbiome/context/LazyAreaContext.java
-index be94881238f733fdc9ff7115c45b20e24461d69f..56840111269566622f7e825f337640e0f8b4c470 100644
+index be94881238f733fdc9ff7115c45b20e24461d69f..5307a4ee434e20b51627aa055f41b86091b4ddb7 100644
 --- a/src/main/java/net/minecraft/world/level/newbiome/context/LazyAreaContext.java
 +++ b/src/main/java/net/minecraft/world/level/newbiome/context/LazyAreaContext.java
 @@ -15,9 +15,13 @@ public class LazyAreaContext implements BigContext<LazyArea> {
@@ -722,7 +722,7 @@ index be94881238f733fdc9ff7115c45b20e24461d69f..56840111269566622f7e825f337640e0
 +        this.salt = salt;
          this.seed = mixSeed(seed, salt);
 -        this.biomeNoise = new ImprovedNoise(new SimpleRandomSource(seed));
-+        this.biomeNoise = new ImprovedNoise(new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.BIOME_NOISE_SALT, 0)); // CloudPlane - port secure seed
++        this.biomeNoise = new ImprovedNoise(!tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new SimpleRandomSource(seed) : new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.BIOME_NOISE_SALT, 0)); // CloudPlane - port secure seed
          this.cache = new Long2IntLinkedOpenHashMap(16, 0.25F);
          this.cache.defaultReturnValue(Integer.MIN_VALUE);
          this.maxCache = cacheCapacity;
@@ -730,7 +730,7 @@ index be94881238f733fdc9ff7115c45b20e24461d69f..56840111269566622f7e825f337640e0
  
      @Override
      public void initRandom(long x, long y) {
-+        if (true) random.setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, (int) x, (int) y, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.BIOME_SALT, salt); // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) random.setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, (int) x, (int) y, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.BIOME_SALT, salt); // CloudPlane - port secure seed
          long l = this.seed;
          l = LinearCongruentialGenerator.next(l, x);
          l = LinearCongruentialGenerator.next(l, y);
@@ -738,7 +738,7 @@ index be94881238f733fdc9ff7115c45b20e24461d69f..56840111269566622f7e825f337640e0
  
      @Override
      public int nextRandom(int bound) {
-+        if (true) return random.nextInt(bound); // CloudPlane - port secure seed
++        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) return random.nextInt(bound); // CloudPlane - port secure seed
          int i = Math.floorMod(this.rval >> 24, bound);
          this.rval = LinearCongruentialGenerator.next(this.rval, this.seed);
          return i;
