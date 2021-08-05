@@ -5,7 +5,7 @@ Subject: [PATCH] configurable ban-screen date format
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index f1608b8e0fa4966011f87691bf062a0e47f5b293..ceed603531947b1cc5757f86f0602c2dd0d28268 100644
+index e37f80065134fd7929ca6cf0838b2bc5b67cbc7b..74265a7dd3622149fa6ecdc0ac6e677b4ed92e78 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -745,7 +745,7 @@ public abstract class PlayerList {

@@ -5,19 +5,19 @@ Subject: [PATCH] cloudplane configuration
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index 84c970ed188509127cd5b4d268a5fa1f9e7eda0b..c629b20907661d9dbe4c063d3ac4bc282f8c1d8c 100644
+index bfad241892b8280d261ab8301245b91b5403b51a..f0074028a56599c4f19464f98cd416e683e4e4e3 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
-@@ -203,6 +203,7 @@ public class Commands {
-             net.pl3x.purpur.command.PingCommand.register(this.dispatcher); // Purpur
+@@ -204,6 +204,7 @@ public class Commands {
              net.pl3x.purpur.command.UptimeCommand.register(this.dispatcher); // Purpur
              net.pl3x.purpur.command.TPSBarCommand.register(this.dispatcher); // Purpur
+             net.pl3x.purpur.command.CompassCommand.register(this.dispatcher); // Purpur
 +            tk.booky.cloudplane.CloudPlaneConfig.registerCommands(this.dispatcher); // CloudPlane
          }
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 928b3756a668dc367539789603a429d4781c476a..78aa5f6d79e76a651129725e49f2515230a5488c 100644
+index 3e06ae53273ca9409d07c3134bdeb2e78eef4598..c2a6c2a371009d770f8406d3f6991b79085834e6 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -709,6 +709,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -29,7 +29,7 @@ index 928b3756a668dc367539789603a429d4781c476a..78aa5f6d79e76a651129725e49f25152
          this.server.getPluginManager().callEvent(new ServerLoadEvent(ServerLoadEvent.LoadType.STARTUP));
          this.connection.acceptConnections();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 127e211548675155e8f3c11cf15775406c9f44bc..2982dbad35780fd1f032643e4ea5a13a32e70aaa 100644
+index 1da53b46c69dc5cfca0fea805cc491e79a841153..c2f49d0b968311022d162040f0f0e0980d162bf5 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -228,6 +228,14 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -46,7 +46,7 @@ index 127e211548675155e8f3c11cf15775406c9f44bc..2982dbad35780fd1f032643e4ea5a13a
 +        // CloudPlane end
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // load version history now
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
-         io.papermc.paper.util.StacktraceDeobfuscator.INSTANCE.getClass(); // load mappings for stacktrace deobf
+         io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
 index 27674fb28825b48eee86b93d6bbd1e7af94c0fe0..fdd2a8b3d749955ba346c19c11a586d3915e677e 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
@@ -68,10 +68,10 @@ index 27674fb28825b48eee86b93d6bbd1e7af94c0fe0..fdd2a8b3d749955ba346c19c11a586d3
          this.generator = gen;
          this.world = new CraftWorld((ServerLevel) this, gen, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 713aa997435a82461762b92f2590d51a9f06e390..b4ff24131b3aaa5b0131c036e2106899227c8dde 100644
+index 6bcb293f01446e8ff17debda45f3a041b3b69956..0db9337000ea123215792292ff5748d58efe6b69 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -877,6 +877,7 @@ public final class CraftServer implements Server {
+@@ -888,6 +888,7 @@ public final class CraftServer implements Server {
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
          com.tuinity.tuinity.config.TuinityConfig.init((File) console.options.valueOf("tuinity-settings")); // Tuinity - Server Config
          net.pl3x.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur
@@ -79,7 +79,7 @@ index 713aa997435a82461762b92f2590d51a9f06e390..b4ff24131b3aaa5b0131c036e2106899
          for (ServerLevel world : this.console.getAllLevels()) {
              world.serverLevelData.setDifficulty(config.difficulty);
              world.setSpawnSettings(config.spawnMonsters, config.spawnAnimals);
-@@ -2399,6 +2400,13 @@ public final class CraftServer implements Server {
+@@ -2478,6 +2479,13 @@ public final class CraftServer implements Server {
              return net.pl3x.purpur.PurpurConfig.config;
          }
  
@@ -94,7 +94,7 @@ index 713aa997435a82461762b92f2590d51a9f06e390..b4ff24131b3aaa5b0131c036e2106899
          public java.util.Properties getServerProperties() {
              return getProperties().properties;
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 01ca38ee35f2c1e5031ea4b8aca09a2a59c4a475..9084ffd416b4e9b520f8f85dc87d6617c18ad264 100644
+index 35518427857c77dfa0737f1684a0a427ddb90048..ac5842285b7c63f04b6d6d1bf63274ca493ba462 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -162,6 +162,14 @@ public class Main {

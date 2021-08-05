@@ -5,29 +5,39 @@ Subject: [PATCH] changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 8f57361ecb47c531804563fc6ff9311e05b2a17f..1bd26e1b7dc90dad31512e5115d66a1f5218eb5f 100644
+index f1eb3a90a79c34ac4fe267d71925bc92260713ba..562061079c36a2942c6442e3dd5611dcb22c0c10 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -35,7 +35,7 @@ repositories {
+@@ -3,7 +3,8 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
+ import io.papermc.paperweight.tasks.BaseTask
+ import io.papermc.paperweight.tasks.GenerateReobfMappings
+ import io.papermc.paperweight.tasks.PatchMappings
+-import io.papermc.paperweight.util.constants.*
++import io.papermc.paperweight.util.Constants.DEOBF_NAMESPACE // CloudPlane
++import io.papermc.paperweight.util.Constants.SPIGOT_NAMESPACE // CloudPlane
+ import io.papermc.paperweight.util.Git
+ import io.papermc.paperweight.util.cache
+ import io.papermc.paperweight.util.defaultOutput
+@@ -35,7 +36,7 @@ repositories {
  }
  
  dependencies {
 -    implementation(project(":Airplane-API")) // Airplane // Tuinity
 +    implementation(project(":CloudPlane-API")) // CloudPlane // Airplane // Tuinity
-     implementation("com.destroystokyo.paper:paper-mojangapi:1.16.5-R0.1-SNAPSHOT") // Tuinity
+     implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Tuinity
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
-@@ -90,7 +90,7 @@ tasks.jar {
+@@ -92,7 +93,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
--            "Implementation-Version" to "git-Airplane-$implementationVersion", // Airplane // Tuinity
+-            "Implementation-Version" to "git-AirplanePurpur-$implementationVersion", // Airplane // Tuinity
 +            "Implementation-Version" to "git-CloudPlane-$implementationVersion", // CloudPlane // Airplane // Tuinity
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 6a79f329a99539d0413c207e4beaac13dabd6bd3..f812f369e76fb4f46b20aeaac886032fbc1812e7 100644
+index e6ed874b707435b3ac5af500b7b85ac046f305c5..e4e9be385c3ac048d7db374ee111de654dc3e3f0 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -96,6 +96,7 @@ public class PaperConfig {
@@ -39,62 +49,38 @@ index 6a79f329a99539d0413c207e4beaac13dabd6bd3..f812f369e76fb4f46b20aeaac886032f
              Metrics.PaperMetrics.startMetrics();
              metricsStarted = true;
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index e58226afcbf9d43248243ee4b7a2f5fe8e03f18b..64d6b891701825bb46495f9b3842505e1600f9cd 100644
+index bdf9079832bd36d59708fb696b1c454daa63866a..8d76a2ac4e3aba42df3d631bfa226e23fa2caf0f 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-@@ -28,8 +28,8 @@ public class PaperVersionFetcher implements VersionFetcher {
+@@ -29,8 +29,8 @@ public class PaperVersionFetcher implements VersionFetcher {
      @Nonnull
      @Override
      public Component getVersionMessage(@Nonnull String serverVersion) {
--        String[] parts = serverVersion.substring("git-Airplane-".length()).split("[-\\s]"); // Tuinity
--        final Component updateMessage = getUpdateStatusMessage("TECHNOVE/Airplane", "master", parts[0]); // Tuinity
+-        String[] parts = serverVersion.substring("git-AirplanePurpur-".length()).split("[-\\s]"); // Tuinity
+-        final Component updateMessage = getUpdateStatusMessage("TECHNOVE/Airplane", "purpur/1.17", parts[0]); // Tuinity
 +        String[] parts = serverVersion.substring("git-CloudPlane-".length()).split("[-\\s]"); // Tuinity // CloudPlane
 +        final Component updateMessage = getUpdateStatusMessage("CloudCraftProjects/CloudPlane", "master", parts[0]); // Tuinity // CloudPlane
          final Component history = getHistory();
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
-@@ -54,20 +54,20 @@ public class PaperVersionFetcher implements VersionFetcher {
-     private static Component getUpdateStatusMessage(@Nonnull String repo, @Nonnull String branch, @Nonnull String versionInfo) {
-         // Airplane start - revert this some other time
-         int distance = -1;
--        /*
-+        // /* // CloudPlane - changed branding
-         // Purpur start - put this back...
-         try {
-             int build = Integer.parseInt(versionInfo);
-             distance = fetchDistanceFromSiteApi(build, getMinecraftVersion());
-             if (distance < 0) {
--                distance = fetchDistanceFromJenkins(build);
-+                // distance = fetchDistanceFromJenkins(build); // CloudPlane - changed branding
-             }
-         } catch (NumberFormatException ignored) {
-             versionInfo = versionInfo.replace("\"", "");
-             distance = fetchDistanceFromGitHub(repo, branch, versionInfo);
-         }
-         // Purpur end
--         */
-+        // */ // CloudPlane - changed branding
-         // Airplane end
- 
-         switch (distance) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 3f9111ea2680dfbc2a2fc709ba0b08179e542478..46a5316e1f98d1e4f3b3396c6b604c427f5842ec 100644
+index 1ea82baf9f14ec7820abf29b2db5b218c967ca90..3e06ae53273ca9409d07c3134bdeb2e78eef4598 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1733,7 +1733,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      @DontObfuscate
      public String getServerModName() {
          String purpurName = net.pl3x.purpur.PurpurConfig.serverModName;
--        return purpurName.equals("Purpur") ? "AirplanePurpur" : purpurName; // Airplane // Tuinity - Tuinity > //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
-+        return purpurName.equals("Purpur") ? "CloudPlane" : purpurName; // CloudPlane // Airplane // Tuinity - Tuinity > //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
+-        return purpurName.equals("Purpur") ? "AirplanePurpur" : purpurName; // Airplane // Purpur // Tuinity // Paper // Spigot // CraftBukkit
++        return purpurName.equals("Purpur") ? "CloudPlane" : purpurName; // CloudPlane // Airplane // Purpur // Tuinity // Paper // Spigot // CraftBukkit
      }
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index cc7ccda063f5caabcd518c1bf8764eb73396a83f..961d77373fc54ee703dc5b8131036f357613adca 100644
+index 2d148bba699ca9546f2f3d68b9af0c1f632557c7..6bcb293f01446e8ff17debda45f3a041b3b69956 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper
+@@ -240,7 +240,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {

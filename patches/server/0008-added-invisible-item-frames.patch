@@ -35,7 +35,7 @@ index 90f1ecd97eef93316f61bf5d761d33c313e1a077..917c2ca3c32ff548afe05853346dce16
                      if (!player.getAbilities().instabuild) {
                          itemstack.shrink(1);
 diff --git a/src/main/java/net/minecraft/world/item/HangingEntityItem.java b/src/main/java/net/minecraft/world/item/HangingEntityItem.java
-index ddd50db8bb92c147d7c1eef4d1df3ac53e2d3e4b..f52f760fc08393cda56a6a0626f8c8631688fb41 100644
+index 8cdede6a9698d6c99b4f08edc2a3403fec854f66..1d38fe546cf48dc35ef22c35b33365ba2fce7e66 100644
 --- a/src/main/java/net/minecraft/world/item/HangingEntityItem.java
 +++ b/src/main/java/net/minecraft/world/item/HangingEntityItem.java
 @@ -46,6 +46,14 @@ public class HangingEntityItem extends Item {
@@ -68,7 +68,7 @@ index 1bb84a382a02b6930f9fd503cb52ddde068f6ffb..f96454e69349fd10c8bdde04fe826160
  
 diff --git a/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java b/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..b6ea11001e70bb4a931d7d761fa7050192717c10
+index 0000000000000000000000000000000000000000..ec06c748a779c95a5f817f8581b96f2013e6aafc
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java
 @@ -0,0 +1,29 @@
@@ -101,4 +101,3 @@ index 0000000000000000000000000000000000000000..b6ea11001e70bb4a931d7d761fa70501
 +        return new ShapedRecipe(KEY, item).shape(SHAPE).setIngredient('#', Material.GLASS_PANE).setIngredient('+', Material.ITEM_FRAME);
 +    }
 +}
-\ No newline at end of file

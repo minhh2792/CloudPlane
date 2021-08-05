@@ -5,7 +5,7 @@ Subject: [PATCH] added lobby command using brigadier
 
 
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 5f0e72bc977e25cb00f2732e6c744da4615b7748..acdf5ea416e60adfdc191572190ea398700fc660 100644
+index d9955a86ba2b6a5015e95f5b07258f1995d8f834..1bb84a382a02b6930f9fd503cb52ddde068f6ffb 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -64,6 +64,7 @@ public class CloudPlaneConfig {
@@ -18,7 +18,7 @@ index 5f0e72bc977e25cb00f2732e6c744da4615b7748..acdf5ea416e60adfdc191572190ea398
      }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java b/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..b94706dca91cff474bb4d7131465ba1f4024011b
+index 0000000000000000000000000000000000000000..d7ec645e2b5deb689e1c250d88487c5b4590d7fc
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java
 @@ -0,0 +1,55 @@
@@ -77,4 +77,3 @@ index 0000000000000000000000000000000000000000..b94706dca91cff474bb4d7131465ba1f
 +        return targets.size();
 +    }
 +}
-\ No newline at end of file

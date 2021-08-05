@@ -5,7 +5,7 @@ Subject: [PATCH] added allowPvP gamerule
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 19af848a119217084b4a2e6c1b72158a5fdae372..b046de151cec011da981cba10bd6655251c7b746 100644
+index 2999fe6357a3e4163c55aa2e4ad0c1c1a190021e..9026a5056c412d5503f5b3f2e483a2e7b8f043db 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -3159,7 +3159,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n

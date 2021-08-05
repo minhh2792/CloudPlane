@@ -5,7 +5,7 @@ Subject: [PATCH] added tempban command
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 602b96d5dfbeb9a24072a8c80db3547a2af2ae6f..36dabd2427dd7cbd4a66e7a6ff24a406b32cd885 100644
+index 54f5e11b636649d1fb5a1b5cc05427b81341e10f..e37f80065134fd7929ca6cf0838b2bc5b67cbc7b 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -129,7 +129,7 @@ public abstract class PlayerList {

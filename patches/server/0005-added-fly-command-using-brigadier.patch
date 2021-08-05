@@ -5,7 +5,7 @@ Subject: [PATCH] added fly command using brigadier
 
 
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 016c408b78dfedddc4186b39d2dd6e675f7ac97d..56ac9fc8121145290ffe43f37390679e959c3934 100644
+index 7ea3ccc82b38bbbd74ce338b55237b74c3769cd2..972c1c1c73d147b56e6cf6b509086370aa81fcea 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -63,6 +63,8 @@ public class CloudPlaneConfig {
@@ -19,7 +19,7 @@ index 016c408b78dfedddc4186b39d2dd6e675f7ac97d..56ac9fc8121145290ffe43f37390679e
  
 diff --git a/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java b/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..34c9053ee9d198e520ce5acc69903dd9c11e45de
+index 0000000000000000000000000000000000000000..79b9c4067f4f42d377b083f8985c7a7e99461f95
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java
 @@ -0,0 +1,58 @@
@@ -81,4 +81,3 @@ index 0000000000000000000000000000000000000000..34c9053ee9d198e520ce5acc69903dd9
 +        return targets.size();
 +    }
 +}
-\ No newline at end of file

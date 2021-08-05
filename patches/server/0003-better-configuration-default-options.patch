@@ -5,7 +5,7 @@ Subject: [PATCH] better configuration default options
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index f812f369e76fb4f46b20aeaac886032fbc1812e7..024f45fa15c71efb92e2c36958797498dec385ff 100644
+index e4e9be385c3ac048d7db374ee111de654dc3e3f0..28304903e468a063f97b4e790aab897002ae28fd 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -207,7 +207,7 @@ public class PaperConfig {
@@ -18,13 +18,13 @@ index f812f369e76fb4f46b20aeaac886032fbc1812e7..024f45fa15c71efb92e2c36958797498
          boolean reallyEnableTimings = getBoolean("timings.really-enabled", false);
          if (timings && !reallyEnableTimings) {
 diff --git a/src/main/java/net/pl3x/purpur/PurpurConfig.java b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-index 8244f362f551ed2bdef4df8e6b83cb176b4a4e59..a0fd4c709cc8e523c61b831bcbf277f6375432f4 100644
+index 526a1032a2f61792c7f5791dbb3e9a7292fc186d..fcc1949184655bf4124ab18df8b871ea18f01fc0 100644
 --- a/src/main/java/net/pl3x/purpur/PurpurConfig.java
 +++ b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-@@ -362,8 +362,8 @@ public class PurpurConfig {
-     public static String commandTPSBarTextColorMedium = "<gradient:#ffff55:#ffaa00><text></gradient>";
-     public static String commandTPSBarTextColorLow = "<gradient:#ff5555:#aa0000><text></gradient>";
-     public static int commandTPSBarTickInterval = 20;
+@@ -374,8 +374,8 @@ public class PurpurConfig {
+     public static BossBar.Color commandCompassBarProgressColor = BossBar.Color.BLUE;
+     public static float commandCompassBarProgressPercent = 1.0F;
+     public static int commandCompassBarTickInterval = 5;
 -    public static boolean commandGamemodeRequiresPermission = false;
 -    public static boolean hideHiddenPlayersFromEntitySelector = false;
 +    public static boolean commandGamemodeRequiresPermission = true; // CloudPlane - better default option for gamemode requires specific permission

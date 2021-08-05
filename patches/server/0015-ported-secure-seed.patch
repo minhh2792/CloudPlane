@@ -5,7 +5,7 @@ Subject: [PATCH] ported secure seed
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index bd3e606ea9336088b5f4c3486acf4c0382e23dfc..9bf35fbe0a63c6a1a5743754be220814786a663b 100644
+index c2a6c2a371009d770f8406d3f6991b79085834e6..47b0c1dc7734a144f64dfba8e8b47766c7b0e5dd 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -760,8 +760,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -49,10 +49,10 @@ index 6f4aa3fce42a53883db1485731e03822887cadc0..6387fe3bb7c7f673f16b621d9834dac2
      }
  }
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index e557651034e948cec7a2e9695e452756cf262ceb..dfecff819aa6a1fc4e78c19e06a2a60211223bcf 100644
+index d720eba9fbfa1d8a13dd204e9f1a84233b834e58..ab17d76fb599665e16000aa2f81a934f581d2a8d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -1097,6 +1097,7 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1103,6 +1103,7 @@ public class ServerChunkCache extends ChunkSource {
      }
  
      public ChunkGenerator getGenerator() {
@@ -61,7 +61,7 @@ index e557651034e948cec7a2e9695e452756cf262ceb..dfecff819aa6a1fc4e78c19e06a2a602
      }
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index df68b8fea1ec98c42a53884e883314a7a26e3131..bc9f1fbd05c3b09ab9b68815e90b79511c7b9317 100644
+index a6fbdcd48ecc91d50a9cbc4a4c80a5e964ecaea8..48594c99fd20145593c682b19d05156d4a19fc87 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -512,6 +512,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -233,7 +233,7 @@ index 93dd5a2d0b550b0373cbf59376a04e9fd6146e92..d6760dac2facacce6149425c03b82901
  
          this.exitPortalPattern = BlockPatternBuilder.start().aisle("       ", "       ", "       ", "   #   ", "       ", "       ", "       ").aisle("       ", "       ", "       ", "   #   ", "       ", "       ", "       ").aisle("       ", "       ", "       ", "   #   ", "       ", "       ", "       ").aisle("  ###  ", " #   # ", "#     #", "#  #  #", "#     #", " #   # ", "  ###  ").aisle("       ", "  ###  ", " ##### ", " ##### ", " ##### ", "  ###  ", "       ").where('#', BlockInWorld.hasState(BlockPredicate.forBlock(Blocks.BEDROCK))).build();
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
-index 43efd756dec0dddcbcb18bcc2c48972f236ffda9..408487d25708312b0f66c8f141e34682308663d7 100644
+index b906895e1db3f0b5654694796cd87bfe4cdd09c7..7cc061ccfe56a267ba20a678f3c67a7cde4fc248 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
 @@ -96,14 +96,14 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {

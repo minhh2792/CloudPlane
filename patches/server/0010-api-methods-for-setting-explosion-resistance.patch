@@ -18,10 +18,10 @@ index f34973be478de4f088a0593b45bd89e558a13609..b157bf6af3d2d366a48a5991c14e335d
      protected final SoundType soundType;
      protected final float friction;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ccf3bd936d4b6a3a55a4b5e62e6439f8adf3bcda..ecdf5f2017786dc5ae7a4719257573c11bf0b83c 100644
+index 0db9337000ea123215792292ff5748d58efe6b69..b133518b63db3067a55d7909876ddcf5bcf4a927 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2579,4 +2579,16 @@ public final class CraftServer implements Server {
+@@ -2658,4 +2658,16 @@ public final class CraftServer implements Server {
          return getServer().lagging;
      }
      // Purpur end
