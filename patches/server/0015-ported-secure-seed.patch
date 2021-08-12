@@ -173,19 +173,6 @@ index 3f7c4e0938933705ac1bcb8dd676d018088a831a..3effacf5a15add05356dc8fee3b6c65e
          worldgenRandom.consumeCount(17292);
          this.islandNoise = new SimplexNoise(worldgenRandom);
      }
-diff --git a/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java b/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
-index 77948e19dd99b6f30bf294c9d5308228a271929b..9a8c9e86abc08c9892d029ca175e58b40ef1df45 100644
---- a/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
-+++ b/src/main/java/net/minecraft/world/level/chunk/ChunkGenerator.java
-@@ -100,7 +100,7 @@ public abstract class ChunkGenerator {
-                 int i = structuresettingsstronghold.distance();
-                 int j = structuresettingsstronghold.count();
-                 int k = structuresettingsstronghold.spread();
--                Random random = new Random();
-+                Random random = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new Random() : (new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.STRONGHOLD_LOCATION_SALT, 0)); if (!tk.booky.cloudplane.CloudPlaneConfig.secureSeed) // CloudPlane - port secure seed
- 
-                 random.setSeed(this.strongholdSeed);
-                 double d0 = random.nextDouble() * 3.141592653589793D * 2.0D;
 diff --git a/src/main/java/net/minecraft/world/level/chunk/ChunkStatus.java b/src/main/java/net/minecraft/world/level/chunk/ChunkStatus.java
 index 1c7b18db0053bca6e7750225a79f7d95843edabe..78465a3d09b6030fb606bfa56fb59e132b7ebb0b 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/ChunkStatus.java
@@ -579,7 +566,7 @@ index c7d158e390cf7164edb9623339fcf42e768c9696..8dbf3a86ad731adf57fb367c713129e0
      protected boolean isFeatureChunk(ChunkGenerator chunkGenerator, BiomeSource biomeSource, long worldSeed, WorldgenRandom random, ChunkPos pos, Biome biome, ChunkPos chunkPos, JigsawConfiguration config, LevelHeightAccessor world) {
          int i = pos.x >> 4;
          int j = pos.z >> 4;
-+        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) random.setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, chunkPos.x >> 4, chunkPos.z >> 4, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.PILLAGER_OUTPOST_SALT, 0); if (!tk.booky.cloudplane.CloudPlaneConfig.secureSeed) // CloudPlane - port secure seed
++        random.setInsecure(); // CloudPlane - port secure seed
          random.setSeed((long)(i ^ j << 4) ^ worldSeed);
          random.nextInt();
          if (random.nextInt(5) != 0) {
