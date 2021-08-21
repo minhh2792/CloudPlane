@@ -5,7 +5,7 @@ Subject: [PATCH] api methods for setting explosion resistance
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 34902835cd4e030902feb568a2315c7f5d60f0eb..91c8389b456b380c168b17cf01940d058d8a3f6b 100644
+index 34902835cd4e030902feb568a2315c7f5d60f0eb..aa3c3f6e098f7afa0cdfc68ee732eed44fd72dbe 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -2081,4 +2081,14 @@ public final class Bukkit {
@@ -14,17 +14,17 @@ index 34902835cd4e030902feb568a2315c7f5d60f0eb..91c8389b456b380c168b17cf01940d05
      // Purpur end
 +
 +    // CloudPlane start
-+    public static float getExplosionResistance(Material material) {
++    public static float getExplosionResistance(@NotNull Material material) {
 +        return server.getExplosionResistance(material);
 +    }
 +
-+    public static void setExplosionResistance(Material material, float explosionResistance) {
++    public static void setExplosionResistance(@NotNull Material material, float explosionResistance) {
 +        server.setExplosionResistance(material, explosionResistance);
 +    }
 +    // CloudPlane end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index ec8721fa6536b0297c1ecef7701994474cc9433c..6285466806ea6d6f734335c9445cfd0318dfc4fd 100644
+index ec8721fa6536b0297c1ecef7701994474cc9433c..22651d1431c01f3707a8277991424519c5bf9975 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -1833,4 +1833,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
@@ -33,8 +33,8 @@ index ec8721fa6536b0297c1ecef7701994474cc9433c..6285466806ea6d6f734335c9445cfd03
      // Purpur end
 +
 +    // CloudPlane start
-+    float getExplosionResistance(Material material);
++    float getExplosionResistance(@NotNull Material material);
 +
-+    void setExplosionResistance(Material material, float explosionResistance);
++    void setExplosionResistance(@NotNull Material material, float explosionResistance);
 +    // CloudPlane end
  }
