@@ -5,54 +5,45 @@ Subject: [PATCH] localize item names and lore
 
 
 diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-index 363f94e86e3349d9ed03b692e136307fe9fa5e28..a8f4d2385334ee7a70715ccf380746dfeb2123a3 100644
+index 363f94e86e3349d9ed03b692e136307fe9fa5e28..858e2a57a2ea74779c12bfbcc4f0310663a4b0de 100644
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-@@ -368,4 +368,47 @@ public final class PaperAdventure {
+@@ -368,4 +368,38 @@ public final class PaperAdventure {
      public static @Nullable ChatFormatting asVanilla(TextColor color) {
          return ChatFormatting.getByHexValue(color.value());
      }
 +
 +    // CloudPlane start - localize item names and lore
 +    public static @Nullable ItemStack renderNMSItem(@Nullable ItemStack stack, @NonNull Locale locale) {
-+        if (stack == null) {
-+            return null;
-+        } else {
++        if (tk.booky.cloudplane.CloudPlaneConfig.localizeItems && stack != null && stack != ItemStack.EMPTY) {
 +            CompoundTag display = (stack = stack.copy()).getTagElement("display");
 +            if (display != null) {
 +                if (display.contains("Name", 8)) {
-+                    Component name = GsonComponentSerializer.gson().deserialize(display.getString("Name"));
-+                    if (name instanceof TranslatableComponent) {
-+                        display.putString("Name", asJsonString(name, locale));
++                    if (GSON.deserialize(display.getString("Name")) instanceof TranslatableComponent component) {
++                        display.putString("Name", asJsonString(component, locale));
 +                    }
 +                }
 +
 +                if (display.contains("Lore", 9)) {
 +                    ListTag lore = display.getList("Lore", 8);
-+
 +                    for (int i = 0; i < lore.size(); i++) {
-+                        Component part = GsonComponentSerializer.gson().deserialize(lore.getString(i));
-+                        if (part instanceof TranslatableComponent) {
-+                            lore.set(i, StringTag.valueOf(asJsonString(part, locale)));
++                        if (GSON.deserialize(lore.getString(i)) instanceof TranslatableComponent component) {
++                            lore.set(i, StringTag.valueOf(asJsonString(component, locale)));
 +                        }
 +                    }
 +                }
 +            }
-+
-+            return stack;
 +        }
++        return stack;
 +    }
 +
 +    public static net.minecraft.core.@Nullable NonNullList<ItemStack> renderNMSItems(net.minecraft.core.@Nullable NonNullList<ItemStack> stacks, @NonNull Locale locale) {
-+        if (stacks == null) {
-+            return null;
-+        } else {
-+            net.minecraft.core.NonNullList<ItemStack> newStacks = net.minecraft.core.NonNullList.createWithCapacity(stacks.size());
-+            for (ItemStack stack : stacks) {
-+                newStacks.add(renderNMSItem(stack, locale));
++        if (tk.booky.cloudplane.CloudPlaneConfig.localizeItems && stacks != null) {
++            for (int i = 0; i < stacks.size(); i++) {
++                stacks.set(i, renderNMSItem(stacks.get(i), locale));
 +            }
-+            return newStacks;
 +        }
++        return stacks;
 +    }
 +    // CloudPlane end
  }
@@ -201,6 +192,19 @@ index e25417976ebe787cdeff88fa2cca7a1c002b54a5..f603012f945222e0f867d63a02349726
          }
      }
  
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index 41b7f84c74f12d35da163cc688f624569500f50b..e339ebcee68772273ab49acb13db868f3100271c 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -2402,7 +2402,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         final int stateId = getHandle().containerMenu.getStateId();
+         connection.send(new net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket(0, stateId, slot, item));
+         connection.send(new net.minecraft.network.protocol.game.ClientboundOpenBookPacket(net.minecraft.world.InteractionHand.MAIN_HAND));
+-        connection.send(new net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket(0, stateId, slot, inventory.getSelected()));
++        connection.send(new net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket(0, stateId, slot, io.papermc.paper.adventure.PaperAdventure.renderNMSItem(inventory.getSelected(), locale()))); // CloudPlane - localize item names and lore
+     }
+ 
+     @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventoryPlayer.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventoryPlayer.java
 index d6a228473ca6f425757683a4b17b035a53ab117f..fbecdbcf59eaaa559a077ae8311c1d90baa5889b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventoryPlayer.java
@@ -214,3 +218,17 @@ index d6a228473ca6f425757683a4b17b035a53ab117f..fbecdbcf59eaaa559a077ae8311c1d90
      }
  
      @Override
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+index 799b18b3c629a1825d875775a96ef96fb1829a57..ee5fc760ad53c66009c59a651f60adb22e3d87fd 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+@@ -158,4 +158,9 @@ public class CloudPlaneConfig {
+     private static void secureSeed() {
+         secureSeed = getBoolean("settings.secure-seed", secureSeed);
+     }
++
++    public static boolean localizeItems = false;
++    private static void localizing() {
++        localizeItems = getBoolean("settings.localize.items", localizeItems);
++    }
+ }
