@@ -47,10 +47,10 @@ index f96454e69349fd10c8bdde04fe826160a318fd36..e00fea8118098b615659272a446ee97a
      }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java b/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..33326c5badac385a98dc086659d7622c1a40775e
+index 0000000000000000000000000000000000000000..40650c0b91f38bc6d1fec5956c84b17311de52bb
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java
-@@ -0,0 +1,41 @@
+@@ -0,0 +1,40 @@
 +package tk.booky.cloudplane.commands;
 +// Created by booky10 in CloudPlane (13:20 02.07.21)
 +
@@ -73,10 +73,9 @@ index 0000000000000000000000000000000000000000..33326c5badac385a98dc086659d7622c
 +        LiteralCommandNode<CommandSourceStack> node = dispatcher.register(Commands.literal("reply")
 +                .requires((listener) -> listener.hasPermission(1, "bukkit.command.reply"))
 +                .then(Commands.argument("message", MessageArgument.message())
-+                        .executes((context) -> execute(context.getSource(), MessageArgument.getMessage(context, "message"))))
-+        );
++                        .executes((context) -> execute(context.getSource(), MessageArgument.getMessage(context, "message")))));
 +
-+        dispatcher.register(Commands.literal("r").redirect(node));
++        dispatcher.register(Commands.literal("r").requires((listener) -> listener.hasPermission(1, "bukkit.command.reply")).redirect(node));
 +    }
 +
 +    private int execute(CommandSourceStack sender, Component message) throws CommandSyntaxException {
