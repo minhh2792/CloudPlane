@@ -1,0 +1,153 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <boooky10@gmail.com>
+Date: Wed, 28 Jul 2021 12:13:58 +0200
+Subject: [PATCH] ported secure seed
+
+
+diff --git a/src/main/java/org/bukkit/UnsafeValues.java b/src/main/java/org/bukkit/UnsafeValues.java
+index b2502aaab690b1414a1adffdf64e5a5456feb99c..3719de8192f116bf79e9f8e3628d602ab602fb61 100644
+--- a/src/main/java/org/bukkit/UnsafeValues.java
++++ b/src/main/java/org/bukkit/UnsafeValues.java
+@@ -218,4 +218,12 @@ public interface UnsafeValues {
+      */
+     org.bukkit.entity.Entity deserializeEntity(byte[] data, org.bukkit.World world);
+     // Purpur end
++
++    // CloudPlane start - port secure seed
++    /**
++     * Gets a random secure seed.
++     * @return a random secure seed
++     */
++    long[] randomSecureSeed();
++    // CloudPlane end
+ }
+diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
+index 4017cc64532a9a8e42c3a6492878cd96db13fcb3..afaf0154dfc696b08d846ad0a9cbf941de629e09 100644
+--- a/src/main/java/org/bukkit/World.java
++++ b/src/main/java/org/bukkit/World.java
+@@ -2226,6 +2226,14 @@ public interface World extends PluginMessageRecipient, Metadatable, net.kyori.ad
+      */
+     public long getSeed();
+ 
++    // CloudPlane start - port secure seed
++    /**
++     * Gets the secure seed for this world.
++     * @return this worlds secure seed
++     */
++    public long[] getSecureSeed();
++    // CloudPlane end
++
+     /**
+      * Gets the current PVP setting for this world.
+      *
+diff --git a/src/main/java/org/bukkit/WorldCreator.java b/src/main/java/org/bukkit/WorldCreator.java
+index 445c1c13a85f7abb5fd319f9aeb05572bb1f63f6..5f608939d85b74e530f29c4b74c8b49bca223962 100644
+--- a/src/main/java/org/bukkit/WorldCreator.java
++++ b/src/main/java/org/bukkit/WorldCreator.java
+@@ -13,13 +13,14 @@ import org.jetbrains.annotations.Nullable;
+ public class WorldCreator {
+     private final NamespacedKey key; // Paper
+     private final String name;
+-    private long seed;
++    // private long seed; // CloudPlane - port secure seed
+     private World.Environment environment = World.Environment.NORMAL;
+     private ChunkGenerator generator = null;
+     private WorldType type = WorldType.NORMAL;
+     private boolean generateStructures = true;
+     private String generatorSettings = "";
+     private boolean hardcore = false;
++    private long[] secureSeed; // CloudPlane - port secure seed
+ 
+     /**
+      * Creates an empty WorldCreationOptions for the given world name
+@@ -42,8 +43,9 @@ public class WorldCreator {
+             throw new IllegalArgumentException("World name and key cannot be null");
+         }
+         this.name = levelName;
+-        this.seed = (new Random()).nextLong();
++        // this.seed = (new Random()).nextLong(); // CloudPlane - port secure seed
+         this.key = worldKey;
++        this.secureSeed = Bukkit.getUnsafe().randomSecureSeed(); // CloudPlane - port secure seed
+     }
+ 
+     /**
+@@ -105,12 +107,13 @@ public class WorldCreator {
+             throw new IllegalArgumentException("World cannot be null");
+         }
+ 
+-        seed = world.getSeed();
++        // seed = world.getSeed(); // CloudPlane - port secure seed
+         environment = world.getEnvironment();
+         generator = world.getGenerator();
+         type = world.getWorldType();
+         generateStructures = world.canGenerateStructures();
+         hardcore = world.isHardcore();
++        secureSeed = world.getSecureSeed(); // CloudPlane - port secure seed
+ 
+         return this;
+     }
+@@ -127,13 +130,14 @@ public class WorldCreator {
+             throw new IllegalArgumentException("Creator cannot be null");
+         }
+ 
+-        seed = creator.seed();
++        // seed = creator.seed(); // CloudPlane - port secure seed
+         environment = creator.environment();
+         generator = creator.generator();
+         type = creator.type();
+         generateStructures = creator.generateStructures();
+         generatorSettings = creator.generatorSettings();
+         hardcore = creator.hardcore();
++        secureSeed = creator.secureSeed(); // CloudPlane - port secure seed
+ 
+         return this;
+     }
+@@ -154,7 +158,7 @@ public class WorldCreator {
+      * @return World seed
+      */
+     public long seed() {
+-        return seed;
++        return secureSeed[0]; // CloudPlane - port secure seed
+     }
+ 
+     /**
+@@ -165,7 +169,8 @@ public class WorldCreator {
+      */
+     @NotNull
+     public WorldCreator seed(long seed) {
+-        this.seed = seed;
++        this.secureSeed = new long[this.secureSeed.length]; // CloudPlane - port secure seed
++        this.secureSeed[0] = seed; // CloudPlane - port secure seed
+ 
+         return this;
+     }
+@@ -371,6 +376,29 @@ public class WorldCreator {
+         return hardcore;
+     }
+ 
++    // CloudPlane start - port secure seed
++    /**
++     * Sets the secure seed the world will have.
++     *
++     * @param secureSeed the secure seed for the world
++     * @return this object, for chaining
++     */
++    @NotNull
++    public WorldCreator secureSeed(long[] secureSeed) {
++        this.secureSeed = secureSeed;
++
++        return this;
++    }
++
++    /**
++     * Gets the secure seed the world will have.
++     * @return the secure seed the world will have
++     */
++    public long[] secureSeed() {
++        return secureSeed;
++    }
++    // CloudPlane end
++
+     /**
+      * Creates a world with the specified options.
+      * <p>

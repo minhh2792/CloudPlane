@@ -5,7 +5,7 @@ Subject: [PATCH] ported secure seed
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c2a6c2a371009d770f8406d3f6991b79085834e6..47b0c1dc7734a144f64dfba8e8b47766c7b0e5dd 100644
+index 892630a20970ee479431c4e2bf907946f38060dc..577cbec9edeb079a5e6df586e63d8331f075069e 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -760,8 +760,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -29,7 +29,7 @@ index c2a6c2a371009d770f8406d3f6991b79085834e6..47b0c1dc7734a144f64dfba8e8b47766
                  return biomebase.getMobSettings().playerSpawnFriendly();
              }, random);
 diff --git a/src/main/java/net/minecraft/server/commands/SeedCommand.java b/src/main/java/net/minecraft/server/commands/SeedCommand.java
-index 6f4aa3fce42a53883db1485731e03822887cadc0..6387fe3bb7c7f673f16b621d9834dac2aa9e07ad 100644
+index 6f4aa3fce42a53883db1485731e03822887cadc0..d06f9f252dab596c70dc2ccb5f892dc7676d5422 100644
 --- a/src/main/java/net/minecraft/server/commands/SeedCommand.java
 +++ b/src/main/java/net/minecraft/server/commands/SeedCommand.java
 @@ -16,12 +16,13 @@ public class SeedCommand {
@@ -38,7 +38,7 @@ index 6f4aa3fce42a53883db1485731e03822887cadc0..6387fe3bb7c7f673f16b621d9834dac2
          }).executes((context) -> {
 -            long l = context.getSource().getLevel().getSeed();
 +            if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed) tk.booky.cloudplane.secureseed.Globals.setupGlobals(context.getSource().getLevel()); // CloudPlane - port secure seed
-+            String l = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? Long.toString(context.getSource().getLevel().getSeed()) : tk.booky.cloudplane.secureseed.Globals.seedToString(tk.booky.cloudplane.secureseed.Globals.worldSeed); // CloudPlane - port secure seed
++            String l = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? Long.toString(context.getSource().getLevel().getSeed()) : tk.booky.cloudplane.secureseed.Globals.seedToString(context.getSource().getLevel().serverLevelData.worldGenSettings().getSecureSeed()); // CloudPlane - port secure seed
              Component component = ComponentUtils.wrapInSquareBrackets((new TextComponent(String.valueOf(l))).withStyle((style) -> {
                  return style.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(l))).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("chat.copy.click"))).withInsertion(String.valueOf(l));
              }));
@@ -559,7 +559,7 @@ index 97458bfc0fa59b89e460d2f668e0dfae00068d24..d00d145eb9ff08e2ccb2822b5710f7e8
          double e = (double)chunkPos.getMiddleBlockZ();
          double f = 16.0D + horizontalScale * 2.0D;
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/PillagerOutpostFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/PillagerOutpostFeature.java
-index c7d158e390cf7164edb9623339fcf42e768c9696..8dbf3a86ad731adf57fb367c713129e03da6d5b4 100644
+index c7d158e390cf7164edb9623339fcf42e768c9696..f40098954f64cc17e5ee69c8a62f35d5ed67e6d4 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/feature/PillagerOutpostFeature.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/feature/PillagerOutpostFeature.java
 @@ -29,6 +29,7 @@ public class PillagerOutpostFeature extends JigsawFeature {
@@ -729,6 +729,54 @@ index be94881238f733fdc9ff7115c45b20e24461d69f..5307a4ee434e20b51627aa055f41b860
          int i = Math.floorMod(this.rval >> 24, bound);
          this.rval = LinearCongruentialGenerator.next(this.rval, this.seed);
          return i;
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 0d40e5d1db422c02d3cfca2b6d0a0f5564ebc2bc..fac2faa56b103265ad7ad271b459933266109b10 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -1155,6 +1155,7 @@ public final class CraftServer implements Server {
+             properties.put("level-type", Objects.toString(creator.type().getName()));
+ 
+             WorldGenSettings generatorsettings = WorldGenSettings.create(this.console.registryAccess(), properties);
++            generatorsettings.setSecureSeed(creator.secureSeed()); // CloudPlane - port secure seed
+             worldSettings = new LevelSettings(name, GameType.byId(this.getDefaultGameMode().getValue()), hardcore, Difficulty.EASY, false, new GameRules(), console.datapackconfiguration);
+             worlddata = new PrimaryLevelData(worldSettings, generatorsettings, Lifecycle.stable());
+         }
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+index 2e79e2a23a4aec4b526814f7e959232c0a074860..b3a1798de06044adac56a9436bfe01fb4439c37d 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+@@ -1536,6 +1536,13 @@ public class CraftWorld implements World {
+         return this.world.getSeed();
+     }
+ 
++    // CloudPlane start - port secure seed
++    @Override
++    public long[] getSecureSeed() {
++        return world.serverLevelData.worldGenSettings().getSecureSeed();
++    }
++    // CloudPlane end
++
+     @Override
+     public boolean getPVP() {
+         return world.pvpMode;
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
+index f12eec135f8134409f1abe5c97ffee59913a4d9e..16a26c4c2cd190a333e5ee055d79b92a95ff51cf 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
+@@ -548,6 +548,13 @@ public final class CraftMagicNumbers implements UnsafeValues {
+     }
+     // Paper end
+ 
++    // CloudPlane start - port secure seed
++    @Override
++    public long[] randomSecureSeed() {
++        return tk.booky.cloudplane.secureseed.Globals.createRandomWorldSeed();
++    }
++    // CloudPlane end
++
+     /**
+      * This helper class represents the different NBT Tags.
+      * <p>
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 index 50ccfe5cc68113f77a90b73bcb3f8c3eecad3678..799b18b3c629a1825d875775a96ef96fb1829a57 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
