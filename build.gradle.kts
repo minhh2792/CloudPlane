@@ -1,5 +1,7 @@
 plugins {
+    idea
     java
+
     id("com.github.johnrengelman.shadow") version "7.0.0" apply false
     id("io.papermc.paperweight.patcher") version "1.1.9"
 }
@@ -21,6 +23,7 @@ dependencies {
 
 subprojects {
     apply(plugin = "java")
+    apply(plugin = "idea")
 
     java { toolchain { languageVersion.set(JavaLanguageVersion.of(16)) } }
 

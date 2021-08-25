@@ -1,0 +1,7 @@
+name: CloudPlane-Test-Plugin
+version: ${version}
+main: tk.booky.cloudplane.testplugin.TestPlugin
+description: CloudPlane Test Plugin
+author: booky10
+api-version: 1.17
+load: STARTUP

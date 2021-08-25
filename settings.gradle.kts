@@ -9,3 +9,10 @@ pluginManagement {
 rootProject.name = "CloudPlane"
 
 include("CloudPlane-API", "CloudPlane-Server")
+
+val testPlugin = file("test-plugin.settings.gradle.kts")
+if (testPlugin.exists()) {
+    apply(from = testPlugin)
+} else {
+    testPlugin.writeText("// Uncomment to enable the test plugin module\n//include(\":test-plugin\")\n")
+}

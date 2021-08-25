@@ -24,7 +24,6 @@ dependency-reduced-pom.xml
 .*.sw[a-p]
 
 # various other potential build files
-build/
 bin/
 dist/
 manifest.mf
@@ -53,3 +52,5 @@ run
 current-paper
 
 !gradle/wrapper/gradle-wrapper.jar
+
+test-plugin.settings.gradle.kts
