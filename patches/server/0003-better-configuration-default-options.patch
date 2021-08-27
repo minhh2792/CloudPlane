@@ -5,10 +5,10 @@ Subject: [PATCH] better configuration default options
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index e4e9be385c3ac048d7db374ee111de654dc3e3f0..28304903e468a063f97b4e790aab897002ae28fd 100644
+index e6ed874b707435b3ac5af500b7b85ac046f305c5..1a0610a3afb77af3da9d6bb7c09252c1e95e6133 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-@@ -207,7 +207,7 @@ public class PaperConfig {
+@@ -206,7 +206,7 @@ public class PaperConfig {
  
      public static String timingsServerName;
      private static void timings() {
