@@ -5,10 +5,10 @@ Subject: [PATCH] ported secure seed
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 892630a20970ee479431c4e2bf907946f38060dc..577cbec9edeb079a5e6df586e63d8331f075069e 100644
+index b7b5335fb9c9620397ce08619351559bdb86164c..4bcfc5b7c8253c5db4b44afaf3388fd4d0dacb31 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -760,8 +760,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -775,8 +775,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              ChunkGenerator chunkgenerator = world.getChunkSource().getGenerator();
              // Paper start - moved down
              // CraftBukkit start
@@ -19,7 +19,7 @@ index 892630a20970ee479431c4e2bf907946f38060dc..577cbec9edeb079a5e6df586e63d8331
                  org.bukkit.Location spawn = world.generator.getFixedSpawnLocation(world.getWorld(), rand);
  
                  if (spawn != null) {
-@@ -777,7 +778,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -792,7 +793,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              // Paper start - if the generator created a spawn for us, then there is no need for us to also create a spawn -
              // only do it if the generator did not
              BiomeSource worldchunkmanager = chunkgenerator.getBiomeSource();
@@ -49,10 +49,10 @@ index 6f4aa3fce42a53883db1485731e03822887cadc0..d06f9f252dab596c70dc2ccb5f892dc7
      }
  }
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index d720eba9fbfa1d8a13dd204e9f1a84233b834e58..ab17d76fb599665e16000aa2f81a934f581d2a8d 100644
+index 35f27e9a7c82eaec5b4a1a71696dac8485b2cd6d..b9623e9f3f35016a030011f7d37020b00400889b 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -1103,6 +1103,7 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1110,6 +1110,7 @@ public class ServerChunkCache extends ChunkSource {
      }
  
      public ChunkGenerator getGenerator() {
@@ -61,10 +61,10 @@ index d720eba9fbfa1d8a13dd204e9f1a84233b834e58..ab17d76fb599665e16000aa2f81a934f
      }
  
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index a6fbdcd48ecc91d50a9cbc4a4c80a5e964ecaea8..48594c99fd20145593c682b19d05156d4a19fc87 100644
+index 7a3288f9a83ae36c4947f56265d487a2ab3e0e62..82b2f1473a9e2e3a7441d542b66771a1a4994281 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -512,6 +512,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -511,6 +511,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          this.dragonParts = new Int2ObjectOpenHashMap();
          this.tickTime = flag1;
          this.server = minecraftserver;
@@ -73,10 +73,10 @@ index a6fbdcd48ecc91d50a9cbc4a4c80a5e964ecaea8..48594c99fd20145593c682b19d05156d
          this.customSpawners = Lists.newArrayList();
          if (purpurConfig.phantomSpawning) {
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Slime.java b/src/main/java/net/minecraft/world/entity/monster/Slime.java
-index 7a9654a365a968592d706a13fb46615effcc2399..686f42358dc50b5f85eab1e9b6b1085ff54bdc8b 100644
+index 01d04bf183743bf892be25fe839f3f5cf7ccff42..3f7b01d7ee95c1ff10a0d1d1204775b511b462ec 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Slime.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Slime.java
-@@ -391,7 +391,7 @@ public class Slime extends Mob implements Enemy {
+@@ -392,7 +392,7 @@ public class Slime extends Mob implements Enemy {
              }
  
              ChunkPos chunkcoordintpair = new ChunkPos(pos);
@@ -86,7 +86,7 @@ index 7a9654a365a968592d706a13fb46615effcc2399..686f42358dc50b5f85eab1e9b6b1085f
              if (random.nextInt(10) == 0 && flag && pos.getY() < 40) {
                  return checkMobSpawnRules(type, world, spawnReason, pos, random);
 diff --git a/src/main/java/net/minecraft/world/level/biome/Biome.java b/src/main/java/net/minecraft/world/level/biome/Biome.java
-index e298097d2b29cd9a625154ec1a67372c496afd8e..6333f95bfbc0bc8d4d32a66923c1d0741e6fdf99 100644
+index b5c6b0bc307aef2835761cfa50413cebfd624795..c6882d19295b6ce591ace2529b0346b0e51dca4f 100644
 --- a/src/main/java/net/minecraft/world/level/biome/Biome.java
 +++ b/src/main/java/net/minecraft/world/level/biome/Biome.java
 @@ -93,9 +93,9 @@ public final class Biome {
@@ -186,7 +186,7 @@ index 1c7b18db0053bca6e7750225a79f7d95843edabe..78465a3d09b6030fb606bfa56fb59e13
      }
  
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index b2e71a78424dbe1ce87b982b073d8534de890181..5369c2527c89c2016baf363a128c8e742579f372 100644
+index e265980f07d95a7912bf8873819033e51ef04c98..3558abfadba3114e27281230ff2d7cd47ad62b5c 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -124,6 +124,16 @@ public class LevelChunk implements ChunkAccess {
@@ -204,10 +204,10 @@ index b2e71a78424dbe1ce87b982b073d8534de890181..5369c2527c89c2016baf363a128c8e74
 +    }
 +    // CloudPlane end
  
-     // Tuinity start - rewrite light engine
+     // Paper start - rewrite light engine
      protected volatile SWMRNibbleArray[] blockNibbles;
 diff --git a/src/main/java/net/minecraft/world/level/dimension/end/EndDragonFight.java b/src/main/java/net/minecraft/world/level/dimension/end/EndDragonFight.java
-index 93dd5a2d0b550b0373cbf59376a04e9fd6146e92..d6760dac2facacce6149425c03b8290150986818 100644
+index 53001f490f374c75e0d44ec75387f4bee6ab8952..88989486d888132e447788f004257c99962ada9d 100644
 --- a/src/main/java/net/minecraft/world/level/dimension/end/EndDragonFight.java
 +++ b/src/main/java/net/minecraft/world/level/dimension/end/EndDragonFight.java
 @@ -120,7 +120,7 @@ public class EndDragonFight {
@@ -220,26 +220,27 @@ index 93dd5a2d0b550b0373cbf59376a04e9fd6146e92..d6760dac2facacce6149425c03b82901
  
          this.exitPortalPattern = BlockPatternBuilder.start().aisle("       ", "       ", "       ", "   #   ", "       ", "       ", "       ").aisle("       ", "       ", "       ", "   #   ", "       ", "       ", "       ").aisle("       ", "       ", "       ", "   #   ", "       ", "       ", "       ").aisle("  ###  ", " #   # ", "#     #", "#  #  #", "#     #", " #   # ", "  ###  ").aisle("       ", "  ###  ", " ##### ", " ##### ", " ##### ", "  ###  ", "       ").where('#', BlockInWorld.hasState(BlockPredicate.forBlock(Blocks.BEDROCK))).build();
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
-index b906895e1db3f0b5654694796cd87bfe4cdd09c7..7cc061ccfe56a267ba20a678f3c67a7cde4fc248 100644
+index 5cc63122b8e2c955b2d756000c1677d51e8d8629..04e6fa67a38ffc41fca937de7ddb0b71c575cf2d 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator.java
-@@ -96,14 +96,14 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {
+@@ -103,7 +103,7 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {
          this.cellCountX = 16 / this.cellWidth;
-         this.cellCountY = noiseSettings.height() / this.cellHeight;
+         this.cellCountY = noisesettings.height() / this.cellHeight;
          this.cellCountZ = 16 / this.cellWidth;
--        WorldgenRandom worldgenRandom = new WorldgenRandom(seed);
-+        WorldgenRandom worldgenRandom = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : (new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.TERRAIN_NOISE_SALT, 0)); // CloudPlane - port secure seed
-         BlendedNoise blendedNoise = new BlendedNoise(worldgenRandom);
-         this.surfaceNoise = (SurfaceNoise)(noiseSettings.useSimplexSurfaceNoise() ? new PerlinSimplexNoise(worldgenRandom, IntStream.rangeClosed(-3, 0)) : new PerlinNoise(worldgenRandom, IntStream.rangeClosed(-3, 0)));
-         worldgenRandom.consumeCount(2620);
-         PerlinNoise perlinNoise = new PerlinNoise(worldgenRandom, IntStream.rangeClosed(-15, 0));
-         SimplexNoise simplexNoise;
-         if (noiseSettings.islandNoiseOverride()) {
--            WorldgenRandom worldgenRandom2 = new WorldgenRandom(seed);
-+            WorldgenRandom worldgenRandom2 = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : (new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.TERRAIN_NOISE_SALT, 1)); // CloudPlane - port secure seed
-             worldgenRandom2.consumeCount(17292);
-             simplexNoise = new SimplexNoise(worldgenRandom2);
-         } else {
+-        WorldgenRandom seededrandom = new WorldgenRandom(seed);
++        WorldgenRandom seededrandom = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : (new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.TERRAIN_NOISE_SALT, 0)); // CloudPlane - port secure seed
+         BlendedNoise blendednoise = new BlendedNoise(seededrandom);
+ 
+         this.surfaceNoise = (SurfaceNoise) (noisesettings.useSimplexSurfaceNoise() ? new PerlinSimplexNoise(seededrandom, IntStream.rangeClosed(-3, 0)) : new PerlinNoise(seededrandom, IntStream.rangeClosed(-3, 0)));
+@@ -112,7 +112,7 @@ public final class NoiseBasedChunkGenerator extends ChunkGenerator {
+         SimplexNoise noisegenerator3handler;
+ 
+         if (noisesettings.islandNoiseOverride()) {
+-            WorldgenRandom seededrandom1 = new WorldgenRandom(seed);
++            WorldgenRandom seededrandom1 = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new WorldgenRandom(seed) : (new WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.TERRAIN_NOISE_SALT, 1)); // CloudPlane - port secure seed
+ 
+             seededrandom1.consumeCount(17292);
+             noisegenerator3handler = new SimplexNoise(seededrandom1);
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java b/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
 index 57b12ba5a24e68b0a0420d692946fe5e83974db4..407b3e6611b115a20c5eb599c2ba956a24c0ef97 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
@@ -571,16 +572,15 @@ index c7d158e390cf7164edb9623339fcf42e768c9696..f40098954f64cc17e5ee69c8a62f35d5
          random.nextInt();
          if (random.nextInt(5) != 0) {
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
-index 5ad051dd62968fb861a4ed2ad5426d6429184173..2da5295d0065334418753330feee6dfa61f5c7f6 100644
+index c03bf5bdb67b00c75f9fcfead882c4d944282244..15daf3e6df360ce54649d352cc753bacee384c53 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
-@@ -37,7 +37,8 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+@@ -36,7 +36,7 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+     }
  
      public static List<SpikeFeature.EndSpike> getSpikesForLevel(WorldGenLevel world) {
-         int seed = net.pl3x.purpur.PurpurConfig.seedFeatureEndSpike; // Purpur
--        Random random = new Random(seed == -1 ? world.getSeed() : seed); // Purpur
-+        if (tk.booky.cloudplane.CloudPlaneConfig.secureSeed && world instanceof net.minecraft.server.level.ServerLevel) tk.booky.cloudplane.secureseed.Globals.setupGlobals((net.minecraft.server.level.ServerLevel) world); // CloudPlane - port secure seed
-+        Random random = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ?  new Random(seed == -1 ? world.getSeed() : seed) : new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.END_PILLAR_SALT, 0); // Purpur // CloudPlane - port secure seed
+-        Random random = new Random(world.getSeed());
++        Random random = !tk.booky.cloudplane.CloudPlaneConfig.secureSeed ? new Random(world.getSeed()) : new net.minecraft.world.level.levelgen.WorldgenRandom(0).setSecureSeed(tk.booky.cloudplane.secureseed.Globals.worldSeed, 0, 0, tk.booky.cloudplane.secureseed.Globals.dimension.get(), tk.booky.cloudplane.secureseed.Globals.END_PILLAR_SALT, 0); // CloudPlane - port secure seed
          long l = random.nextLong() & 65535L;
          return SPIKE_CACHE.getUnchecked(l);
      }
@@ -730,10 +730,10 @@ index be94881238f733fdc9ff7115c45b20e24461d69f..5307a4ee434e20b51627aa055f41b860
          this.rval = LinearCongruentialGenerator.next(this.rval, this.seed);
          return i;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 0d40e5d1db422c02d3cfca2b6d0a0f5564ebc2bc..fac2faa56b103265ad7ad271b459933266109b10 100644
+index abef1b306b7c48c1bc37f204eeef7b4e6cdcaaa3..48944817106da6c580912852094d676a9630fc77 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1155,6 +1155,7 @@ public final class CraftServer implements Server {
+@@ -1164,6 +1164,7 @@ public final class CraftServer implements Server {
              properties.put("level-type", Objects.toString(creator.type().getName()));
  
              WorldGenSettings generatorsettings = WorldGenSettings.create(this.console.registryAccess(), properties);
@@ -742,10 +742,10 @@ index 0d40e5d1db422c02d3cfca2b6d0a0f5564ebc2bc..fac2faa56b103265ad7ad271b4599332
              worlddata = new PrimaryLevelData(worldSettings, generatorsettings, Lifecycle.stable());
          }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 2e79e2a23a4aec4b526814f7e959232c0a074860..b3a1798de06044adac56a9436bfe01fb4439c37d 100644
+index 7e56d6e60f1e1bd8dbf768afcbe06addcd5c5a60..6d3a09e2b7df0a3da8fa1025073e89b8e3bafc30 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -1536,6 +1536,13 @@ public class CraftWorld implements World {
+@@ -1255,6 +1255,13 @@ public class CraftWorld extends CraftRegionAccessor implements World {
          return this.world.getSeed();
      }
  
@@ -759,11 +759,56 @@ index 2e79e2a23a4aec4b526814f7e959232c0a074860..b3a1798de06044adac56a9436bfe01fb
      @Override
      public boolean getPVP() {
          return world.pvpMode;
+diff --git a/src/main/java/org/bukkit/craftbukkit/generator/CraftWorldInfo.java b/src/main/java/org/bukkit/craftbukkit/generator/CraftWorldInfo.java
+index aeffb30cd91d4b21850059d33070c537bd5cb25e..c2e6bc752caec6989ac515abde8ed6b38d51efed 100644
+--- a/src/main/java/org/bukkit/craftbukkit/generator/CraftWorldInfo.java
++++ b/src/main/java/org/bukkit/craftbukkit/generator/CraftWorldInfo.java
+@@ -15,6 +15,7 @@ public class CraftWorldInfo implements WorldInfo {
+     private final UUID uuid;
+     private final World.Environment environment;
+     private final long seed;
++    private final long[] secureSeed; // CloudPlane - ported secure seed
+     private final int minHeight;
+     private final int maxHeight;
+ 
+@@ -23,11 +24,18 @@ public class CraftWorldInfo implements WorldInfo {
+         this.uuid = WorldUUID.getUUID(session.levelPath.toFile());
+         this.environment = environment;
+         this.seed = ((PrimaryLevelData) worldDataServer).worldGenSettings().seed();
++        this.secureSeed = ((PrimaryLevelData) worldDataServer).worldGenSettings().getSecureSeed(); // CloudPlane - ported secure seed
+         this.minHeight = dimensionManager.minY();
+         this.maxHeight = dimensionManager.minY() + dimensionManager.height();
+     }
+ 
+     public CraftWorldInfo(String name, UUID uuid, World.Environment environment, long seed, int minHeight, int maxHeight) {
++        // CloudPlane start - ported secure seed
++        this(name, uuid, environment, seed, new long[16], minHeight, maxHeight);
++    }
++    public CraftWorldInfo(String name, UUID uuid, World.Environment environment, long seed, long[] secureSeed, int minHeight, int maxHeight) {
++        this.secureSeed = secureSeed;
++        // CloudPlane end
+         this.name = name;
+         this.uuid = uuid;
+         this.environment = environment;
+@@ -56,6 +64,13 @@ public class CraftWorldInfo implements WorldInfo {
+         return this.seed;
+     }
+ 
++    // CloudPlane start - ported secure seed
++    @Override
++    public long[] getSecureSeed() {
++        return this.secureSeed;
++    }
++    // CloudPlane end
++
+     @Override
+     public int getMinHeight() {
+         return this.minHeight;
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index f12eec135f8134409f1abe5c97ffee59913a4d9e..16a26c4c2cd190a333e5ee055d79b92a95ff51cf 100644
+index 09b99e3465ae142081f01c483116c1d1adb34842..cdcb48a4123c2a4a5a9f3cbbb793d4253b18926c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -548,6 +548,13 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -547,6 +547,13 @@ public final class CraftMagicNumbers implements UnsafeValues {
      }
      // Paper end
  
@@ -778,10 +823,10 @@ index f12eec135f8134409f1abe5c97ffee59913a4d9e..16a26c4c2cd190a333e5ee055d79b92a
       * This helper class represents the different NBT Tags.
       * <p>
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 50ccfe5cc68113f77a90b73bcb3f8c3eecad3678..799b18b3c629a1825d875775a96ef96fb1829a57 100644
+index cd33c25f71919d8ae5d6cf78119b02918c289cec..6cec3748ea04c89d910cce99162dab0d1d52d2e5 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -153,4 +153,9 @@ public class CloudPlaneConfig {
+@@ -152,4 +152,9 @@ public class CloudPlaneConfig {
          ipBannedReason = getString("settings.banning.messages.ip-banned.reason", ipBannedReason);
          ipBannedExpiration = getString("settings.banning.messages.ip-banned.expiration", ipBannedExpiration);
      }

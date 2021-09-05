@@ -5,10 +5,10 @@ Subject: [PATCH] localize item names and lore
 
 
 diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-index 363f94e86e3349d9ed03b692e136307fe9fa5e28..858e2a57a2ea74779c12bfbcc4f0310663a4b0de 100644
+index 26c5c3c6e7c51ad6ccc9bac05e2af4972658179d..bf96c3b75a65cbd90a8aa306f9d716e8c8d1a3b4 100644
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-@@ -368,4 +368,38 @@ public final class PaperAdventure {
+@@ -379,4 +379,38 @@ public final class PaperAdventure {
      public static @Nullable ChatFormatting asVanilla(TextColor color) {
          return ChatFormatting.getByHexValue(color.value());
      }
@@ -61,7 +61,7 @@ index a8a1ecfa349d4cb8daa1d426920988c64b392b14..94b5799de372499f908fb9aace2f7b56
          return true;
      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 023b3df9b375aa8f91a5f2e7d3592482afac7c0e..a6d9d07f0a05be857e28bee754bb98456dd31e57 100644
+index 0cb58f2a5607664193adddbfd7e43384c5a44862..8ab023db22cdda10f2596b31e27996859283461b 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -279,7 +279,7 @@ public class ServerPlayer extends Player {
@@ -89,7 +89,7 @@ index 023b3df9b375aa8f91a5f2e7d3592482afac7c0e..a6d9d07f0a05be857e28bee754bb9845
  
              @Override
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 43d124818c4538bc0d84111dfab25c38aab249c1..94a7368b7d1d6b2cae717964fa7d0ac3c61a5497 100644
+index 86ed3f8491ea7ad117ac36be0d4bf304489c79f1..315c19b30f29eebe84bfaf8069ba53422b6d9b44 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -972,8 +972,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -103,7 +103,7 @@ index 43d124818c4538bc0d84111dfab25c38aab249c1..94a7368b7d1d6b2cae717964fa7d0ac3
          this.player.connection.send(new ClientboundSetCarriedItemPacket(this.player.getInventory().selected));
      }
  
-@@ -2893,19 +2893,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2900,19 +2900,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                                  case PLACE_SOME:
                                  case PLACE_ONE:
                                  case SWAP_WITH_CURSOR:
@@ -127,7 +127,7 @@ index 43d124818c4538bc0d84111dfab25c38aab249c1..94a7368b7d1d6b2cae717964fa7d0ac3
                                      break;
                                  // Nothing
                                  case NOTHING:
-@@ -3030,7 +3030,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3037,7 +3037,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  case DENY:
                      // Reset the slot
                      if (packet.getSlotNum() >= 0) {
@@ -167,10 +167,10 @@ index 1b6111084e963281b453b9c29736cee61d422abf..a9c281025284d3042578581391a89e75
                      }
                      // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-index 080449cf3aa0394bd179e26fda8d7248f488ea8d..cc40c5ce045aeadec57d3927732455a7ad869373 100644
+index 9dd5dfc95049de84916bbbd63acb6125ec9ee0a0..70ca455500cf083ea603dfedb2420fe568c2ebe9 100644
 --- a/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
 +++ b/src/main/java/net/minecraft/world/inventory/AnvilMenu.java
-@@ -333,7 +333,7 @@ public class AnvilMenu extends ItemCombinerMenu {
+@@ -334,7 +334,7 @@ public class AnvilMenu extends ItemCombinerMenu {
              this.broadcastChanges();
              // Purpur start
              if ((canDoUnsafeEnchants || net.pl3x.purpur.PurpurConfig.allowUnsafeEnchants) && itemstack1 != ItemStack.EMPTY) {
@@ -193,10 +193,10 @@ index e25417976ebe787cdeff88fa2cca7a1c002b54a5..f603012f945222e0f867d63a02349726
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 41b7f84c74f12d35da163cc688f624569500f50b..e339ebcee68772273ab49acb13db868f3100271c 100644
+index 53ec1f1725a8b7bff4d93f4d1d6a7344818799f0..e88417f1a7b207dd5a49763c1f099bba393a6c6e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2402,7 +2402,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2443,7 +2443,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          final int stateId = getHandle().containerMenu.getStateId();
          connection.send(new net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket(0, stateId, slot, item));
          connection.send(new net.minecraft.network.protocol.game.ClientboundOpenBookPacket(net.minecraft.world.InteractionHand.MAIN_HAND));
@@ -219,10 +219,10 @@ index d6a228473ca6f425757683a4b17b035a53ab117f..fbecdbcf59eaaa559a077ae8311c1d90
  
      @Override
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 799b18b3c629a1825d875775a96ef96fb1829a57..ee5fc760ad53c66009c59a651f60adb22e3d87fd 100644
+index 6cec3748ea04c89d910cce99162dab0d1d52d2e5..04c180c9bcea4238a7f1c559ce5367c0fe83986f 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -158,4 +158,9 @@ public class CloudPlaneConfig {
+@@ -157,4 +157,9 @@ public class CloudPlaneConfig {
      private static void secureSeed() {
          secureSeed = getBoolean("settings.secure-seed", secureSeed);
      }

@@ -54,10 +54,10 @@ index 8cdede6a9698d6c99b4f08edc2a3403fec854f66..1d38fe546cf48dc35ef22c35b33365ba
                  if (this.type != EntityType.GLOW_ITEM_FRAME) {
                      return InteractionResult.sidedSuccess(world.isClientSide);
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 1bb84a382a02b6930f9fd503cb52ddde068f6ffb..f96454e69349fd10c8bdde04fe826160a318fd36 100644
+index f077828be3b355c10dc6e06488c3531e1521e472..7c5cbfd668b5c56dc0ee7d55881592970ad93744 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -72,6 +72,8 @@ public class CloudPlaneConfig {
+@@ -71,6 +71,8 @@ public class CloudPlaneConfig {
      public static void registerRecipes(Server server) {
          recipes.clear();
  
@@ -68,12 +68,11 @@ index 1bb84a382a02b6930f9fd503cb52ddde068f6ffb..f96454e69349fd10c8bdde04fe826160
  
 diff --git a/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java b/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ec06c748a779c95a5f817f8581b96f2013e6aafc
+index 0000000000000000000000000000000000000000..106c33201526f4c9676f3d6ee3ac51c9fe5ef35d
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java
-@@ -0,0 +1,29 @@
+@@ -0,0 +1,28 @@
 +package tk.booky.cloudplane.recipes;
-+// Created by booky10 in CloudPlane (21:50 01.07.21)
 +
 +import net.kyori.adventure.text.Component;
 +import net.kyori.adventure.text.format.TextDecoration;

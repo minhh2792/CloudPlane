@@ -5,7 +5,7 @@ Subject: [PATCH] cloudplane configuration
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index bfad241892b8280d261ab8301245b91b5403b51a..f0074028a56599c4f19464f98cd416e683e4e4e3 100644
+index 8c2424b0917d278bb0b9e687d116d8de73696446..e011a8ff8ca3839024b2fd39c030dfe0f1168e6b 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -204,6 +204,7 @@ public class Commands {
@@ -17,10 +17,10 @@ index bfad241892b8280d261ab8301245b91b5403b51a..f0074028a56599c4f19464f98cd416e6
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 3e06ae53273ca9409d07c3134bdeb2e78eef4598..c2a6c2a371009d770f8406d3f6991b79085834e6 100644
+index 84b4d7ac8153ecd943be6690506f8c472e0e70ab..b7b5335fb9c9620397ce08619351559bdb86164c 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -709,6 +709,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -724,6 +724,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
          // Paper end
  
@@ -29,7 +29,7 @@ index 3e06ae53273ca9409d07c3134bdeb2e78eef4598..c2a6c2a371009d770f8406d3f6991b79
          this.server.getPluginManager().callEvent(new ServerLoadEvent(ServerLoadEvent.LoadType.STARTUP));
          this.connection.acceptConnections();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 1da53b46c69dc5cfca0fea805cc491e79a841153..c2f49d0b968311022d162040f0f0e0980d162bf5 100644
+index 77eb1b3bf77d496fb0675fbb681efb0df32fb5c4..5485804373db07c935c979bdf9b3e2544e0ffdfc 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -228,6 +228,14 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -48,38 +48,38 @@ index 1da53b46c69dc5cfca0fea805cc491e79a841153..c2f49d0b968311022d162040f0f0e098
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 27674fb28825b48eee86b93d6bbd1e7af94c0fe0..fdd2a8b3d749955ba346c19c11a586d3915e677e 100644
+index 5e06dbb25359b593c6960652ee99f8227bf4deb0..136c440581e968b45745c14528a9b282ca13b57d 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -168,6 +168,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
-     public final com.tuinity.tuinity.config.TuinityConfig.WorldConfig tuinityConfig; // Tuinity - Server Config
+ 
      public final net.pl3x.purpur.PurpurWorldConfig purpurConfig; // Purpur
 +    public final tk.booky.cloudplane.CloudPlaneWorldConfig cloudplaneConfig; // CloudPlane
  
      public final co.aikar.timings.WorldTimingsHandler timings; // Paper
      public static BlockPos lastPhysicsProblem; // Spigot
-@@ -362,6 +363,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -361,6 +362,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+         this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), this.spigotConfig); // Paper
-         this.tuinityConfig = new com.tuinity.tuinity.config.TuinityConfig.WorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData)worlddatamutable).getLevelName()); // Tuinity - Server Config
          this.purpurConfig = new net.pl3x.purpur.PurpurWorldConfig((ServerLevel) this, ((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), env); // Purpur
 +        this.cloudplaneConfig = new tk.booky.cloudplane.CloudPlaneWorldConfig((((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()), env); // CloudPlane
          this.playerBreedingCooldowns = this.getNewBreedingCooldownCache(); // Purpur
          this.generator = gen;
-         this.world = new CraftWorld((ServerLevel) this, gen, env);
+         this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 6bcb293f01446e8ff17debda45f3a041b3b69956..0db9337000ea123215792292ff5748d58efe6b69 100644
+index 2fa3bad53be47917cc5c13c18d77cc1e4460995f..74418dc19be9f0f159b3f1633b0f03c20de03a8f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -888,6 +888,7 @@ public final class CraftServer implements Server {
+@@ -893,6 +893,7 @@ public final class CraftServer implements Server {
+         org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
-         com.tuinity.tuinity.config.TuinityConfig.init((File) console.options.valueOf("tuinity-settings")); // Tuinity - Server Config
          net.pl3x.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur
 +        tk.booky.cloudplane.CloudPlaneConfig.init((File) console.options.valueOf("cloudplane-settings")); // CloudPlane
          for (ServerLevel world : this.console.getAllLevels()) {
              world.serverLevelData.setDifficulty(config.difficulty);
              world.setSpawnSettings(config.spawnMonsters, config.spawnAnimals);
-@@ -2478,6 +2479,13 @@ public final class CraftServer implements Server {
+@@ -2541,6 +2542,13 @@ public final class CraftServer implements Server {
              return net.pl3x.purpur.PurpurConfig.config;
          }
  
@@ -94,10 +94,10 @@ index 6bcb293f01446e8ff17debda45f3a041b3b69956..0db9337000ea123215792292ff5748d5
          public java.util.Properties getServerProperties() {
              return getProperties().properties;
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 35518427857c77dfa0737f1684a0a427ddb90048..ac5842285b7c63f04b6d6d1bf63274ca493ba462 100644
+index 56674053351962a75b2731dde137dbbc0c70dbde..2d0246648d5044f5f1da43e629a0ef3af5e94860 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -162,6 +162,14 @@ public class Main {
+@@ -155,6 +155,14 @@ public class Main {
                      .describedAs("Yml file");
                  // Purpur end
  
@@ -114,12 +114,11 @@ index 35518427857c77dfa0737f1684a0a427ddb90048..ac5842285b7c63f04b6d6d1bf63274ca
                          .withRequiredArg()
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..7ea3ccc82b38bbbd74ce338b55237b74c3769cd2
+index 0000000000000000000000000000000000000000..4ff3b9515705e540a94360c15cfa6aec8191cd31
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -0,0 +1,127 @@
+@@ -0,0 +1,126 @@
 +package tk.booky.cloudplane;
-+// Created by booky10 in CloudPlane (20:08 27.06.21)
 +
 +import com.mojang.brigadier.CommandDispatcher;
 +import net.minecraft.commands.CommandSourceStack;
@@ -247,12 +246,11 @@ index 0000000000000000000000000000000000000000..7ea3ccc82b38bbbd74ce338b55237b74
 +}
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e8fd9c4410fb985a54091d58fb2f3e4014228c1a
+index 0000000000000000000000000000000000000000..14c26bb02bd5bc8b3033b4c3f5c87595f97b53d8
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java
-@@ -0,0 +1,70 @@
+@@ -0,0 +1,69 @@
 +package tk.booky.cloudplane;
-+// Created by booky10 in CloudPlane (20:23 27.06.21)
 +
 +import org.apache.commons.lang.BooleanUtils;
 +import org.bukkit.World;
@@ -323,12 +321,11 @@ index 0000000000000000000000000000000000000000..e8fd9c4410fb985a54091d58fb2f3e40
 +}
 diff --git a/src/main/java/tk/booky/cloudplane/commands/CloudPlaneCommand.java b/src/main/java/tk/booky/cloudplane/commands/CloudPlaneCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..1ba086daa5cb4d02efdab9ba41a29a2d0aecda6d
+index 0000000000000000000000000000000000000000..1ba093f16ec68e5ba20357333098bdb32b90986f
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/CloudPlaneCommand.java
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,9 @@
 +package tk.booky.cloudplane.commands;
-+// Created by booky10 in CloudPlane (20:14 27.06.21)
 +
 +import com.mojang.brigadier.CommandDispatcher;
 +import net.minecraft.commands.CommandSourceStack;

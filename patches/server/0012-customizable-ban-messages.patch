@@ -34,7 +34,7 @@ index b6eb53d5647600963c038cf2ef1301aba66f524d..60d26c7366189794311622be7d57f55c
              }
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 74265a7dd3622149fa6ecdc0ac6e677b4ed92e78..6ab36bf19930c0517be737bfeb1f376162bd6868 100644
+index a285930d4f088a0a7f0dde4b97d43c383d1421d8..7e8f86c98a9dcaee90f0415dd64b2d1d9c6f5def 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -698,7 +698,7 @@ public abstract class PlayerList {
@@ -46,7 +46,7 @@ index 74265a7dd3622149fa6ecdc0ac6e677b4ed92e78..6ab36bf19930c0517be737bfeb1f3761
  
          // Moved from processLogin
          UUID uuid = net.minecraft.world.entity.player.Player.createPlayerUUID(gameprofile);
-@@ -743,9 +743,13 @@ public abstract class PlayerList {
+@@ -742,9 +742,13 @@ public abstract class PlayerList {
          if (getBans().isBanned(gameprofile) && (gameprofilebanentry = getBans().get(gameprofile)) != null) {
              // Paper end
  
@@ -62,7 +62,7 @@ index 74265a7dd3622149fa6ecdc0ac6e677b4ed92e78..6ab36bf19930c0517be737bfeb1f3761
              }
  
              // return chatmessage;
-@@ -756,9 +760,13 @@ public abstract class PlayerList {
+@@ -755,9 +759,13 @@ public abstract class PlayerList {
          } else if (this.getIpBans().isBanned(socketaddress) && getIpBans().get(socketaddress) != null && !this.getIpBans().get(socketaddress).hasExpired()) { // Paper - fix NPE with temp ip bans
              IpBanListEntry ipbanentry = this.ipBans.get(socketaddress);
  
@@ -79,10 +79,10 @@ index 74265a7dd3622149fa6ecdc0ac6e677b4ed92e78..6ab36bf19930c0517be737bfeb1f3761
  
              // return chatmessage;
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index c38f6f76ca2520e67599c5e55dea03783af184f1..50ccfe5cc68113f77a90b73bcb3f8c3eecad3678 100644
+index 680634fb56a5086c8ce60861d58806a122539114..cd33c25f71919d8ae5d6cf78119b02918c289cec 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -138,7 +138,19 @@ public class CloudPlaneConfig {
+@@ -137,7 +137,19 @@ public class CloudPlaneConfig {
      }
  
      public static java.text.SimpleDateFormat expireDateFormat = (java.text.SimpleDateFormat) net.minecraft.server.players.PlayerList.BAN_DATE_FORMAT.clone();
@@ -103,10 +103,10 @@ index c38f6f76ca2520e67599c5e55dea03783af184f1..50ccfe5cc68113f77a90b73bcb3f8c3e
      }
  }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
-index 0466574e70fb6be6cb95207a147e8eb1a02398eb..bea857daaddbc4fb51ba3b9d2118f1dcafa4bc8f 100644
+index 9a2d2b7a2dd5a8a6f52c08a256f1276f0ade9722..2dc5f72d43417d637021e69b57d6a787af43aa88 100644
 --- a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
 +++ b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
-@@ -67,8 +67,12 @@ public class TempBanCommand implements CloudPlaneCommand {
+@@ -66,8 +66,12 @@ public class TempBanCommand implements CloudPlaneCommand {
              ServerPlayer target = source.getServer().getPlayerList().getPlayer(profile.getId());
  
              if (target == null) continue;

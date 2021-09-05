@@ -5,9 +5,9 @@ ROOT_DIR="$(dirname $0)/.."
 echo "Project root directory detected as $ROOT_DIR"
 
 # This can be adjusted to the wanted repository, branch and gradle property
-GRADLE_PROPERTY="airplaneRef"
-REPOSITORY="TECHNOVE/Airplane"
-BRANCH="purpur/1.17"
+GRADLE_PROPERTY="purpurRef"
+REPOSITORY="pl3xgaming/Purpur"
+BRANCH="ver/1.17.1"
 
 # Print out the information which will be used for updating to the runner.
 echo "Will be updating property $GRADLE_PROPERTY from repository $REPOSITORY in branch $BRANCH."

@@ -5,7 +5,7 @@ Subject: [PATCH] added tempban command
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 54f5e11b636649d1fb5a1b5cc05427b81341e10f..e37f80065134fd7929ca6cf0838b2bc5b67cbc7b 100644
+index 71705517943f62ae85a9298cf484bb7c78438267..e0dc1aa46703ed1d761bfcae2b81064785f52bfb 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -129,7 +129,7 @@ public abstract class PlayerList {
@@ -18,10 +18,10 @@ index 54f5e11b636649d1fb5a1b5cc05427b81341e10f..e37f80065134fd7929ca6cf0838b2bc5
      public final List<ServerPlayer> players = new java.util.concurrent.CopyOnWriteArrayList(); // CraftBukkit - ArrayList -> CopyOnWriteArrayList: Iterator safety
      private final Map<UUID, ServerPlayer> playersByUUID = Maps.newHashMap();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index e00fea8118098b615659272a446ee97a91af54c9..e437153fabb826421b76efc712eaf2baae25addf 100644
+index 51d00e0cfc6a4b3967514a747a9f9988604a4bbc..7c38855cde3d11c63b5f65f4c864a8da5501197b 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -66,6 +66,7 @@ public class CloudPlaneConfig {
+@@ -65,6 +65,7 @@ public class CloudPlaneConfig {
          commands.add(new tk.booky.cloudplane.commands.FlyCommand());
          commands.add(new tk.booky.cloudplane.commands.LobbyCommand());
          commands.add(new tk.booky.cloudplane.commands.ReplyCommand());
@@ -31,12 +31,11 @@ index e00fea8118098b615659272a446ee97a91af54c9..e437153fabb826421b76efc712eaf2ba
      }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..7a68603c55ab2f0d91ec3fbbd28d4ab577f9fc14
+index 0000000000000000000000000000000000000000..8e634dd88407dda1202bd3105176bb422c505628
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
-@@ -0,0 +1,81 @@
+@@ -0,0 +1,80 @@
 +package tk.booky.cloudplane.commands;
-+// Created by booky10 in CloudPlane (18:28 05.07.21)
 +
 +import com.mojang.authlib.GameProfile;
 +import com.mojang.brigadier.CommandDispatcher;
@@ -118,12 +117,11 @@ index 0000000000000000000000000000000000000000..7a68603c55ab2f0d91ec3fbbd28d4ab5
 +}
 diff --git a/src/main/java/tk/booky/cloudplane/parser/DurationParser.java b/src/main/java/tk/booky/cloudplane/parser/DurationParser.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..4ec033696d592008e646f9063d6d1e03571f404b
+index 0000000000000000000000000000000000000000..6fb3628651d13340cd871b872d0ea42f917a1516
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/parser/DurationParser.java
-@@ -0,0 +1,55 @@
+@@ -0,0 +1,54 @@
 +package tk.booky.cloudplane.parser;
-+// Created by booky10 in CloudPlane (18:42 05.07.21)
 +
 +import com.mojang.brigadier.LiteralMessage;
 +import com.mojang.brigadier.exceptions.CommandSyntaxException;

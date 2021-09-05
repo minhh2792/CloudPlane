@@ -5,35 +5,35 @@ Subject: [PATCH] changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 7590941720eb6882cea671ae98cfe9ab793e79cf..4c6b6672ac1c6fd95953a77295d03e18c390cc17 100644
+index 399641413d38f1a27165a0cf60b6c7c781cf1488..ed90d93a45c0c291cb8719ef3d332a4b37e1f107 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -35,7 +35,7 @@ repositories {
+@@ -32,7 +32,7 @@ repositories {
  }
  
  dependencies {
--    implementation(project(":Airplane-API")) // Airplane // Tuinity
-+    implementation(project(":CloudPlane-API")) // CloudPlane // Airplane // Tuinity
-     implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Tuinity
+-    implementation(project(":Purpur-API")) // Airplane // Purpur
++    implementation(project(":CloudPlane-API")) // Airplane // Purpur // CloudPlane
+     implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Airplane
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
-@@ -93,7 +93,7 @@ tasks.jar {
+@@ -90,7 +90,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
--            "Implementation-Version" to "git-AirplanePurpur-$implementationVersion", // Airplane // Tuinity
-+            "Implementation-Version" to "git-CloudPlane-$implementationVersion", // CloudPlane // Airplane // Tuinity
+-            "Implementation-Version" to "git-Purpur-$implementationVersion", // Airplane // Purpur
++            "Implementation-Version" to "git-CloudPlane-$implementationVersion", // Airplane // Purpur // CloudPlane
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 7b5d81be9f4a55fc7e163359aa6d8b265a538610..b903830d8161c0fd536b8bc39587812a52dca3d5 100644
+index bca3bc0b8687940dff181bab6a5a2a3c11423358..85fc16ccbd0d37e8cd48a440c6e3bab6951f9a10 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
 @@ -232,7 +232,8 @@ public class TimingsExport extends Thread {
              pair("spigot", mapAsJSON(Bukkit.spigot().getSpigotConfig(), null)),
-             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Tuinity - add config to timings report
-             pair("tuinity", mapAsJSON(Bukkit.spigot().getTuinityConfig(), null)), // Tuinity - add config to timings report
+             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Airplane
+             pair("airplane", mapAsJSON(gg.airplane.AirplaneConfig.getConfigCopy(), null)), // Airplane
 -            pair("purpur", mapAsJSON(Bukkit.spigot().getPurpurConfig(), null))
 +            pair("purpur", mapAsJSON(Bukkit.spigot().getPurpurConfig(), null)), // CloudPlane
 +            pair("cloudplane", mapAsJSON(Bukkit.spigot().getCloudPlaneConfig(), null)) // CloudPlane
@@ -41,78 +41,87 @@ index 7b5d81be9f4a55fc7e163359aa6d8b265a538610..b903830d8161c0fd536b8bc39587812a
          ));
  
 diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
-index f5d01bce4d5547b4aeca96b7962b2090f47ea541..983a24e7d297ab5eeb642197836e36b57ed7f7c1 100644
+index 05f1b6d103ec20f196b60944f5bc007384c449f1..85d10f56ecb5abb46fce3c002e4c0c49ba8b3482 100644
 --- a/src/main/java/com/destroystokyo/paper/Metrics.java
 +++ b/src/main/java/com/destroystokyo/paper/Metrics.java
 @@ -593,7 +593,7 @@ public class Metrics {
              boolean logFailedRequests = config.getBoolean("logFailedRequests", false);
              // Only start Metrics, if it's enabled in the config
              if (config.getBoolean("enabled", true)) {
--                Metrics metrics = new Metrics("Airplane", serverUUID, logFailedRequests, Bukkit.getLogger()); // Tuinity - we have our own bstats page // Airplane
-+                Metrics metrics = new Metrics("CloudPlane", serverUUID, logFailedRequests, Bukkit.getLogger()); // Tuinity - we have our own bstats page // Airplane // CloudPlane
- 
+-                Metrics metrics = new Metrics("Purpur", serverUUID, logFailedRequests, Bukkit.getLogger()); // Airplane // Purpur
++                Metrics metrics = new Metrics("CloudPlane", serverUUID, logFailedRequests, Bukkit.getLogger()); // Airplane // Purpur // CloudPlane
                  metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
                      String minecraftVersion = Bukkit.getVersion();
-@@ -603,7 +603,7 @@ public class Metrics {
+                     minecraftVersion = minecraftVersion.substring(minecraftVersion.indexOf("MC: ") + 4, minecraftVersion.length() - 1);
+@@ -602,7 +602,7 @@ public class Metrics {
  
                  metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
-                 metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : "offline"));
--                metrics.addCustomChart(new Metrics.SimplePie("airplane_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Tuinity - we have our own bstats page // Airplane
-+                metrics.addCustomChart(new Metrics.SimplePie("cloudplane_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Tuinity - we have our own bstats page // Airplane // CloudPlane
+                 metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : (PaperConfig.isProxyOnlineMode() ? "bungee" : "offline"))); // Purpur
+-                metrics.addCustomChart(new Metrics.SimplePie("purpur_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Airplane // Purpur
++                metrics.addCustomChart(new Metrics.SimplePie("cloudplane_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Airplane // Purpur // CloudPlane
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index 24019b1e3c68f3b8f362d4a1a8cf925cf135ce5d..7c8a5e51598d0d4f1d7dd652a4b1858e9bf0f33c 100644
+index b6c1e50df4e0a69ac1e81613539bcc0731c67063..a5c2be70f83ca657c05422a2bafdedec5f9b0bc6 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 @@ -29,8 +29,8 @@ public class PaperVersionFetcher implements VersionFetcher {
      @Nonnull
      @Override
      public Component getVersionMessage(@Nonnull String serverVersion) {
--        String[] parts = serverVersion.substring("git-AirplanePurpur-".length()).split("[-\\s]"); // Tuinity
--        final Component updateMessage = getUpdateStatusMessage("TECHNOVE/Airplane", "purpur/1.17", parts[0]); // Tuinity
-+        String[] parts = serverVersion.substring("git-CloudPlane-".length()).split("[-\\s]"); // Tuinity // CloudPlane
-+        final Component updateMessage = getUpdateStatusMessage("CloudCraftProjects/CloudPlane", "master", parts[0]); // Tuinity // CloudPlane
+-        String[] parts = serverVersion.substring("git-Purpur-".length()).split("[-\\s]"); // Airplane // Purpur
+-        final Component updateMessage = getUpdateStatusMessage("pl3xgaming/Purpur", "ver/" + getMinecraftVersion(), parts[0]); // Airplane // Purpur
++        String[] parts = serverVersion.substring("git-CloudPlane-".length()).split("[-\\s]"); // Airplane // Purpur // CloudPlane
++        final Component updateMessage = getUpdateStatusMessage("CloudCraftProjects/CloudPlane", "master", parts[0]); // Airplane // Purpur // CloudPlane
          final Component history = getHistory();
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
+@@ -56,6 +56,7 @@ public class PaperVersionFetcher implements VersionFetcher {
+         int distance;
+         // Purpur start - put all this back, yet again
+         try {
++            if (true) throw new NumberFormatException(); // CloudPlane
+             int buildNumber = Integer.parseInt(versionInfo);
+             distance = fetchDistanceFromSiteApi(buildNumber, getMinecraftVersion());
+             if (distance < 0) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c9cadf5b24e740f2762f765cbb029335cf9bf168..07d3c01c2d47774c48bfd770f9b5937682cbf2f6 100644
+index 928c759d30db2d35ea786b3fe0738c42ef3fed80..84b4d7ac8153ecd943be6690506f8c472e0e70ab 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1733,7 +1733,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1737,7 +1737,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+ 
      @DontObfuscate
      public String getServerModName() {
-         String serverName = net.pl3x.purpur.PurpurConfig.serverModName;
--        return serverName.equals("Purpur") ? "AirplanePurpur" : serverName; // Airplane // Purpur // Tuinity // Paper // Spigot // CraftBukkit
-+        return serverName.equals("Purpur") ? "CloudPlane" : serverName; // CloudPlane // Airplane // Purpur // Tuinity // Paper // Spigot // CraftBukkit
+-        return net.pl3x.purpur.PurpurConfig.serverModName; // Purpur - Purpur > // Airplane - Airplane > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
++        String serverName = net.pl3x.purpur.PurpurConfig.serverModName; // CloudPlane - CloudPlane > // Purpur - Purpur > // Airplane - Airplane > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
++        return serverName.equals("Purpur") ? "CloudPlane" : serverName;
      }
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 236b4b4913dfa2080029cb70f3bcbea3b5ebe6ca..54adea8e11de2d3334dcebd760a92bf4e3e22b7b 100644
+index bd3b975481ce780199d6ec60bddaaa263714d289..2fa3bad53be47917cc5c13c18d77cc1e4460995f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -240,7 +240,7 @@ import javax.annotation.Nullable; // Paper
+@@ -246,7 +246,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
--    private final String serverName = "AirplanePurpur"; // Airplane // Tuinity // Paper
-+    private final String serverName = "CloudPlane"; // CloudPlane // Airplane // Tuinity // Paper
+-    private final String serverName = "Purpur"; // Paper // Airplane // Purpur
++    private final String serverName = "CloudPlane"; // Paper // Airplane // Purpur // CloudPlane
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index 1788d79ea489e446d3d9f541693d4ba3dfc26015..8c663a51fda6dc53d98f546aaaf723a75be85f54 100644
+index e7d740e191c5ac408ba1fa493e9367dd52900a02..2b2c4e2ad437da94ee7803b78b23b344116c0129 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -11,7 +11,7 @@ public final class Versioning {
      public static String getBukkitVersion() {
          String result = "Unknown-Version";
  
--        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/gg.airplane/airplane-api/pom.properties"); // Tuinity // Airplane
-+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/tk.booky.cloudplane/cloudplane-api/pom.properties"); // Tuinity // Airplane // CloudPlane
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/net.pl3x.purpur/purpur-api/pom.properties"); // Airplane // Purpur
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/tk.booky.cloudplane/cloudplane-api/pom.properties"); // Airplane // Purpur // CloudPlane
          Properties properties = new Properties();
  
          if (stream != null) {

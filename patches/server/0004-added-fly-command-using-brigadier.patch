@@ -5,10 +5,10 @@ Subject: [PATCH] added fly command using brigadier
 
 
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 7ea3ccc82b38bbbd74ce338b55237b74c3769cd2..972c1c1c73d147b56e6cf6b509086370aa81fcea 100644
+index 4ff3b9515705e540a94360c15cfa6aec8191cd31..51d9a4ebc99f9c63b6de8e0b02260af9636fa152 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -63,6 +63,8 @@ public class CloudPlaneConfig {
+@@ -62,6 +62,8 @@ public class CloudPlaneConfig {
      public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
          commands.clear();
  
@@ -19,12 +19,11 @@ index 7ea3ccc82b38bbbd74ce338b55237b74c3769cd2..972c1c1c73d147b56e6cf6b509086370
  
 diff --git a/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java b/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..79b9c4067f4f42d377b083f8985c7a7e99461f95
+index 0000000000000000000000000000000000000000..41dc64fff9e605ec9029027d7008b07c07eea699
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,57 @@
 +package tk.booky.cloudplane.commands;
-+// Created by booky10 in CloudPlane (22:08 25.06.21)
 +
 +import com.mojang.brigadier.CommandDispatcher;
 +import com.mojang.brigadier.arguments.BoolArgumentType;

@@ -22,7 +22,7 @@ index 1326e7d09e25b19b6f8a3911b3a3944514d77173..ac1c3687193406864adbd36c2143a45f
  
          return targets.size();
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 4d7e9a0d59ca2e3d9df1a7e47637bdbd6bf26809..10761c44a8d8252cba6968cb65578c9a32631103 100644
+index 8102ee4cc9f936de20a0cb6875ada524800f28f7..e7c9de76eb29936b6e6cc0a09e0e7bf04d1d16a8 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -185,6 +185,7 @@ public abstract class Player extends LivingEntity {
@@ -34,10 +34,10 @@ index 4d7e9a0d59ca2e3d9df1a7e47637bdbd6bf26809..10761c44a8d8252cba6968cb65578c9a
      // CraftBukkit start
      public boolean fauxSleeping;
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index f96454e69349fd10c8bdde04fe826160a318fd36..e00fea8118098b615659272a446ee97a91af54c9 100644
+index 7c5cbfd668b5c56dc0ee7d55881592970ad93744..51d00e0cfc6a4b3967514a747a9f9988604a4bbc 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -65,6 +65,7 @@ public class CloudPlaneConfig {
+@@ -64,6 +64,7 @@ public class CloudPlaneConfig {
  
          commands.add(new tk.booky.cloudplane.commands.FlyCommand());
          commands.add(new tk.booky.cloudplane.commands.LobbyCommand());
@@ -47,12 +47,11 @@ index f96454e69349fd10c8bdde04fe826160a318fd36..e00fea8118098b615659272a446ee97a
      }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java b/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..40650c0b91f38bc6d1fec5956c84b17311de52bb
+index 0000000000000000000000000000000000000000..672e538f8b5561de2e37d1b51cce61dd7ab38e0b
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java
-@@ -0,0 +1,40 @@
+@@ -0,0 +1,39 @@
 +package tk.booky.cloudplane.commands;
-+// Created by booky10 in CloudPlane (13:20 02.07.21)
 +
 +import com.mojang.brigadier.CommandDispatcher;
 +import com.mojang.brigadier.exceptions.CommandSyntaxException;

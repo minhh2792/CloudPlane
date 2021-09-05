@@ -5,10 +5,10 @@ Subject: [PATCH] added lobby command using brigadier
 
 
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index d9955a86ba2b6a5015e95f5b07258f1995d8f834..1bb84a382a02b6930f9fd503cb52ddde068f6ffb 100644
+index d4b63e63cfe837aaf8a0698f740403984a093b4e..f077828be3b355c10dc6e06488c3531e1521e472 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -64,6 +64,7 @@ public class CloudPlaneConfig {
+@@ -63,6 +63,7 @@ public class CloudPlaneConfig {
          commands.clear();
  
          commands.add(new tk.booky.cloudplane.commands.FlyCommand());
@@ -18,12 +18,11 @@ index d9955a86ba2b6a5015e95f5b07258f1995d8f834..1bb84a382a02b6930f9fd503cb52ddde
      }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java b/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..d7ec645e2b5deb689e1c250d88487c5b4590d7fc
+index 0000000000000000000000000000000000000000..b5c56ddcbaccfb7013ee30fb3a51b91c90782f8c
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java
-@@ -0,0 +1,55 @@
+@@ -0,0 +1,54 @@
 +package tk.booky.cloudplane.commands;
-+// Created by booky10 in CloudPlane (21:06 27.06.21)
 +
 +import com.google.common.io.ByteArrayDataOutput;
 +import com.google.common.io.ByteStreams;

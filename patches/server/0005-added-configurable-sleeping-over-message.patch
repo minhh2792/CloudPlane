@@ -5,10 +5,10 @@ Subject: [PATCH] added configurable sleeping over message
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index bd5380ca02218f4b5c2b7d69e164586d91f92e53..df68b8fea1ec98c42a53884e883314a7a26e3131 100644
+index bf91d6c0d67aa72a6272dc878b07e292386f94f2..7a3288f9a83ae36c4947f56265d487a2ab3e0e62 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -736,6 +736,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -735,6 +735,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
              if (this.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE)) {
                  this.stopWeather();
              }
@@ -21,10 +21,10 @@ index bd5380ca02218f4b5c2b7d69e164586d91f92e53..df68b8fea1ec98c42a53884e883314a7
  
          this.updateSkyBrightness();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 972c1c1c73d147b56e6cf6b509086370aa81fcea..d9955a86ba2b6a5015e95f5b07258f1995d8f834 100644
+index 51d9a4ebc99f9c63b6de8e0b02260af9636fa152..d4b63e63cfe837aaf8a0698f740403984a093b4e 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -126,4 +126,9 @@ public class CloudPlaneConfig {
+@@ -125,4 +125,9 @@ public class CloudPlaneConfig {
          config.addDefault(path, def);
          return config.getString(path, config.getString(path));
      }

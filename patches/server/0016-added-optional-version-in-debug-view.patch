@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Tue, 24 Aug 2021 20:43:57 +0200
-Subject: [PATCH] added toggleable git commit hash in debug view
+Subject: [PATCH] added optional version in debug view
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 7794077434f51ad72cda111f4761b43a3e8cf3d5..0949b5f753ad8b9274aedaa11b2bce1e88caad0e 100644
+index 7e8f86c98a9dcaee90f0415dd64b2d1d9c6f5def..fbe31cd2557332450ce84dc41d392b07bbce4287 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -176,6 +176,7 @@ public abstract class PlayerList {
@@ -14,11 +14,11 @@ index 7794077434f51ad72cda111f4761b43a3e8cf3d5..0949b5f753ad8b9274aedaa11b2bce1e
  
 +    private static final java.util.regex.Pattern VERSION_PATTERN = java.util.regex.Pattern.compile("This server is running .+ version .+ \\(Implementing API version .+\\)( \\(Git: .+\\))"); // CloudPlane
      public void placeNewPlayer(Connection connection, ServerPlayer player) {
-         player.isRealPlayer = true; // Paper // Tuinity - this is a better place to write this that works and isn't overriden by plugins
+         player.isRealPlayer = true; // Paper - Chunk priority
          ServerPlayer prev = pendingPlayers.put(player.getUUID(), player);// Paper
 @@ -269,7 +270,14 @@ public abstract class PlayerList {
          // Spigot - view distance
-         playerconnection.send(new ClientboundLoginPacket(player.getId(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), worlddata.isHardcore(), this.server.levelKeys(), this.registryHolder, worldserver1.dimensionType(), worldserver1.dimension(), this.getMaxPlayers(), worldserver1.getChunkSource().chunkMap.playerChunkManager.getLoadDistance(), flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat())); // Paper - no-tick view distance // Tuinity - replace old player chunk management
+         playerconnection.send(new ClientboundLoginPacket(player.getId(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), worlddata.isHardcore(), this.server.levelKeys(), this.registryHolder, worldserver1.dimensionType(), worldserver1.dimension(), this.getMaxPlayers(), worldserver1.getChunkSource().chunkMap.playerChunkManager.getLoadDistance(), flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat())); // Paper - no-tick view distance // Paper - replace old player chunk management
          player.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
 -        playerconnection.send(new ClientboundCustomPayloadPacket(ClientboundCustomPayloadPacket.BRAND, (new FriendlyByteBuf(Unpooled.buffer())).writeUtf(this.getServer().getServerModName())));
 +        // CloudPlane start
@@ -33,10 +33,10 @@ index 7794077434f51ad72cda111f4761b43a3e8cf3d5..0949b5f753ad8b9274aedaa11b2bce1e
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index ee5fc760ad53c66009c59a651f60adb22e3d87fd..6f6fbbd79054fa5626165be87fa7ebe60d417923 100644
+index 04c180c9bcea4238a7f1c559ce5367c0fe83986f..98b1d183f621eaa3dd6126e101d5ca89c4eeb7cc 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -163,4 +163,9 @@ public class CloudPlaneConfig {
+@@ -162,4 +162,9 @@ public class CloudPlaneConfig {
      private static void localizing() {
          localizeItems = getBoolean("settings.localize.items", localizeItems);
      }

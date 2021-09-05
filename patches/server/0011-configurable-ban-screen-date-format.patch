@@ -5,10 +5,10 @@ Subject: [PATCH] configurable ban-screen date format
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index e37f80065134fd7929ca6cf0838b2bc5b67cbc7b..74265a7dd3622149fa6ecdc0ac6e677b4ed92e78 100644
+index e0dc1aa46703ed1d761bfcae2b81064785f52bfb..a285930d4f088a0a7f0dde4b97d43c383d1421d8 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -745,7 +745,7 @@ public abstract class PlayerList {
+@@ -744,7 +744,7 @@ public abstract class PlayerList {
  
              chatmessage = new TranslatableComponent("multiplayer.disconnect.banned.reason", new Object[]{gameprofilebanentry.getReason()});
              if (gameprofilebanentry.getExpires() != null) {
@@ -17,7 +17,7 @@ index e37f80065134fd7929ca6cf0838b2bc5b67cbc7b..74265a7dd3622149fa6ecdc0ac6e677b
              }
  
              // return chatmessage;
-@@ -758,7 +758,7 @@ public abstract class PlayerList {
+@@ -757,7 +757,7 @@ public abstract class PlayerList {
  
              chatmessage = new TranslatableComponent("multiplayer.disconnect.banned_ip.reason", new Object[]{ipbanentry.getReason()});
              if (ipbanentry.getExpires() != null) {
@@ -27,10 +27,10 @@ index e37f80065134fd7929ca6cf0838b2bc5b67cbc7b..74265a7dd3622149fa6ecdc0ac6e677b
  
              // return chatmessage;
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index e437153fabb826421b76efc712eaf2baae25addf..c38f6f76ca2520e67599c5e55dea03783af184f1 100644
+index 7c38855cde3d11c63b5f65f4c864a8da5501197b..680634fb56a5086c8ce60861d58806a122539114 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -136,4 +136,9 @@ public class CloudPlaneConfig {
+@@ -135,4 +135,9 @@ public class CloudPlaneConfig {
      private static void sleeping() {
          sleepMessage = getString("settings.sleeping.message", sleepMessage);
      }
@@ -41,10 +41,10 @@ index e437153fabb826421b76efc712eaf2baae25addf..c38f6f76ca2520e67599c5e55dea0378
 +    }
  }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
-index 7a68603c55ab2f0d91ec3fbbd28d4ab577f9fc14..0466574e70fb6be6cb95207a147e8eb1a02398eb 100644
+index 8e634dd88407dda1202bd3105176bb422c505628..9a2d2b7a2dd5a8a6f52c08a256f1276f0ade9722 100644
 --- a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
 +++ b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
-@@ -68,7 +68,7 @@ public class TempBanCommand implements CloudPlaneCommand {
+@@ -67,7 +67,7 @@ public class TempBanCommand implements CloudPlaneCommand {
  
              if (target == null) continue;
              BaseComponent component = new TranslatableComponent("multiplayer.disconnect.banned");
