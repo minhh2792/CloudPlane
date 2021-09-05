@@ -28,7 +28,7 @@ index 41577145f2d37635401fcc8355061ff604139b62..b9e475f40a6cf91d19271ce2371fb3c8
  }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java b/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..93d78c62c48141546b8996b015c1b6151ba5ccc1
+index 0000000000000000000000000000000000000000..85982e27ea2c3a47bf8b597289832e105a811319
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java
 @@ -0,0 +1,65 @@
@@ -71,7 +71,7 @@ index 0000000000000000000000000000000000000000..93d78c62c48141546b8996b015c1b615
 +        LiteralCommandNode<CommandSourceStack> node = dispatcher.register(requiredBuilder("lobby", null)
 +                .executes((context) -> execute(context.getSource(), Collections.singleton(context.getSource().getPlayerOrException())))
 +                .then(Commands.argument("targets", EntityArgument.players())
-+                        .requires((listener) -> listener.hasPermission(2, "bukkit.command.lobby.other"))
++                        .requires((listener) -> listener.hasPermission(2, "cloudplane.command.lobby.other"))
 +                        .executes((context) -> execute(context.getSource(), EntityArgument.getPlayers(context, "targets")))));
 +
 +        dispatcher.register(requiredBuilder("hub", node));
@@ -84,7 +84,7 @@ index 0000000000000000000000000000000000000000..93d78c62c48141546b8996b015c1b615
 +
 +    private LiteralArgumentBuilder<CommandSourceStack> requiredBuilder(String alias, @Nullable CommandNode<CommandSourceStack> redirection) {
 +        LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal(alias);
-+        builder.requires((listener) -> listener.hasPermission(1, "bukkit.command.lobby"));
++        builder.requires((listener) -> listener.hasPermission(1, "cloudplane.command.lobby"));
 +        return redirection != null ? builder.redirect(redirection) : builder;
 +    }
 +

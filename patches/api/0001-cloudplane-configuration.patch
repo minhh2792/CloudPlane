@@ -22,3 +22,43 @@ index 88767865cc2dce0e341eef0f53323af6f95fb841..4e55f94dea206dceb809eadae1a6974a
          @NotNull
          public java.util.Properties getServerProperties() {
              throw new UnsupportedOperationException("Not supported yet.");
+diff --git a/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..2469125af21a9f344bae968d77ca7a70f81aad60
+--- /dev/null
++++ b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
+@@ -0,0 +1,22 @@
++package org.bukkit.util.permissions;
++
++import org.bukkit.permissions.Permission;
++import org.bukkit.permissions.PermissionDefault;
++import org.jetbrains.annotations.NotNull;
++
++public class CloudPlanePermissions {
++
++    private static final String ROOT = "cloudplane";
++    private static final String PREFIX = ROOT + '.';
++
++    @NotNull
++    public static Permission registerPermissions() {
++        Permission cloudplane = DefaultPermissions.registerPermission(ROOT, "Gives the user the ability to use alle CloudPlane utilities and commands", PermissionDefault.FALSE);
++
++        Permission commands = DefaultPermissions.registerPermission(PREFIX + "command", "Allows the user to use all CloudPlane commands", PermissionDefault.FALSE, cloudplane);
++        commands.recalculatePermissibles();
++
++        cloudplane.recalculatePermissibles();
++        return cloudplane;
++    }
++}
+diff --git a/src/main/java/org/bukkit/util/permissions/DefaultPermissions.java b/src/main/java/org/bukkit/util/permissions/DefaultPermissions.java
+index 10627d2a11251a8cb01bbc3f6242d66f3505a16e..c6f880ea3b7be70335d790e642acb5265cf955b8 100644
+--- a/src/main/java/org/bukkit/util/permissions/DefaultPermissions.java
++++ b/src/main/java/org/bukkit/util/permissions/DefaultPermissions.java
+@@ -90,6 +90,7 @@ public final class DefaultPermissions {
+         BroadcastPermissions.registerPermissions(parent);
+ 
+         PurpurPermissions.registerPermissions(); // Purpur
++        CloudPlanePermissions.registerPermissions(); // CloudPlane
+ 
+         parent.recalculatePermissibles();
+     }

@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <boooky10@gmail.com>
+Date: Fri, 25 Jun 2021 22:20:11 +0200
+Subject: [PATCH] added fly command
+
+
+diff --git a/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
+index 2469125af21a9f344bae968d77ca7a70f81aad60..8df71e6ece094482f2a1268da4af9c3a3ce41a17 100644
+--- a/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
++++ b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
+@@ -14,6 +14,8 @@ public class CloudPlanePermissions {
+         Permission cloudplane = DefaultPermissions.registerPermission(ROOT, "Gives the user the ability to use alle CloudPlane utilities and commands", PermissionDefault.FALSE);
+ 
+         Permission commands = DefaultPermissions.registerPermission(PREFIX + "command", "Allows the user to use all CloudPlane commands", PermissionDefault.FALSE, cloudplane);
++        DefaultPermissions.registerPermission(PREFIX + "command.fly", "Allows the user to use the fly command on himself", PermissionDefault.OP, commands);
++        DefaultPermissions.registerPermission(PREFIX + "command.fly.other", "Allows the user to use the fly command on others", PermissionDefault.OP, commands);
+         commands.recalculatePermissibles();
+ 
+         cloudplane.recalculatePermissibles();

@@ -31,7 +31,7 @@ index e184d6ce39d86f2a33aaacd90062f61d8c6b7f3a..44ef2aa3a3cd13ff347a37cd03153391
      }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..df022ce5e791b75851ba35e12bc4e87b07b35a05
+index 0000000000000000000000000000000000000000..94844b5d7ab355450720c6770354ad5afabbf682
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
 @@ -0,0 +1,71 @@
@@ -70,7 +70,7 @@ index 0000000000000000000000000000000000000000..df022ce5e791b75851ba35e12bc4e87b
 +    @Override
 +    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 +        dispatcher.register(Commands.literal("tempban")
-+                .requires((source) -> source.hasPermission(3, "bukkit.command.tempban"))
++                .requires((source) -> source.hasPermission(3, "cloudplane.command.tempban"))
 +                .then(Commands.argument("targets", GameProfileArgument.gameProfile())
 +                        .then(Commands.argument("duration", StringArgumentType.string())
 +                                .executes(context -> tempBanPlayers(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), StringArgumentType.getString(context, "duration"), null))

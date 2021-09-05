@@ -47,7 +47,7 @@ index 4627e50daa929bf0b97d03d53401070a951cfe4c..e184d6ce39d86f2a33aaacd90062f61d
      }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java b/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..85af97b3c2c0cd70dbcba7bbf4b3cdf3c9566f2d
+index 0000000000000000000000000000000000000000..2e25f8006e6a800eb4d0a3a4af3a607efa91fa55
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java
 @@ -0,0 +1,42 @@
@@ -70,12 +70,12 @@ index 0000000000000000000000000000000000000000..85af97b3c2c0cd70dbcba7bbf4b3cdf3
 +    @Override
 +    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 +        LiteralCommandNode<CommandSourceStack> node = dispatcher.register(Commands.literal("reply")
-+                .requires((listener) -> listener.hasPermission(1, "bukkit.command.reply"))
++                .requires((listener) -> listener.hasPermission(1, "cloudplane.command.reply"))
 +                .then(Commands.argument("message", MessageArgument.message())
 +                        .executes((context) -> execute(context.getSource(), MessageArgument.getMessage(context, "message")))));
 +
 +        dispatcher.register(Commands.literal("r")
-+                .requires((listener) -> listener.hasPermission(1, "bukkit.command.reply"))
++                .requires((listener) -> listener.hasPermission(1, "cloudplane.command.reply"))
 +                .redirect(node));
 +    }
 +

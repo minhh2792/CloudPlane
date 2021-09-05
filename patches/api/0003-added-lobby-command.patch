@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <boooky10@gmail.com>
+Date: Sun, 27 Jun 2021 21:22:35 +0200
+Subject: [PATCH] added lobby command
+
+
+diff --git a/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
+index 8df71e6ece094482f2a1268da4af9c3a3ce41a17..9de706abfe8ac6fbe11d7c9f94ba3d63cfbd1d19 100644
+--- a/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
++++ b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
+@@ -16,6 +16,8 @@ public class CloudPlanePermissions {
+         Permission commands = DefaultPermissions.registerPermission(PREFIX + "command", "Allows the user to use all CloudPlane commands", PermissionDefault.FALSE, cloudplane);
+         DefaultPermissions.registerPermission(PREFIX + "command.fly", "Allows the user to use the fly command on himself", PermissionDefault.OP, commands);
+         DefaultPermissions.registerPermission(PREFIX + "command.fly.other", "Allows the user to use the fly command on others", PermissionDefault.OP, commands);
++        DefaultPermissions.registerPermission(PREFIX + "command.lobby", "Allows the user to use the lobby command on himself", PermissionDefault.TRUE, commands);
++        DefaultPermissions.registerPermission(PREFIX + "command.lobby.other", "Allows the user to use the lobby command on others", PermissionDefault.OP, commands);
+         commands.recalculatePermissibles();
+ 
+         cloudplane.recalculatePermissibles();

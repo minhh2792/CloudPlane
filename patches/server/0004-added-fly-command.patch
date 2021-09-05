@@ -18,7 +18,7 @@ index 9b5a078ed79b7a2a9168849a84dfd474583f206a..a2ac3976c168c32c7669b3a49884a3ef
      }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java b/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..a9e09b527a095122c17efc28d5f7a152d36c0e72
+index 0000000000000000000000000000000000000000..32ed29ec8eb6c6bc07115139e8bbfc2e0b4c658f
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/FlyCommand.java
 @@ -0,0 +1,44 @@
@@ -40,15 +40,15 @@ index 0000000000000000000000000000000000000000..a9e09b527a095122c17efc28d5f7a152
 +    @Override
 +    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 +        dispatcher.register(Commands.literal("fly")
-+                .requires((listener) -> listener.hasPermission(2, "bukkit.command.fly"))
++                .requires((listener) -> listener.hasPermission(2, "cloudplane.command.fly"))
 +                .executes((context) -> execute(context.getSource(), Collections.singleton(context.getSource().getPlayerOrException()), null))
 +                .then(Commands.argument("allow", BoolArgumentType.bool())
 +                        .executes((context) -> execute(context.getSource(), Collections.singleton(context.getSource().getPlayerOrException()), BoolArgumentType.getBool(context, "allow")))
 +                        .then(Commands.argument("targets", EntityArgument.players())
-+                                .requires((listener) -> listener.hasPermission(3, "bukkit.command.fly.other"))
++                                .requires((listener) -> listener.hasPermission(3, "cloudplane.command.fly.other"))
 +                                .executes((context) -> execute(context.getSource(), EntityArgument.getPlayers(context, "targets"), BoolArgumentType.getBool(context, "allow")))))
 +                .then(Commands.argument("targets", EntityArgument.players())
-+                        .requires((listener) -> listener.hasPermission(3, "bukkit.command.fly.other"))
++                        .requires((listener) -> listener.hasPermission(3, "cloudplane.command.fly.other"))
 +                        .executes((context) -> execute(context.getSource(), EntityArgument.getPlayers(context, "targets"), null))));
 +    }
 +
