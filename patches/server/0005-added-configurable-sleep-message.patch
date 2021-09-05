@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Sun, 27 Jun 2021 21:06:03 +0200
-Subject: [PATCH] added configurable sleeping over message
+Subject: [PATCH] added configurable sleep message
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
@@ -21,16 +21,22 @@ index bf91d6c0d67aa72a6272dc878b07e292386f94f2..7a3288f9a83ae36c4947f56265d487a2
  
          this.updateSkyBrightness();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 51d9a4ebc99f9c63b6de8e0b02260af9636fa152..d4b63e63cfe837aaf8a0698f740403984a093b4e 100644
+index a2ac3976c168c32c7669b3a49884a3ef5d57b785..41577145f2d37635401fcc8355061ff604139b62 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -125,4 +125,9 @@ public class CloudPlaneConfig {
+@@ -126,4 +126,15 @@ public class CloudPlaneConfig {
          config.addDefault(path, def);
          return config.getString(path, config.getString(path));
      }
 +
 +    public static String sleepMessage = "The night has been skipped!";
-+    private static void sleeping() {
-+        sleepMessage = getString("settings.sleeping.message", sleepMessage);
++    private static void sleepMessage() {
++        if (currentVersion == 1) {
++            sleepMessage = getString("settings.sleeping.message", sleepMessage);
++            set("settings.sleep-message", sleepMessage);
++            set("settings.sleeping", null);
++        }
++
++        sleepMessage = getString("settings.sleep-message", sleepMessage);
 +    }
  }

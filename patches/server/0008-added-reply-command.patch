@@ -1,18 +1,18 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Fri, 2 Jul 2021 13:34:31 +0200
-Subject: [PATCH] added a reply command
+Subject: [PATCH] added reply command
 
 
 diff --git a/src/main/java/net/minecraft/server/commands/MsgCommand.java b/src/main/java/net/minecraft/server/commands/MsgCommand.java
-index 1326e7d09e25b19b6f8a3911b3a3944514d77173..ac1c3687193406864adbd36c2143a45fa9fa5b20 100644
+index 1326e7d09e25b19b6f8a3911b3a3944514d77173..43c95115a14401d128026bf7ef623f0aff5de1dd 100644
 --- a/src/main/java/net/minecraft/server/commands/MsgCommand.java
 +++ b/src/main/java/net/minecraft/server/commands/MsgCommand.java
 @@ -43,6 +43,12 @@ public class MsgCommand {
          for(ServerPlayer serverPlayer2 : targets) {
              consumer.accept(serverPlayer2.getDisplayName());
              serverPlayer2.sendMessage((new TranslatableComponent("commands.message.display.incoming", source.getDisplayName(), message)).withStyle(new ChatFormatting[]{ChatFormatting.GRAY, ChatFormatting.ITALIC}), uUID);
-+            // CloudPlane start - reply command
++            // CloudPlane start
 +            if (entity instanceof ServerPlayer) {
 +                ((ServerPlayer) entity).replyTarget = serverPlayer2;
 +                serverPlayer2.replyTarget = ((ServerPlayer) entity);
@@ -34,7 +34,7 @@ index 8102ee4cc9f936de20a0cb6875ada524800f28f7..e7c9de76eb29936b6e6cc0a09e0e7bf0
      // CraftBukkit start
      public boolean fauxSleeping;
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 7c5cbfd668b5c56dc0ee7d55881592970ad93744..51d00e0cfc6a4b3967514a747a9f9988604a4bbc 100644
+index 4627e50daa929bf0b97d03d53401070a951cfe4c..e184d6ce39d86f2a33aaacd90062f61d8c6b7f3a 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -64,6 +64,7 @@ public class CloudPlaneConfig {
@@ -47,10 +47,10 @@ index 7c5cbfd668b5c56dc0ee7d55881592970ad93744..51d00e0cfc6a4b3967514a747a9f9988
      }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java b/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..672e538f8b5561de2e37d1b51cce61dd7ab38e0b
+index 0000000000000000000000000000000000000000..85af97b3c2c0cd70dbcba7bbf4b3cdf3c9566f2d
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java
-@@ -0,0 +1,39 @@
+@@ -0,0 +1,42 @@
 +package tk.booky.cloudplane.commands;
 +
 +import com.mojang.brigadier.CommandDispatcher;
@@ -74,17 +74,20 @@ index 0000000000000000000000000000000000000000..672e538f8b5561de2e37d1b51cce61dd
 +                .then(Commands.argument("message", MessageArgument.message())
 +                        .executes((context) -> execute(context.getSource(), MessageArgument.getMessage(context, "message")))));
 +
-+        dispatcher.register(Commands.literal("r").requires((listener) -> listener.hasPermission(1, "bukkit.command.reply")).redirect(node));
++        dispatcher.register(Commands.literal("r")
++                .requires((listener) -> listener.hasPermission(1, "bukkit.command.reply"))
++                .redirect(node));
 +    }
 +
 +    private int execute(CommandSourceStack sender, Component message) throws CommandSyntaxException {
 +        ServerPlayer player = sender.getPlayerOrException();
 +
 +        if (player.replyTarget == null) {
-+            sender.sendFailure(new TextComponent("You have not received or send a message to a player recently!"));
++            sender.sendFailure(new TextComponent("You have not received or sent a message to a player recently"));
 +        } else {
 +            player.sendMessage(new TranslatableComponent("commands.message.display.outgoing", player.replyTarget.getDisplayName(), message).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), player.getUUID());
 +            player.replyTarget.sendMessage(new TranslatableComponent("commands.message.display.incoming", sender.getDisplayName(), message).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC), player.getUUID());
++            player.replyTarget.replyTarget = player;
 +        }
 +
 +        return 1;

@@ -823,10 +823,10 @@ index 09b99e3465ae142081f01c483116c1d1adb34842..cdcb48a4123c2a4a5a9f3cbbb793d425
       * This helper class represents the different NBT Tags.
       * <p>
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index cd33c25f71919d8ae5d6cf78119b02918c289cec..6cec3748ea04c89d910cce99162dab0d1d52d2e5 100644
+index 18ee11c9fdc1a47515d7557c963179a2fe5116c6..8ab0a59f92dc49cf7cfd3a67eed594d604762e56 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -152,4 +152,9 @@ public class CloudPlaneConfig {
+@@ -163,4 +163,9 @@ public class CloudPlaneConfig {
          ipBannedReason = getString("settings.banning.messages.ip-banned.reason", ipBannedReason);
          ipBannedExpiration = getString("settings.banning.messages.ip-banned.expiration", ipBannedExpiration);
      }

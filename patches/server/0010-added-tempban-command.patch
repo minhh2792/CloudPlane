@@ -18,7 +18,7 @@ index 71705517943f62ae85a9298cf484bb7c78438267..e0dc1aa46703ed1d761bfcae2b810647
      public final List<ServerPlayer> players = new java.util.concurrent.CopyOnWriteArrayList(); // CraftBukkit - ArrayList -> CopyOnWriteArrayList: Iterator safety
      private final Map<UUID, ServerPlayer> playersByUUID = Maps.newHashMap();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 51d00e0cfc6a4b3967514a747a9f9988604a4bbc..7c38855cde3d11c63b5f65f4c864a8da5501197b 100644
+index e184d6ce39d86f2a33aaacd90062f61d8c6b7f3a..44ef2aa3a3cd13ff347a37cd031533915837c99b 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -65,6 +65,7 @@ public class CloudPlaneConfig {
@@ -31,16 +31,15 @@ index 51d00e0cfc6a4b3967514a747a9f9988604a4bbc..7c38855cde3d11c63b5f65f4c864a8da
      }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..8e634dd88407dda1202bd3105176bb422c505628
+index 0000000000000000000000000000000000000000..df022ce5e791b75851ba35e12bc4e87b07b35a05
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
-@@ -0,0 +1,80 @@
+@@ -0,0 +1,71 @@
 +package tk.booky.cloudplane.commands;
 +
 +import com.mojang.authlib.GameProfile;
 +import com.mojang.brigadier.CommandDispatcher;
 +import com.mojang.brigadier.arguments.StringArgumentType;
-+import com.mojang.brigadier.context.CommandContext;
 +import com.mojang.brigadier.exceptions.CommandSyntaxException;
 +import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 +import net.minecraft.commands.CommandSourceStack;
@@ -56,9 +55,9 @@ index 0000000000000000000000000000000000000000..8e634dd88407dda1202bd3105176bb42
 +import net.minecraft.server.players.UserBanList;
 +import net.minecraft.server.players.UserBanListEntry;
 +import org.bukkit.event.player.PlayerKickEvent;
++import org.jetbrains.annotations.Nullable;
 +import tk.booky.cloudplane.parser.DurationParser;
 +
-+import javax.annotation.Nullable;
 +import java.util.ArrayList;
 +import java.util.Collection;
 +import java.util.Date;
@@ -74,17 +73,9 @@ index 0000000000000000000000000000000000000000..8e634dd88407dda1202bd3105176bb42
 +                .requires((source) -> source.hasPermission(3, "bukkit.command.tempban"))
 +                .then(Commands.argument("targets", GameProfileArgument.gameProfile())
 +                        .then(Commands.argument("duration", StringArgumentType.string())
-+                                .executes(TempBanCommand::executeContext)
++                                .executes(context -> tempBanPlayers(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), StringArgumentType.getString(context, "duration"), null))
 +                                .then(Commands.argument("reason", MessageArgument.message())
-+                                        .executes(TempBanCommand::executeContextReason)))));
-+    }
-+
-+    private static int executeContext(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-+        return tempBanPlayers(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), StringArgumentType.getString(context, "duration"), null);
-+    }
-+
-+    private static int executeContextReason(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-+        return tempBanPlayers(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), StringArgumentType.getString(context, "duration"), MessageArgument.getMessage(context, "reason"));
++                                        .executes(context -> tempBanPlayers(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), StringArgumentType.getString(context, "duration"), MessageArgument.getMessage(context, "reason")))))));
 +    }
 +
 +    private static int tempBanPlayers(CommandSourceStack source, Collection<GameProfile> targets, String time, @Nullable Component reason) throws CommandSyntaxException {

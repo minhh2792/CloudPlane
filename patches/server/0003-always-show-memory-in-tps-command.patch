@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Fri, 25 Jun 2021 21:03:07 +0200
-Subject: [PATCH] always show memory on /tps
+Subject: [PATCH] always show memory in tps command
 
 
 diff --git a/src/main/java/org/spigotmc/TicksPerSecondCommand.java b/src/main/java/org/spigotmc/TicksPerSecondCommand.java

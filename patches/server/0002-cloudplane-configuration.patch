@@ -114,10 +114,10 @@ index 56674053351962a75b2731dde137dbbc0c70dbde..2d0246648d5044f5f1da43e629a0ef3a
                          .withRequiredArg()
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..4ff3b9515705e540a94360c15cfa6aec8191cd31
+index 0000000000000000000000000000000000000000..9b5a078ed79b7a2a9168849a84dfd474583f206a
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -0,0 +1,126 @@
+@@ -0,0 +1,128 @@
 +package tk.booky.cloudplane;
 +
 +import com.mojang.brigadier.CommandDispatcher;
@@ -147,7 +147,7 @@ index 0000000000000000000000000000000000000000..4ff3b9515705e540a94360c15cfa6aec
 +    private static final Set<CloudPlaneCommand> commands = new HashSet<>();
 +    private static final Set<Recipe> recipes = new HashSet<>();
 +
-+    static int version, currentVersion = 1;
++    static int version, currentVersion = 2;
 +    static boolean verbose;
 +
 +    public static void init(File configFile) {
@@ -182,11 +182,13 @@ index 0000000000000000000000000000000000000000..4ff3b9515705e540a94360c15cfa6aec
 +    public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
 +        commands.clear();
 +
++
 +        commands.forEach(command -> command.register(dispatcher));
 +    }
 +
 +    public static void registerRecipes(Server server) {
 +        recipes.clear();
++
 +
 +        recipes.forEach(server::addRecipe);
 +    }

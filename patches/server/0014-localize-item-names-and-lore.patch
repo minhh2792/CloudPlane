@@ -219,10 +219,10 @@ index d6a228473ca6f425757683a4b17b035a53ab117f..fbecdbcf59eaaa559a077ae8311c1d90
  
      @Override
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 6cec3748ea04c89d910cce99162dab0d1d52d2e5..04c180c9bcea4238a7f1c559ce5367c0fe83986f 100644
+index 8ab0a59f92dc49cf7cfd3a67eed594d604762e56..74f499932b0be687696725d43b56e22fa2e7b46c 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -157,4 +157,9 @@ public class CloudPlaneConfig {
+@@ -168,4 +168,9 @@ public class CloudPlaneConfig {
      private static void secureSeed() {
          secureSeed = getBoolean("settings.secure-seed", secureSeed);
      }

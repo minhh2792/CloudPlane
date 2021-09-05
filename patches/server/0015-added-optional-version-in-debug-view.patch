@@ -33,10 +33,10 @@ index 7e8f86c98a9dcaee90f0415dd64b2d1d9c6f5def..fbe31cd2557332450ce84dc41d392b07
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 04c180c9bcea4238a7f1c559ce5367c0fe83986f..98b1d183f621eaa3dd6126e101d5ca89c4eeb7cc 100644
+index 74f499932b0be687696725d43b56e22fa2e7b46c..6a18adb3cce61564883f0f4e423d03f05fb97b34 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -162,4 +162,9 @@ public class CloudPlaneConfig {
+@@ -173,4 +173,9 @@ public class CloudPlaneConfig {
      private static void localizing() {
          localizeItems = getBoolean("settings.localize.items", localizeItems);
      }

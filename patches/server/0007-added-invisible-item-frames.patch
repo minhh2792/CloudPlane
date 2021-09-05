@@ -5,7 +5,7 @@ Subject: [PATCH] added invisible item frames
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
-index 90f1ecd97eef93316f61bf5d761d33c313e1a077..917c2ca3c32ff548afe05853346dce16f9ccca42 100644
+index 90f1ecd97eef93316f61bf5d761d33c313e1a077..751a63750d05021fdb188a9a59c0030f4dc23d66 100644
 --- a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
 +++ b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
 @@ -187,6 +187,12 @@ public class ItemFrame extends HangingEntity {
@@ -14,8 +14,8 @@ index 90f1ecd97eef93316f61bf5d761d33c313e1a077..917c2ca3c32ff548afe05853346dce16
                  this.playSound(this.getRemoveItemSound(), 1.0F, 1.0F);
 +                // CloudPlane start - invisible item frames
 +                if (noCulling) {
-+                    setInvisible(false);
 +                    setGlowingTag(true);
++                    setInvisible(false);
 +                }
 +                // CloudPlane end
              }
@@ -54,24 +54,23 @@ index 8cdede6a9698d6c99b4f08edc2a3403fec854f66..1d38fe546cf48dc35ef22c35b33365ba
                  if (this.type != EntityType.GLOW_ITEM_FRAME) {
                      return InteractionResult.sidedSuccess(world.isClientSide);
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index f077828be3b355c10dc6e06488c3531e1521e472..7c5cbfd668b5c56dc0ee7d55881592970ad93744 100644
+index b9e475f40a6cf91d19271ce2371fb3c84b5de6f5..4627e50daa929bf0b97d03d53401070a951cfe4c 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -71,6 +71,8 @@ public class CloudPlaneConfig {
+@@ -71,6 +71,7 @@ public class CloudPlaneConfig {
      public static void registerRecipes(Server server) {
          recipes.clear();
  
 +        recipes.add(tk.booky.cloudplane.recipes.InvisibleItemFrameRecipe.get());
-+
+ 
          recipes.forEach(server::addRecipe);
      }
- 
 diff --git a/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java b/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..106c33201526f4c9676f3d6ee3ac51c9fe5ef35d
+index 0000000000000000000000000000000000000000..d85e6605e600f7d5fdb4cc40619aaed2c1a26ad1
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/recipes/InvisibleItemFrameRecipe.java
-@@ -0,0 +1,28 @@
+@@ -0,0 +1,30 @@
 +package tk.booky.cloudplane.recipes;
 +
 +import net.kyori.adventure.text.Component;
@@ -87,7 +86,6 @@ index 0000000000000000000000000000000000000000..106c33201526f4c9676f3d6ee3ac51c9
 +
 +    private static final Component NAME = Component.text("Invisible Item Frame").decoration(TextDecoration.ITALIC, false);
 +    private static final NamespacedKey KEY = NamespacedKey.minecraft("invisible_item_frame");
-+    private static final String[] SHAPE = new String[]{"###", "#+#", "###"};
 +
 +    public static Recipe get() {
 +        ItemStack item = new ItemStack(Material.ITEM_FRAME);
@@ -97,6 +95,9 @@ index 0000000000000000000000000000000000000000..106c33201526f4c9676f3d6ee3ac51c9
 +        meta.displayName(NAME);
 +
 +        item.setItemMeta(meta);
-+        return new ShapedRecipe(KEY, item).shape(SHAPE).setIngredient('#', Material.GLASS_PANE).setIngredient('+', Material.ITEM_FRAME);
++        return new ShapedRecipe(KEY, item)
++                .shape("###", "#+#", "###")
++                .setIngredient('#', Material.GLASS_PANE)
++                .setIngredient('+', Material.ITEM_FRAME);
 +    }
 +}
