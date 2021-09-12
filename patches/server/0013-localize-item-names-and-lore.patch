@@ -48,7 +48,7 @@ index 26c5c3c6e7c51ad6ccc9bac05e2af4972658179d..bf96c3b75a65cbd90a8aa306f9d716e8
 +    // CloudPlane end
  }
 diff --git a/src/main/java/net/minecraft/network/protocol/game/ClientboundContainerSetContentPacket.java b/src/main/java/net/minecraft/network/protocol/game/ClientboundContainerSetContentPacket.java
-index a8a1ecfa349d4cb8daa1d426920988c64b392b14..94b5799de372499f908fb9aace2f7b56f59d4359 100644
+index dbd8b9b09b82c1b75e8be9dc7416d9f0863c8c87..e9c60af6cc132998adb24f2d478acbab20a5d077 100644
 --- a/src/main/java/net/minecraft/network/protocol/game/ClientboundContainerSetContentPacket.java
 +++ b/src/main/java/net/minecraft/network/protocol/game/ClientboundContainerSetContentPacket.java
 @@ -35,7 +35,7 @@ public class ClientboundContainerSetContentPacket implements Packet<ClientGamePa
@@ -219,12 +219,12 @@ index d6a228473ca6f425757683a4b17b035a53ab117f..fbecdbcf59eaaa559a077ae8311c1d90
  
      @Override
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 8ab0a59f92dc49cf7cfd3a67eed594d604762e56..74f499932b0be687696725d43b56e22fa2e7b46c 100644
+index 18ee11c9fdc1a47515d7557c963179a2fe5116c6..50079824d5988d4d5696749163dc3ca9fef33227 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -168,4 +168,9 @@ public class CloudPlaneConfig {
-     private static void secureSeed() {
-         secureSeed = getBoolean("settings.secure-seed", secureSeed);
+@@ -163,4 +163,9 @@ public class CloudPlaneConfig {
+         ipBannedReason = getString("settings.banning.messages.ip-banned.reason", ipBannedReason);
+         ipBannedExpiration = getString("settings.banning.messages.ip-banned.expiration", ipBannedExpiration);
      }
 +
 +    public static boolean localizeItems = false;
