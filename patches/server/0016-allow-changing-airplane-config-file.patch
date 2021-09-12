@@ -1,0 +1,70 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <boooky10@gmail.com>
+Date: Sun, 12 Sep 2021 12:50:09 +0200
+Subject: [PATCH] allow changing airplane config file
+
+
+diff --git a/src/main/java/gg/airplane/AirplaneCommand.java b/src/main/java/gg/airplane/AirplaneCommand.java
+index 89c89e633f14b5820147e734b1b7ad8cadfdce80..7abe142d8f2d5ad23d5fdba2e27b52a43cfba6e7 100644
+--- a/src/main/java/gg/airplane/AirplaneCommand.java
++++ b/src/main/java/gg/airplane/AirplaneCommand.java
+@@ -47,7 +47,7 @@ public class AirplaneCommand extends Command {
+         if (args[0].equalsIgnoreCase("reload")) {
+             MinecraftServer console = MinecraftServer.getServer();
+             try {
+-                AirplaneConfig.load();
++                AirplaneConfig.load((java.io.File) console.options.valueOf("airplane-settings")); // CloudPlane - allow changing airplane config file
+             } catch (IOException e) {
+                 sender.sendMessage(Component.text("Failed to reload.", NamedTextColor.RED));
+                 e.printStackTrace();
+diff --git a/src/main/java/gg/airplane/AirplaneConfig.java b/src/main/java/gg/airplane/AirplaneConfig.java
+index 0f4cb1644d32c4411cda3cf7ee5faea91a9ab205..5f2e6eb25e605ea32f861df6b43d164a305451ff 100644
+--- a/src/main/java/gg/airplane/AirplaneConfig.java
++++ b/src/main/java/gg/airplane/AirplaneConfig.java
+@@ -52,9 +52,11 @@ public class AirplaneConfig {
+         return updates;
+     }
+ 
+-    public static void load() throws IOException {
+-        File oldConfigFile = new File("airplane.air");
+-        File configFile = new File("airplane.yml");
++    // CloudPlane start - allow changing airplane config file
++    public static void load(File configFile) throws IOException {
++        File oldConfigFile = new File(configFile.getParentFile(), "airplane.air");
++        // File configFile = new File("airplane.yml");
++        // CloudPlane end
+         if (oldConfigFile.exists() && !configFile.exists()) {
+             try (FileInputStream inputStream = new FileInputStream(oldConfigFile)) {
+                 oldConfig = new AIR(inputStream);
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index d45eed580855ba9e92f49e669b1009f9165258da..5858eef286eda728207a0c0e9d9d3f70922b2152 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -240,7 +240,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
+         io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
+         // Paper end
+-        gg.airplane.AirplaneConfig.load(); // Airplane - config
++        gg.airplane.AirplaneConfig.load((java.io.File) options.valueOf("airplane-settings")); // Airplane - config // CloudPlane - allow changing airplane config file
+         gg.airplane.commands.AirplaneCommands.init(); // Airplane - command
+ 
+         this.setPvpAllowed(dedicatedserverproperties.pvp);
+diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
+index 2d0246648d5044f5f1da43e629a0ef3af5e94860..26f3276b7c81d5b554cf32efe65a4d63ce39f698 100644
+--- a/src/main/java/org/bukkit/craftbukkit/Main.java
++++ b/src/main/java/org/bukkit/craftbukkit/Main.java
+@@ -163,6 +163,14 @@ public class Main {
+                         .describedAs("Yml file");
+                 // CloudPlane end
+ 
++                // CloudPlane start - allow changing airplane config file
++                acceptsAll(asList("airplane", "airplane-settings"), "File for airplane settings")
++                        .withRequiredArg()
++                        .ofType(File.class)
++                        .defaultsTo(new File("airplane.yml"))
++                        .describedAs("Yml file");
++                // CloudPlane end
++
+                 // Paper start
+                 acceptsAll(asList("server-name"), "Name of the server")
+                         .withRequiredArg()
