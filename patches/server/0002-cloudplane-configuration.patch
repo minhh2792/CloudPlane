@@ -29,7 +29,7 @@ index 84b4d7ac8153ecd943be6690506f8c472e0e70ab..b7b5335fb9c9620397ce08619351559b
          this.server.getPluginManager().callEvent(new ServerLoadEvent(ServerLoadEvent.LoadType.STARTUP));
          this.connection.acceptConnections();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 77eb1b3bf77d496fb0675fbb681efb0df32fb5c4..5485804373db07c935c979bdf9b3e2544e0ffdfc 100644
+index 79a9e8dd970b10ceb03d814224a568a9331208c9..d45eed580855ba9e92f49e669b1009f9165258da 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -228,6 +228,14 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -45,8 +45,8 @@ index 77eb1b3bf77d496fb0675fbb681efb0df32fb5c4..5485804373db07c935c979bdf9b3e254
 +        }
 +        // CloudPlane end
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // load version history now
-         io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
+         io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
 index 5e06dbb25359b593c6960652ee99f8227bf4deb0..136c440581e968b45745c14528a9b282ca13b57d 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java

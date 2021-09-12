@@ -5,7 +5,7 @@ Subject: [PATCH] changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 399641413d38f1a27165a0cf60b6c7c781cf1488..ed90d93a45c0c291cb8719ef3d332a4b37e1f107 100644
+index c6b4a4d679614b13215768e0c38b9fe0e9ca76a7..5806ecf848eeaf67d76e199b4afffdc0ba28f107 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -32,7 +32,7 @@ repositories {
@@ -17,7 +17,7 @@ index 399641413d38f1a27165a0cf60b6c7c781cf1488..ed90d93a45c0c291cb8719ef3d332a4b
      implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Airplane
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
-@@ -90,7 +90,7 @@ tasks.jar {
+@@ -93,7 +93,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
