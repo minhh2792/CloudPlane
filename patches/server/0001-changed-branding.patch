@@ -27,7 +27,7 @@ index c6b4a4d679614b13215768e0c38b9fe0e9ca76a7..5806ecf848eeaf67d76e199b4afffdc0
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index bca3bc0b8687940dff181bab6a5a2a3c11423358..85fc16ccbd0d37e8cd48a440c6e3bab6951f9a10 100644
+index c5803537b23d44bad5f447bd2f98d54226d3e80e..9a7d76832dd1c0ce0b4819078e5718d2a816b984 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
 @@ -232,7 +232,8 @@ public class TimingsExport extends Thread {
@@ -86,21 +86,21 @@ index b6c1e50df4e0a69ac1e81613539bcc0731c67063..a5c2be70f83ca657c05422a2bafdedec
              distance = fetchDistanceFromSiteApi(buildNumber, getMinecraftVersion());
              if (distance < 0) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 928c759d30db2d35ea786b3fe0738c42ef3fed80..84b4d7ac8153ecd943be6690506f8c472e0e70ab 100644
+index ba6b329334f2c2c1c9149c51ccfb707eec0e29bd..ea1733486de40d88ce703fd1a83df9934e4908de 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1737,7 +1737,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
--        return net.pl3x.purpur.PurpurConfig.serverModName; // Purpur - Purpur > // Airplane - Airplane > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
-+        String serverName = net.pl3x.purpur.PurpurConfig.serverModName; // CloudPlane - CloudPlane > // Purpur - Purpur > // Airplane - Airplane > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
+-        return net.pl3x.purpur.PurpurConfig.serverModName; // Purpur - Purpur > // Airplane // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
++        String serverName = net.pl3x.purpur.PurpurConfig.serverModName; // CloudPlane - CloudPlane > // Purpur - Purpur > // Airplane // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
 +        return serverName.equals("Purpur") ? "CloudPlane" : serverName;
      }
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index bd3b975481ce780199d6ec60bddaaa263714d289..2fa3bad53be47917cc5c13c18d77cc1e4460995f 100644
+index 3c7a337745839858c48aa5bf2f9f39d9d5e201d7..5ee4e6f852b420855752ecb469d084f55aa894d9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -246,7 +246,7 @@ import javax.annotation.Nullable; // Paper

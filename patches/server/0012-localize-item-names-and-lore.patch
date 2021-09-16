@@ -89,10 +89,10 @@ index 0cb58f2a5607664193adddbfd7e43384c5a44862..8ab023db22cdda10f2596b31e2799685
  
              @Override
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 86ed3f8491ea7ad117ac36be0d4bf304489c79f1..315c19b30f29eebe84bfaf8069ba53422b6d9b44 100644
+index ddd685d0a0e23e4dcd0cd2e7a9269f431235d3af..d9d1f9085a67c469a4f7287c0d64002016fd935a 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -972,8 +972,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -986,8 +986,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
          }
          this.player.getInventory().pickSlot(packet.getSlot()); // Paper - Diff above if changed
          // Paper end
@@ -103,7 +103,7 @@ index 86ed3f8491ea7ad117ac36be0d4bf304489c79f1..315c19b30f29eebe84bfaf8069ba5342
          this.player.connection.send(new ClientboundSetCarriedItemPacket(this.player.getInventory().selected));
      }
  
-@@ -2900,19 +2900,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2923,19 +2923,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                                  case PLACE_SOME:
                                  case PLACE_ONE:
                                  case SWAP_WITH_CURSOR:
@@ -127,7 +127,7 @@ index 86ed3f8491ea7ad117ac36be0d4bf304489c79f1..315c19b30f29eebe84bfaf8069ba5342
                                      break;
                                  // Nothing
                                  case NOTHING:
-@@ -3037,7 +3037,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3060,7 +3060,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  case DENY:
                      // Reset the slot
                      if (packet.getSlotNum() >= 0) {
@@ -193,10 +193,10 @@ index e25417976ebe787cdeff88fa2cca7a1c002b54a5..f603012f945222e0f867d63a02349726
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 53ec1f1725a8b7bff4d93f4d1d6a7344818799f0..e88417f1a7b207dd5a49763c1f099bba393a6c6e 100644
+index 010c5ea04ae1ff2c21e40857b9f8932fb4a45f62..a2f1f1e9d52ed24e9ef5abe9608d935c13d0af36 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2443,7 +2443,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2444,7 +2444,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          final int stateId = getHandle().containerMenu.getStateId();
          connection.send(new net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket(0, stateId, slot, item));
          connection.send(new net.minecraft.network.protocol.game.ClientboundOpenBookPacket(net.minecraft.world.InteractionHand.MAIN_HAND));

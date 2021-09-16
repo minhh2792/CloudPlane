@@ -17,7 +17,7 @@ index 8c2424b0917d278bb0b9e687d116d8de73696446..e011a8ff8ca3839024b2fd39c030dfe0
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 84b4d7ac8153ecd943be6690506f8c472e0e70ab..b7b5335fb9c9620397ce08619351559bdb86164c 100644
+index ea1733486de40d88ce703fd1a83df9934e4908de..341795d54e182187ffbb44c57dfd41ac49e15753 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -724,6 +724,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -68,7 +68,7 @@ index 5e06dbb25359b593c6960652ee99f8227bf4deb0..136c440581e968b45745c14528a9b282
          this.generator = gen;
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 2fa3bad53be47917cc5c13c18d77cc1e4460995f..74418dc19be9f0f159b3f1633b0f03c20de03a8f 100644
+index 5ee4e6f852b420855752ecb469d084f55aa894d9..f4402cf3feb4c969d67541db7d75bc8021835dbd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -893,6 +893,7 @@ public final class CraftServer implements Server {
@@ -79,7 +79,7 @@ index 2fa3bad53be47917cc5c13c18d77cc1e4460995f..74418dc19be9f0f159b3f1633b0f03c2
          for (ServerLevel world : this.console.getAllLevels()) {
              world.serverLevelData.setDifficulty(config.difficulty);
              world.setSpawnSettings(config.spawnMonsters, config.spawnAnimals);
-@@ -2541,6 +2542,13 @@ public final class CraftServer implements Server {
+@@ -2537,6 +2538,13 @@ public final class CraftServer implements Server {
              return net.pl3x.purpur.PurpurConfig.config;
          }
  
