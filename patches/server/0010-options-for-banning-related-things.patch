@@ -105,7 +105,7 @@ index 44ef2aa3a3cd13ff347a37cd031533915837c99b..18ee11c9fdc1a47515d7557c963179a2
 +    }
  }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
-index df022ce5e791b75851ba35e12bc4e87b07b35a05..388456571d3799b2b0d812473cccc0e069468b70 100644
+index 94844b5d7ab355450720c6770354ad5afabbf682..afd7b599762e01c74727b08bc32db76ec3ee619e 100644
 --- a/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
 +++ b/src/main/java/tk/booky/cloudplane/commands/TempBanCommand.java
 @@ -57,8 +57,12 @@ public class TempBanCommand implements CloudPlaneCommand {
