@@ -37,6 +37,9 @@ jobs:
           git config --global user.email "no-reply@github.com"
           git config --global user.name "Github Actions"
 
+      - name: Clean Paperweight Cache
+        run: ./gradlew cleanCache -Dpaperweight.debug=true
+
       - name: Apply CloudPlane Patches
         run: ./gradlew applyPatches -Dpaperweight.debug=true
 
