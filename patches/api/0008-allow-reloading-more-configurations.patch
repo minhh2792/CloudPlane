@@ -1,0 +1,79 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <boooky10@gmail.com>
+Date: Fri, 24 Sep 2021 21:24:42 +0200
+Subject: [PATCH] allow reloading more configurations
+
+This adds the possibility, to reload the bukkit.yml and server.properties file.
+It can be called using the API (Bukkit#reloadBukkit(), Bukkit#reloadProperties())
+or as a command using /reload <bukkit|properties>.
+
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index acb79b39939c5447f9654177e4bee5b909483098..af76643d3bafbd83a7eb6c2c139270a7a9b00234 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -2111,5 +2111,13 @@ public final class Bukkit {
+     public static void setExplosionResistance(@NotNull Material material, float explosionResistance) {
+         server.setExplosionResistance(material, explosionResistance);
+     }
++
++    public static void reloadBukkit() {
++        server.reloadBukkit();
++    }
++
++    public static void reloadProperties() {
++        server.reloadProperties();
++    }
+     // CloudPlane end
+ }
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index a4a56cee0a1e4891be69966fd4c25f63f2ab748e..bec2fde29d31dea15bab33cf358625714fbb1eef 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -1847,5 +1847,9 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     float getExplosionResistance(@NotNull Material material);
+ 
+     void setExplosionResistance(@NotNull Material material, float explosionResistance);
++
++    void reloadBukkit();
++
++    void reloadProperties();
+     // CloudPlane end
+ }
+diff --git a/src/main/java/org/bukkit/command/defaults/ReloadCommand.java b/src/main/java/org/bukkit/command/defaults/ReloadCommand.java
+index 0c7ba0718de2b93d013968ca0fec34ffd423990f..74a7dc3c27324508625147f339223775c82982d9 100644
+--- a/src/main/java/org/bukkit/command/defaults/ReloadCommand.java
++++ b/src/main/java/org/bukkit/command/defaults/ReloadCommand.java
+@@ -13,7 +13,7 @@ public class ReloadCommand extends BukkitCommand {
+     public ReloadCommand(@NotNull String name) {
+         super(name);
+         this.description = "Reloads the server configuration and plugins";
+-        this.usageMessage = "/reload [permissions|commands|confirm]"; // Paper
++        this.usageMessage = "/reload [permissions|commands|confirm|bukkit|properties]"; // Paper // CloudPlane
+         this.setPermission("bukkit.command.reload");
+         this.setAliases(Arrays.asList("rl"));
+     }
+@@ -29,6 +29,16 @@ public class ReloadCommand extends BukkitCommand {
+                 Bukkit.getServer().reloadPermissions();
+                 Command.broadcastCommandMessage(sender, ChatColor.GREEN + "Permissions successfully reloaded.");
+                 return true;
++                // CloudPlane
++            } else if ("bukkit".equalsIgnoreCase(args[0])) {
++                Bukkit.getServer().reloadBukkit();
++                Command.broadcastCommandMessage(sender, ChatColor.GREEN + "The bukkit configuration has been reloaded.");
++                return true;
++            } else if ("properties".equalsIgnoreCase(args[0])) {
++                Bukkit.getServer().reloadProperties();
++                Command.broadcastCommandMessage(sender, ChatColor.GREEN + "The server properties have been reloaded.");
++                return true;
++                // CloudPlane end
+             } else if ("commands".equalsIgnoreCase(args[0])) {
+                 if (Bukkit.getServer().reloadCommandAliases()) {
+                     Command.broadcastCommandMessage(sender, ChatColor.GREEN + "Command aliases successfully reloaded.");
+@@ -60,6 +70,6 @@ public class ReloadCommand extends BukkitCommand {
+     @NotNull
+     @Override
+     public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+-        return com.google.common.collect.Lists.newArrayList("permissions", "commands"); // Paper
++        return com.google.common.collect.Lists.newArrayList("permissions", "commands", "bukkit", "properties"); // Paper // CloudPlane
+     }
+ }
