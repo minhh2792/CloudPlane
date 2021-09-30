@@ -18,13 +18,13 @@ index 7e8f86c98a9dcaee90f0415dd64b2d1d9c6f5def..1fbaced1b106e6285864900a62f6e890
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4e3c4b304ef5ea7eccb61fce939fd0ff04e0a1b8..0d9a975b74a91a0f7501878cefe4dfa4a72b428c 100644
+index c8c01343b4f40046c5c3a23e9c4c2299eb470a92..8d4e2c2df4e7d95fe42e0faf3d3298c09d334d12 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -247,7 +247,7 @@ import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
-     private final String serverName = "CloudPlane"; // Paper // Airplane // Purpur // CloudPlane
+     private final String serverName = "CloudPlane"; // Paper // Airplane // CloudPlane
 -    private final String serverVersion;
 +    public final String serverVersion; // CloudPlane - private --> public
      private final String bukkitVersion = Versioning.getBukkitVersion();

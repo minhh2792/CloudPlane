@@ -17,7 +17,7 @@ index 8c2424b0917d278bb0b9e687d116d8de73696446..e011a8ff8ca3839024b2fd39c030dfe0
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index ea1733486de40d88ce703fd1a83df9934e4908de..341795d54e182187ffbb44c57dfd41ac49e15753 100644
+index 3787f8dd95ad2069d4a2100d8b03de0424d239b9..87f648a11253dcc531b84492484f04d475d8e865 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -724,6 +724,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -29,7 +29,7 @@ index ea1733486de40d88ce703fd1a83df9934e4908de..341795d54e182187ffbb44c57dfd41ac
          this.server.getPluginManager().callEvent(new ServerLoadEvent(ServerLoadEvent.LoadType.STARTUP));
          this.connection.acceptConnections();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 79a9e8dd970b10ceb03d814224a568a9331208c9..d45eed580855ba9e92f49e669b1009f9165258da 100644
+index 5de94d015302098fe0feb60b227a05695c49f67c..879097f1f7f81a6f1c17de6985a094f1e67d9bd2 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -228,6 +228,14 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -48,7 +48,7 @@ index 79a9e8dd970b10ceb03d814224a568a9331208c9..d45eed580855ba9e92f49e669b1009f9
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 5e06dbb25359b593c6960652ee99f8227bf4deb0..136c440581e968b45745c14528a9b282ca13b57d 100644
+index 62ea2d69f9b96b31bc3ff323d8b71f32425863ff..c4df3f66c33582df7dd766a9d84ca1a690a01f5e 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -168,6 +168,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -59,7 +59,7 @@ index 5e06dbb25359b593c6960652ee99f8227bf4deb0..136c440581e968b45745c14528a9b282
  
      public final co.aikar.timings.WorldTimingsHandler timings; // Paper
      public static BlockPos lastPhysicsProblem; // Spigot
-@@ -361,6 +362,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -370,6 +371,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), this.spigotConfig); // Paper
          this.purpurConfig = new net.pl3x.purpur.PurpurWorldConfig((ServerLevel) this, ((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), env); // Purpur
@@ -68,7 +68,7 @@ index 5e06dbb25359b593c6960652ee99f8227bf4deb0..136c440581e968b45745c14528a9b282
          this.generator = gen;
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5ee4e6f852b420855752ecb469d084f55aa894d9..f4402cf3feb4c969d67541db7d75bc8021835dbd 100644
+index c8b3d9dd6c75b30fee0fe243bad2f63c4b4e8506..fe8f15516f5770edb1bdc6e6b5e4ea3e890b43f0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -893,6 +893,7 @@ public final class CraftServer implements Server {

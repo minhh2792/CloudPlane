@@ -51,12 +51,12 @@ subprojects {
 paperweight {
     serverProject.set(project(":CloudPlane-Server"))
 
-    useStandardUpstream("purpur") {
-        url.set(github("pl3xgaming", "Purpur"))
-        ref.set(providers.gradleProperty("purpurRef"))
+    useStandardUpstream("airplane") {
+        url.set(github("TECHNOVE", "Airplane"))
+        ref.set(providers.gradleProperty("airplaneRef"))
 
         withStandardPatcher {
-            baseName("Purpur")
+            baseName("Airplane")
 
             remapRepo.set("https://maven.quiltmc.org/repository/release/")
             decompileRepo.set("https://files.minecraftforge.net/maven/")

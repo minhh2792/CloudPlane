@@ -11,8 +11,8 @@ echo "Project root directory detected as $ROOT_DIR."
 ORGANISATION=$(cat build.gradle.kts | grep 'set(github' | awk -F '"' '{ print $2}')
 REPOSITORY=$(cat build.gradle.kts | grep 'set(github' | awk -F '"' '{ print $4}')
 
-# Query the default branch from the github api
-BRANCH=$(curl -s "https://api.github.com/repos/$ORGANISATION/$REPOSITORY" | jq -r .default_branch)
+# Query the default branch from the github api if none has been set
+BRANCH=${1:-$(curl -s "https://api.github.com/repos/$ORGANISATION/$REPOSITORY" | jq -r .default_branch)}
 
 # Extract the current gradle property from the buildscript
 GRADLE_PROPERTY=$(cat build.gradle.kts | grep gradleProperty | awk -F '\"' '{ print $2}')
