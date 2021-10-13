@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SuperKooks <superkooks@superkooks.com>
+Date: Wed, 4 Aug 2021 18:18:52 +1000
+Subject: [PATCH] Expose tracked entities
+
+
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index 033cf450dcfb02e57d0875d0117086e6fe615c32..c3fd89a1dd3698f6570fa02fd8f04688d5bf4c1b 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -2445,4 +2445,14 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      */
+     public boolean hasFlyingFallDamage();
+     // Purpur end
++
++    // CloudPlane start - expose tracked entities
++    /**
++     * Gets entities within this player's tracking range (that the player's client can "see")
++     * @param entityClass The class of entities to filter for
++     * @return The filtered et of entities
++     */
++    @NotNull
++    <T extends org.bukkit.entity.Entity> java.util.Collection<? extends T> getTrackedEntities(@NotNull Class<T> entityClass);
++    // CloudPlane end
+ }

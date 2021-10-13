@@ -1,0 +1,36 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SuperKooks <superkooks@superkooks.com>
+Date: Wed, 4 Aug 2021 18:05:01 +1000
+Subject: [PATCH] Expose tracked entities
+
+
+diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
+index 15a42357a449e48fca2197e5eb6a9c46a3b554b9..a64424e8dbf0b8a9a3fcb62a1fead0a62ca7fb14 100644
+--- a/src/main/java/net/minecraft/server/level/ChunkMap.java
++++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
+@@ -2274,7 +2274,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+ 
+         public final ServerEntity serverEntity; // Purpur -> package -> public
+         final Entity entity;
+-        private final int range;
++        public final int range; // CloudPlane - private --> public
+         SectionPos lastSectionPos;
+         public final Set<ServerPlayerConnection> seenBy = new ReferenceOpenHashSet<>(); // Paper - optimise map impl
+ 
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+index f2bf33e4d1c812cf03f38989cffe910ae32625f3..96edb229420cd0e2be151518c1965477432d9ecc 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -2682,4 +2682,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         return getHandle().flyingFallDamage;
+     }
+     // Purpur end
++
++    // CloudPlane start - expose tracked entities
++    @Override
++    @SuppressWarnings("unchecked")
++    public <T extends org.bukkit.entity.Entity> Collection<? extends T> getTrackedEntities(Class<T> entityClass) {
++        return entityClass == Player.class ? (Set<T>) getTrackedPlayers() : getWorld().getNearbyEntitiesByType(entityClass, getLocation(), entity.tracker.range);
++    }
++    // CloudPlane end
+ }
