@@ -5,10 +5,10 @@ Subject: [PATCH] cloudplane configuration
 
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 88767865cc2dce0e341eef0f53323af6f95fb841..4e55f94dea206dceb809eadae1a6974a3a14ccc1 100644
+index c44212baa2cc167a1a818c158441e5ff749f29eb..f3ad1fb81b5f35bedd68abc7476b44e23074c970 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1688,6 +1688,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1724,6 +1724,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
              throw new UnsupportedOperationException("Not supported yet.");
          }
  

@@ -5,10 +5,10 @@ Subject: [PATCH] changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index e4fdc5d362b8dbef2c8b209678200f147e871db0..d3a6af2b5d8fc0a43788019f26a5382cbc6a4bb1 100644
+index fdc3f2390d8d0124102cbff386e8a981c6f92c22..210bbbce674103fa9746fc5745aed037da0b1047 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -32,7 +32,7 @@ repositories {
+@@ -31,7 +31,7 @@ repositories {
  }
  
  dependencies {
@@ -17,7 +17,7 @@ index e4fdc5d362b8dbef2c8b209678200f147e871db0..d3a6af2b5d8fc0a43788019f26a5382c
      implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Airplane
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
-@@ -94,6 +94,7 @@ tasks.jar {
+@@ -93,6 +93,7 @@ tasks.jar {
              "Implementation-Title" to "CraftBukkit",
              "Implementation-Version" to "git-Paper-$implementationVersion",
              "Implementation-Version" to "git-Airplane-$implementationVersion", // Airplane
@@ -62,10 +62,10 @@ index 05f1b6d103ec20f196b60944f5bc007384c449f1..85d10f56ecb5abb46fce3c002e4c0c49
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index 580bae0d414d371a07a6bfeefc41fdd989dc0083..528c8cc44c83b761daa1f075590fe6418a25f42f 100644
+index ece77f5ea4b14bbed7c070131b3251ea86764538..142b724d039419f6ef4faee9ae8e73f850f9fc1a 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-@@ -29,8 +29,8 @@ public class PaperVersionFetcher implements VersionFetcher {
+@@ -31,8 +31,8 @@ public class PaperVersionFetcher implements VersionFetcher {
      @Nonnull
      @Override
      public Component getVersionMessage(@Nonnull String serverVersion) {
@@ -77,7 +77,7 @@ index 580bae0d414d371a07a6bfeefc41fdd989dc0083..528c8cc44c83b761daa1f075590fe641
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 6066e9f9682b33dafab4ae8e4b23e3b446023b5c..3787f8dd95ad2069d4a2100d8b03de0424d239b9 100644
+index cf508b8fb239e8397ec89acb1203ff8d767e1d08..058b481c977db1a28b7c757b3806a437fb0bbb7b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1739,7 +1739,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -90,10 +90,10 @@ index 6066e9f9682b33dafab4ae8e4b23e3b446023b5c..3787f8dd95ad2069d4a2100d8b03de04
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 80dd0e4003ef6e6dff19ed85b6374f8c38c93a88..c8b3d9dd6c75b30fee0fe243bad2f63c4b4e8506 100644
+index cf3ce05d21d45013e6aa4d94a0901fb126ea8afd..971cef614b64d5718d525ed40d333c9108214cac 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -246,7 +246,7 @@ import javax.annotation.Nullable; // Paper
+@@ -251,7 +251,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {

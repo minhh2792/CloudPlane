@@ -5,10 +5,10 @@ Subject: [PATCH] added allowPvP gamerule
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 3d748d2b3dff65be3926578de2c22c6a18c4e441..f1ae6bf8d74f416b38d8bc10c1fd79ad4a71f25a 100644
+index 5262874f97024858ede1f4960f88ee70ab429c2a..2d0817df7450456ff251e8c0485146bb2790b107 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -3169,7 +3169,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -3171,7 +3171,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
      }
  
      public boolean isInvulnerableTo(DamageSource damageSource) {
