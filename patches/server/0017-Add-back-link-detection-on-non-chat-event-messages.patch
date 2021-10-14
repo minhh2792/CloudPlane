@@ -1,0 +1,38 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Jake Potrebic <jake.m.potrebic@gmail.com>
+Date: Thu, 22 Jul 2021 21:43:20 -0700
+Subject: [PATCH] Add back link detection on non-chat event messages
+
+
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index 23c68321e9c6265c7f9336b2740bb88a307fea72..f19ed5529a10bf32eb886474546776e75e6f1efb 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -1469,6 +1469,7 @@ public abstract class PlayerList {
+     public void broadcastMessage(Component message, ChatType type, UUID sender) {
+         this.server.sendMessage(message, sender);
+         Iterator iterator = this.players.iterator();
++        if (tk.booky.cloudplane.CloudPlaneConfig.linkDetectionNonAdventure) message = CraftChatMessage.fixComponent(message); // CloudPlane - add back URL detection
+ 
+         while (iterator.hasNext()) {
+             ServerPlayer entityplayer = (ServerPlayer) iterator.next();
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+index e0687daeb0abe5f5dfa14c376b4b1b00d692694b..c2e876d27206a74263b09b9b41c25d1a9221e43c 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+@@ -165,6 +165,7 @@ public class CloudPlaneConfig {
+     }
+ 
+     public static boolean localizeItems = false;
++    public static boolean linkDetectionNonAdventure = false;
+     private static void adventure() {
+         if (currentVersion == 2) {
+             localizeItems = getBoolean("settings.localize.items", localizeItems);
+@@ -172,6 +173,7 @@ public class CloudPlaneConfig {
+             set("settings.localize", null);
+         } else {
+             localizeItems = getBoolean("settings.adventure.localize-items", localizeItems);
++            linkDetectionNonAdventure = getBoolean("settings.adventure.link-detection-non-adventure", linkDetectionNonAdventure);
+         }
+     }
+ 

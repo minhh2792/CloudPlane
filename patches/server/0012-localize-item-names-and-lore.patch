@@ -61,7 +61,7 @@ index dbd8b9b09b82c1b75e8be9dc7416d9f0863c8c87..e9c60af6cc132998adb24f2d478acbab
          return true;
      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8f421cc6838455ffdc54614e7020cb510bc4c182..b9fedb844933c395eea2f82f82d7634bdfe4a084 100644
+index 6a6019462c76b92a9f6644b175ea3403b01ad98d..0fa85628583e36e5f2682616faea1dfed60cc9af 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -279,7 +279,7 @@ public class ServerPlayer extends Player {
@@ -193,7 +193,7 @@ index e25417976ebe787cdeff88fa2cca7a1c002b54a5..f603012f945222e0f867d63a02349726
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 4322a3bc15c3f0cc71788719362f6ac5627379b9..20c65dd8a0d54d7e5bab0d5f957d781d1cc3e7c7 100644
+index aad35b054114366cbf0ab2e232efb97419142d57..f2bf33e4d1c812cf03f38989cffe910ae32625f3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -2464,7 +2464,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
@@ -219,16 +219,22 @@ index d6a228473ca6f425757683a4b17b035a53ab117f..fbecdbcf59eaaa559a077ae8311c1d90
  
      @Override
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 18ee11c9fdc1a47515d7557c963179a2fe5116c6..50079824d5988d4d5696749163dc3ca9fef33227 100644
+index 18ee11c9fdc1a47515d7557c963179a2fe5116c6..2460a2c4c27c59b6ceee9b36a356ad34ba358485 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -163,4 +163,9 @@ public class CloudPlaneConfig {
+@@ -163,4 +163,15 @@ public class CloudPlaneConfig {
          ipBannedReason = getString("settings.banning.messages.ip-banned.reason", ipBannedReason);
          ipBannedExpiration = getString("settings.banning.messages.ip-banned.expiration", ipBannedExpiration);
      }
 +
 +    public static boolean localizeItems = false;
-+    private static void localizing() {
-+        localizeItems = getBoolean("settings.localize.items", localizeItems);
++    private static void adventure() {
++        if (currentVersion == 2) {
++            localizeItems = getBoolean("settings.localize.items", localizeItems);
++            set("settings.adventure.localize-items", localizeItems);
++            set("settings.localize", null);
++        } else {
++            localizeItems = getBoolean("settings.adventure.localize-items", localizeItems);
++        }
 +    }
  }

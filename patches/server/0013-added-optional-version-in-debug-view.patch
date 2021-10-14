@@ -31,12 +31,12 @@ index 5de1cf2b031d7347643ea291a4043b9a93ebaaec..5d2cfb093b94c1e4a94fa5529c526ea6
      private final Logger logger = Logger.getLogger("Minecraft");
      private final ServicesManager servicesManager = new SimpleServicesManager();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 50079824d5988d4d5696749163dc3ca9fef33227..03173cc85307ecf3105ad18494ab8209a8be5cdb 100644
+index 2460a2c4c27c59b6ceee9b36a356ad34ba358485..e0687daeb0abe5f5dfa14c376b4b1b00d692694b 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -168,4 +168,9 @@ public class CloudPlaneConfig {
-     private static void localizing() {
-         localizeItems = getBoolean("settings.localize.items", localizeItems);
+@@ -174,4 +174,9 @@ public class CloudPlaneConfig {
+             localizeItems = getBoolean("settings.adventure.localize-items", localizeItems);
+         }
      }
 +
 +    public static boolean debugVersion = false;
