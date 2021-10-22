@@ -5,10 +5,10 @@ Subject: [PATCH] Expose tracked entities
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 15a42357a449e48fca2197e5eb6a9c46a3b554b9..a64424e8dbf0b8a9a3fcb62a1fead0a62ca7fb14 100644
+index fd8215ae01691a5226450faf12b8e9ac498dc7c4..47c3416148a504bf2ab2b300a5cf972586dff4fd 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -2274,7 +2274,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2285,7 +2285,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
  
          public final ServerEntity serverEntity; // Purpur -> package -> public
          final Entity entity;

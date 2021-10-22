@@ -5,10 +5,10 @@ Subject: [PATCH] api methods for setting explosion resistance
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 6197605519abf3c59108f1dff34105cc2bca10c2..c3e67880f845bf0722404c40cc9f250a558aef7e 100644
+index 2e86aa13913553306512232a72497ec6b003260c..2dbeed9bb269bb61a225178ac111a6c31ff168ec 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2143,4 +2143,14 @@ public final class Bukkit {
+@@ -2157,4 +2157,14 @@ public final class Bukkit {
          server.removeFuel(material);
      }
      // Purpur end
@@ -24,10 +24,10 @@ index 6197605519abf3c59108f1dff34105cc2bca10c2..c3e67880f845bf0722404c40cc9f250a
 +    // CloudPlane end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index f3ad1fb81b5f35bedd68abc7476b44e23074c970..2f05a7841d0bdcaec8883cda1408223a3b8c15e2 100644
+index 0177e40ed9d1e86c8a820a50c1fb019686bff990..04da407858d210ad66f9e1437f2e2732356b59c4 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1878,4 +1878,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1890,4 +1890,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      public void removeFuel(@NotNull Material material);
      // Purpur end

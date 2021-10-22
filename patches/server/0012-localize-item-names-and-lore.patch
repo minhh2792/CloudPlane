@@ -89,10 +89,10 @@ index 6a6019462c76b92a9f6644b175ea3403b01ad98d..0fa85628583e36e5f2682616faea1dfe
  
              @Override
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 06bd707a382e9dfcc249c438be5f3d4c1c07071a..b29103f00d23b4e1593e9040b63b1bd91ee1dfa6 100644
+index 66b639a48609f1facc537dbf9ae6998d2abca28f..f0d82b077c26fa63b3579e9a8624f6a6e4b5367b 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -972,8 +972,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -977,8 +977,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
          }
          this.player.getInventory().pickSlot(packet.getSlot()); // Paper - Diff above if changed
          // Paper end
@@ -103,7 +103,7 @@ index 06bd707a382e9dfcc249c438be5f3d4c1c07071a..b29103f00d23b4e1593e9040b63b1bd9
          this.player.connection.send(new ClientboundSetCarriedItemPacket(this.player.getInventory().selected));
      }
  
-@@ -2909,19 +2909,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2914,19 +2914,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                                  case PLACE_SOME:
                                  case PLACE_ONE:
                                  case SWAP_WITH_CURSOR:
@@ -127,7 +127,7 @@ index 06bd707a382e9dfcc249c438be5f3d4c1c07071a..b29103f00d23b4e1593e9040b63b1bd9
                                      break;
                                  // Nothing
                                  case NOTHING:
-@@ -3046,7 +3046,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3051,7 +3051,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  case DENY:
                      // Reset the slot
                      if (packet.getSlotNum() >= 0) {
