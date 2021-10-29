@@ -1,0 +1,106 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <boooky10@gmail.com>
+Date: Fri, 29 Oct 2021 19:24:00 +0200
+Subject: [PATCH] port bungeeguard forwarding
+
+https://github.com/lucko/BungeeGuard/
+https://spigotmc.org/resources/79601/
+
+diff --git a/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
+index 451ca1a1d84227274fd59fc5d46654a441561710..9167abc13319fbe70a5060c6bc169c500062420b 100644
+--- a/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
+@@ -18,6 +18,7 @@ import java.util.HashMap;
+ 
+ public class ServerHandshakePacketListenerImpl implements ServerHandshakePacketListener {
+ 
++    public static final java.lang.reflect.Type PROPERTY_LIST_TYPE = new com.google.common.reflect.TypeToken<java.util.List<com.mojang.authlib.properties.Property>>(){}.getType(); // CloudPlane - port bungeeguard forwarding
+     // Spigot start
+     private static final com.google.gson.Gson gson = new com.google.gson.Gson();
+     static final java.util.regex.Pattern HOST_PATTERN = java.util.regex.Pattern.compile("[0-9a-f\\.:]{0,45}");
+@@ -118,6 +119,61 @@ public class ServerHandshakePacketListenerImpl implements ServerHandshakePacketL
+                 // Don't try and handle default logic if it's been handled by the event.
+                 if (!handledByEvent && proxyLogicEnabled) {
+                 // Paper end
++                    // CloudPlane start - port bungeeguard forwarding
++                    if (tk.booky.cloudplane.CloudPlaneConfig.bungeeGuardEnabled) {
++                        if (packet.hostName.length() > 2500) {
++                            connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                            connection.disconnect(TextComponent.EMPTY);
++                            return;
++                        }
++
++                        String[] hostSplit = packet.hostName.split("\00");
++                        if (hostSplit.length != 4) {
++                            connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                            connection.disconnect(TextComponent.EMPTY);
++                            return;
++                        }
++
++                        java.util.List<com.mojang.authlib.properties.Property> properties = gson.fromJson(hostSplit[3], PROPERTY_LIST_TYPE);
++                        if (properties.isEmpty()) {
++                            connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                            connection.disconnect(TextComponent.EMPTY);
++                            return;
++                        }
++
++                        String bungeeGuardToken = null;
++                        for (java.util.Iterator<com.mojang.authlib.properties.Property> iterator = properties.iterator(); iterator.hasNext(); ) {
++                            com.mojang.authlib.properties.Property property = iterator.next();
++                            if (property.getName().equals("bungeeguard-token")) {
++                                if (bungeeGuardToken != null) {
++                                    connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                                    connection.disconnect(TextComponent.EMPTY);
++                                    return;
++                                }
++
++                                bungeeGuardToken = property.getValue();
++                                iterator.remove();
++                            }
++                        }
++
++                        if (bungeeGuardToken == null) {
++                            connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                            connection.disconnect(TextComponent.EMPTY);
++                            return;
++                        }
++
++                        if (!tk.booky.cloudplane.CloudPlaneConfig.bungeeGuardTokens.contains(bungeeGuardToken)) {
++                            connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                            connection.disconnect(TextComponent.EMPTY);
++                            return;
++                        }
++
++                        packet.hostName = hostSplit[0];
++                        connection.address = new java.net.InetSocketAddress(hostSplit[1], connection.address instanceof java.net.InetSocketAddress ? ((java.net.InetSocketAddress) connection.address).getPort() : 0);
++                        connection.spoofedUUID = com.mojang.util.UUIDTypeAdapter.fromString(hostSplit[2]);;
++                        connection.spoofedProfile = properties.toArray(com.mojang.authlib.properties.Property[]::new);
++                    } else {
++                    // CloudPlane end
+                     // Spigot Start
+                 //if (org.spigotmc.SpigotConfig.bungee) { // Paper - comment out, we check above!
+                         String[] split = packet.hostName.split("\00");
+@@ -139,6 +195,7 @@ public class ServerHandshakePacketListenerImpl implements ServerHandshakePacketL
+                         {
+                             connection.spoofedProfile = ServerHandshakePacketListenerImpl.gson.fromJson(split[3], com.mojang.authlib.properties.Property[].class);
+                         }
++                        } // CloudPlane - port bungeeguard forwarding
+                     }
+                     // Spigot End
+                     ((ServerLoginPacketListenerImpl) this.connection.getPacketListener()).hostname = packet.hostName + ":" + packet.port; // CraftBukkit - set hostname
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+index 2848f199b9b09703561cf80e87d38ac836f09980..15950445d466a3d4a71e97660daf7dc6978d62b2 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+@@ -181,4 +181,11 @@ public class CloudPlaneConfig {
+     private static void debugVersion() {
+         debugVersion = getBoolean("settings.debug-version", debugVersion);
+     }
++
++    public static boolean bungeeGuardEnabled = false;
++    public static Set<String> bungeeGuardTokens = java.util.Collections.emptySet();
++    private static void bungeeGuard() {
++        bungeeGuardEnabled = getBoolean("settings.bungee-guard.enabled", bungeeGuardEnabled);
++        bungeeGuardTokens = new java.util.HashSet<>(getList("settings.bungee-guard.tokens", new java.util.ArrayList<>(bungeeGuardTokens)));
++    }
+ }

@@ -114,7 +114,7 @@ index 56674053351962a75b2731dde137dbbc0c70dbde..2d0246648d5044f5f1da43e629a0ef3a
                          .withRequiredArg()
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..9b5a078ed79b7a2a9168849a84dfd474583f206a
+index 0000000000000000000000000000000000000000..40dd1e7265e8dbeb49034eb3864776ede56e6eef
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -0,0 +1,128 @@
@@ -235,10 +235,10 @@ index 0000000000000000000000000000000000000000..9b5a078ed79b7a2a9168849a84dfd474
 +        return config.getInt(path, config.getInt(path));
 +    }
 +
-+    @SuppressWarnings("rawtypes")
-+    private static <T> List getList(String path, T def) {
++    @SuppressWarnings("unchecked")
++    private static <T> List<T> getList(String path, List<T> def) {
 +        config.addDefault(path, def);
-+        return config.getList(path, config.getList(path));
++        return (List<T>) config.getList(path, config.getList(path));
 +    }
 +
 +    private static String getString(String path, String def) {
@@ -248,10 +248,10 @@ index 0000000000000000000000000000000000000000..9b5a078ed79b7a2a9168849a84dfd474
 +}
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..9ce69a0deca677d017e24822907efa8b0d830257
+index 0000000000000000000000000000000000000000..047b223e23dd99f4fa972893b0231e325f9993d1
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java
-@@ -0,0 +1,72 @@
+@@ -0,0 +1,73 @@
 +package tk.booky.cloudplane;
 +
 +import org.apache.commons.lang.BooleanUtils;
@@ -314,9 +314,10 @@ index 0000000000000000000000000000000000000000..9ce69a0deca677d017e24822907efa8b
 +        return CloudPlaneConfig.config.getInt("world-settings." + worldName + "." + path, CloudPlaneConfig.config.getInt("world-settings.default." + path));
 +    }
 +
-+    private <T> List<?> getList(String path, T def) {
++    @SuppressWarnings("unchecked")
++    private <T> List<T> getList(String path, List<T> def) {
 +        CloudPlaneConfig.config.addDefault("world-settings.default." + path, def);
-+        return CloudPlaneConfig.config.getList("world-settings." + worldName + "." + path, CloudPlaneConfig.config.getList("world-settings.default." + path));
++        return (List<T>) CloudPlaneConfig.config.getList("world-settings." + worldName + "." + path, CloudPlaneConfig.config.getList("world-settings.default." + path));
 +    }
 +
 +    private String getString(String path, String def) {
