@@ -1,0 +1,33 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <boooky10@gmail.com>
+Date: Fri, 29 Oct 2021 18:37:47 +0200
+Subject: [PATCH] prevent negative lure time
+
+Idea took from https://github.com/PaperMC/Paper/issues/6824.
+
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
+index dc7968c3bcf72af22fffbc85b058ac5820f06453..4f461e722ac62b477619fe04182d771e531e73dc 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
+@@ -408,6 +408,7 @@ public class FishingHook extends Projectile {
+                 // CraftBukkit start - logic to modify fishing wait time
+                 this.timeUntilLured = Mth.nextInt(this.random, this.minWaitTime, this.maxWaitTime);
+                 this.timeUntilLured -= (this.applyLure) ? this.lureSpeed * 20 * 5 : 0;
++                if (level.cloudplaneConfig.preventNegativeLureTime && this.timeUntilLured < 0) this.timeUntilLured = 0; // CloudPlane - prevent negative lure time (PaperMC/Paper#6824)
+                 // CraftBukkit end
+             }
+         }
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java
+index 9ce69a0deca677d017e24822907efa8b0d830257..35d21990fa775b43bcbc72c290d5d3d88af53f0b 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java
+@@ -69,4 +69,9 @@ public class CloudPlaneWorldConfig {
+         CloudPlaneConfig.config.addDefault("world-settings.default." + path, def);
+         return CloudPlaneConfig.config.getString("world-settings." + worldName + "." + path, CloudPlaneConfig.config.getString("world-settings.default." + path));
+     }
++
++    public boolean preventNegativeLureTime = false;
++    private void preventNegativeLureTime() {
++        preventNegativeLureTime = getBoolean("prevent-negative-lure-time", preventNegativeLureTime);
++    }
+ }

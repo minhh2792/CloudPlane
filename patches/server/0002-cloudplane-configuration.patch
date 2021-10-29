@@ -248,10 +248,10 @@ index 0000000000000000000000000000000000000000..9b5a078ed79b7a2a9168849a84dfd474
 +}
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..14c26bb02bd5bc8b3033b4c3f5c87595f97b53d8
+index 0000000000000000000000000000000000000000..9ce69a0deca677d017e24822907efa8b0d830257
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneWorldConfig.java
-@@ -0,0 +1,69 @@
+@@ -0,0 +1,72 @@
 +package tk.booky.cloudplane;
 +
 +import org.apache.commons.lang.BooleanUtils;
@@ -263,7 +263,10 @@ index 0000000000000000000000000000000000000000..14c26bb02bd5bc8b3033b4c3f5c87595
 +
 +import static tk.booky.cloudplane.CloudPlaneConfig.log;
 +
-+public record CloudPlaneWorldConfig(String worldName, World.Environment environment) {
++public class CloudPlaneWorldConfig {
++
++    private final String worldName;
++    private final World.Environment environment;
 +
 +    public CloudPlaneWorldConfig(String worldName, World.Environment environment) {
 +        this.worldName = worldName;
