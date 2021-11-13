@@ -61,7 +61,7 @@ index dbd8b9b09b82c1b75e8be9dc7416d9f0863c8c87..e9c60af6cc132998adb24f2d478acbab
          return true;
      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 6a6019462c76b92a9f6644b175ea3403b01ad98d..0fa85628583e36e5f2682616faea1dfed60cc9af 100644
+index 7dff9956c8dc07701a9796098bed0f28f22cce56..4f5a3ad3787d181920b29a1e94599bb9322b3f12 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -279,7 +279,7 @@ public class ServerPlayer extends Player {
@@ -89,7 +89,7 @@ index 6a6019462c76b92a9f6644b175ea3403b01ad98d..0fa85628583e36e5f2682616faea1dfe
  
              @Override
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 66b639a48609f1facc537dbf9ae6998d2abca28f..f0d82b077c26fa63b3579e9a8624f6a6e4b5367b 100644
+index a781453387b7ea96c9e9434f2fe7fb02dabdfa15..8a163a50d3272161977f772e5e681cdaea2fb9b3 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -977,8 +977,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -193,10 +193,10 @@ index e25417976ebe787cdeff88fa2cca7a1c002b54a5..f603012f945222e0f867d63a02349726
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index aad35b054114366cbf0ab2e232efb97419142d57..f2bf33e4d1c812cf03f38989cffe910ae32625f3 100644
+index d3284cb6a9d9f2f88bec5a41ff1549703bff1609..bc00a03aff2f644f15c56cc3206715437db6bc07 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2464,7 +2464,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2471,7 +2471,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          final int stateId = getHandle().containerMenu.getStateId();
          connection.send(new net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket(0, stateId, slot, item));
          connection.send(new net.minecraft.network.protocol.game.ClientboundOpenBookPacket(net.minecraft.world.InteractionHand.MAIN_HAND));

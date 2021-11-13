@@ -5,7 +5,7 @@ Subject: [PATCH] Expose tracked entities
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index fd8215ae01691a5226450faf12b8e9ac498dc7c4..47c3416148a504bf2ab2b300a5cf972586dff4fd 100644
+index 049ed12d1e74f8ac5937e06047806acdc7967d5f..4c55cd3cd47ea2452b95c0eff6b620ece44f5709 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
 @@ -2285,7 +2285,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
@@ -18,10 +18,10 @@ index fd8215ae01691a5226450faf12b8e9ac498dc7c4..47c3416148a504bf2ab2b300a5cf9725
          public final Set<ServerPlayerConnection> seenBy = new ReferenceOpenHashSet<>(); // Paper - optimise map impl
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index f2bf33e4d1c812cf03f38989cffe910ae32625f3..96edb229420cd0e2be151518c1965477432d9ecc 100644
+index bc00a03aff2f644f15c56cc3206715437db6bc07..897f270b53f1382dff9cbaa39ac3e25c64a6624d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2682,4 +2682,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2689,4 +2689,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return getHandle().flyingFallDamage;
      }
      // Purpur end

@@ -5,10 +5,10 @@ Subject: [PATCH] changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 0bd09bd56968660437a94ec078a13ee78339fa0e..974d77ab3ce84cc44ed0e77de17fcd119ee22f1f 100644
+index fd3528be3d90733e826bcbeae967b95cedf92dfe..5769db3c505cd580c6fc72d0b8d8cc61c445dad8 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -25,7 +25,7 @@ repositories {
+@@ -22,7 +22,7 @@ repositories {
  }
  
  dependencies {
@@ -16,8 +16,8 @@ index 0bd09bd56968660437a94ec078a13ee78339fa0e..974d77ab3ce84cc44ed0e77de17fcd11
 +    implementation(project(":CloudPlane-API")) // CloudPlane // Airplane // Paper
      implementation("io.papermc.paper:paper-mojangapi:1.17.1-R0.1-SNAPSHOT") // Airplane
      // Paper start
-     implementation("org.jline:jline-terminal-jansi:3.12.1")
-@@ -87,6 +87,7 @@ tasks.jar {
+     implementation("org.jline:jline-terminal-jansi:3.21.0")
+@@ -83,6 +83,7 @@ tasks.jar {
              "Implementation-Title" to "CraftBukkit",
              "Implementation-Version" to "git-Paper-$implementationVersion",
              "Implementation-Version" to "git-Airplane-$implementationVersion", // Airplane
@@ -77,7 +77,7 @@ index ece77f5ea4b14bbed7c070131b3251ea86764538..142b724d039419f6ef4faee9ae8e73f8
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 9e3873a8c109e285cd6eedf7dab7705655f5bd4e..7fe30fbb83b761a7fe08dafdc1fddd16cbfbb49b 100644
+index 3cb77c2255bd1e836c17175531a870e1fe810e78..7bda2bfb528bf264623a5822ca44cb772739b1af 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1744,7 +1744,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -90,7 +90,7 @@ index 9e3873a8c109e285cd6eedf7dab7705655f5bd4e..7fe30fbb83b761a7fe08dafdc1fddd16
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index fbd74a6e8d89095b5963c6b85629f6b594e36b95..8743969cedd31665164b8ed2791e969a69c9e095 100644
+index db2916c67a3b34e944282ba6b4cbd463fdbceff2..650ba0c6b87c73b80c334eccf4c9a28793b3d891 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -251,7 +251,7 @@ import javax.annotation.Nullable; // Paper
@@ -103,7 +103,7 @@ index fbd74a6e8d89095b5963c6b85629f6b594e36b95..8743969cedd31665164b8ed2791e969a
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 757480dfc092078af6a9cc762a4991cb8cdecf96..dd7e96064e37bce5cfc479b9b46dbede2a5ef111 100644
+index 72d69a2916f645067ac5d895db26f89d96db994c..edfe904427c5eb2cd9b8cfdf1a68a8188814b774 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -394,7 +394,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
