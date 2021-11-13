@@ -219,7 +219,7 @@ index d6a228473ca6f425757683a4b17b035a53ab117f..fbecdbcf59eaaa559a077ae8311c1d90
  
      @Override
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 18ee11c9fdc1a47515d7557c963179a2fe5116c6..2460a2c4c27c59b6ceee9b36a356ad34ba358485 100644
+index c6dc40c2087b477d788531587b4b7d4bf2bb4ec4..e2314ac489eb7c3895879db0437d8d966944fda6 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -163,4 +163,15 @@ public class CloudPlaneConfig {
@@ -229,7 +229,7 @@ index 18ee11c9fdc1a47515d7557c963179a2fe5116c6..2460a2c4c27c59b6ceee9b36a356ad34
 +
 +    public static boolean localizeItems = false;
 +    private static void adventure() {
-+        if (currentVersion == 2) {
++        if (version == 2) {
 +            localizeItems = getBoolean("settings.localize.items", localizeItems);
 +            set("settings.adventure.localize-items", localizeItems);
 +            set("settings.localize", null);

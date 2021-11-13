@@ -5,7 +5,7 @@ Subject: [PATCH] added configurable sleep message
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 93e2d0aafc8c599bdc0585685805594d7e1d012a..c50db6ca29b42f1e721a2854d32a60002fb81cc0 100644
+index 5787558d17d8fbb912b317f90e1a45f3c75678f5..81543805b71c9b3710a0c8fd24faa9efbfc41554 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -735,6 +735,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -21,7 +21,7 @@ index 93e2d0aafc8c599bdc0585685805594d7e1d012a..c50db6ca29b42f1e721a2854d32a6000
  
          this.updateSkyBrightness();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index a2ac3976c168c32c7669b3a49884a3ef5d57b785..41577145f2d37635401fcc8355061ff604139b62 100644
+index 80208f307a7305b8c1146fecf7ea1ee1fa894140..6a2cbb90489ad54d76031863c8e53b3355dc4a2e 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -126,4 +126,15 @@ public class CloudPlaneConfig {
@@ -31,7 +31,7 @@ index a2ac3976c168c32c7669b3a49884a3ef5d57b785..41577145f2d37635401fcc8355061ff6
 +
 +    public static String sleepMessage = "The night has been skipped!";
 +    private static void sleepMessage() {
-+        if (currentVersion == 1) {
++        if (version == 1) {
 +            sleepMessage = getString("settings.sleeping.message", sleepMessage);
 +            set("settings.sleep-message", sleepMessage);
 +            set("settings.sleeping", null);
