@@ -118,7 +118,7 @@ index 72d69a2916f645067ac5d895db26f89d96db994c..edfe904427c5eb2cd9b8cfdf1a68a818
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index a56765ac2fd152426df87598bb94c021cccd406c..7a57a8540845a5bb5f4fb683cc43feace1c22d44 100644
+index a56765ac2fd152426df87598bb94c021cccd406c..3bd1c4c0bc0cf81cfce33cda67c75a19b7ff96a6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -11,7 +11,7 @@ public final class Versioning {
@@ -126,7 +126,7 @@ index a56765ac2fd152426df87598bb94c021cccd406c..7a57a8540845a5bb5f4fb683cc43feac
          String result = "Unknown-Version";
  
 -        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/gg.pufferfish.pufferfish/pufferfish-api/pom.properties"); // Tuinity // Airplane // Pufferfish
-+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/tk.cloudplane.cloudplane/cloudplane-api/pom.properties"); // Tuinity // Airplane // Pufferfish // CloudPlane
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/tk.booky.cloudplane/cloudplane-api/pom.properties"); // Tuinity // Airplane // Pufferfish // CloudPlane
          Properties properties = new Properties();
  
          if (stream != null) {
