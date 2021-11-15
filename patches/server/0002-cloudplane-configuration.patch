@@ -17,10 +17,10 @@ index 0dde919a6e48664f687181967b8f180f8646b662..9c5d76577d15d1b637e10c724e610c4b
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 7fe30fbb83b761a7fe08dafdc1fddd16cbfbb49b..3dbbc1b40d7b6688afa966be12f6a6854dc897e6 100644
+index 393f6b341a2f4708a17e826928b5ceb3135073d0..bc94b07d66948699b9f63d125f502c1fbc325562 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -729,6 +729,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -731,6 +731,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
          // Paper end
  
@@ -29,7 +29,7 @@ index 7fe30fbb83b761a7fe08dafdc1fddd16cbfbb49b..3dbbc1b40d7b6688afa966be12f6a685
          this.server.getPluginManager().callEvent(new ServerLoadEvent(ServerLoadEvent.LoadType.STARTUP));
          this.connection.acceptConnections();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 7f08d3b6743de6c8281bcc2e7ac12757ef842de2..01ed08c3c7496f40d420c67ed8f66fd6dcfd6695 100644
+index 16dd108b4ec98d82e12fc968d8213b95b0a6952f..20e37cdd709ff177d3c2a73939f77b15e2458c41 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -239,6 +239,14 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -68,7 +68,7 @@ index 7a0462425f62ce1fb197fa2670e102286ef4c865..5464807752ad912057e4005326698549
          this.generator = gen;
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8743969cedd31665164b8ed2791e969a69c9e095..39da315b100df335491643823f7b9d4be1e5fb0b 100644
+index 9917cd779809d4bba3525731ca1fcc77a33903bd..86fc756dcdf9dafc14748caa4cde03f2ffb8802b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -925,6 +925,7 @@ public final class CraftServer implements Server {

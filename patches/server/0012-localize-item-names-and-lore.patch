@@ -89,7 +89,7 @@ index 7dff9956c8dc07701a9796098bed0f28f22cce56..4f5a3ad3787d181920b29a1e94599bb9
  
              @Override
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index a781453387b7ea96c9e9434f2fe7fb02dabdfa15..8a163a50d3272161977f772e5e681cdaea2fb9b3 100644
+index cc7785b5ef90835791f68ca5783d00cc67982227..b929f7565848a92adfc25742afe6d0c3040ffce8 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -977,8 +977,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -103,7 +103,7 @@ index a781453387b7ea96c9e9434f2fe7fb02dabdfa15..8a163a50d3272161977f772e5e681cda
          this.player.connection.send(new ClientboundSetCarriedItemPacket(this.player.getInventory().selected));
      }
  
-@@ -2914,19 +2914,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2915,19 +2915,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                                  case PLACE_SOME:
                                  case PLACE_ONE:
                                  case SWAP_WITH_CURSOR:
@@ -127,7 +127,7 @@ index a781453387b7ea96c9e9434f2fe7fb02dabdfa15..8a163a50d3272161977f772e5e681cda
                                      break;
                                  // Nothing
                                  case NOTHING:
-@@ -3051,7 +3051,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3052,7 +3052,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  case DENY:
                      // Reset the slot
                      if (packet.getSlotNum() >= 0) {

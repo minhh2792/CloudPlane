@@ -58,12 +58,12 @@ dependencies {
 paperweight {
     serverProject.set(project(":CloudPlane-Server"))
 
-    useStandardUpstream("airplane") {
-        url.set(github("TECHNOVE", "Airplane"))
-        ref.set(providers.gradleProperty("airplaneRef"))
+    useStandardUpstream("pufferfish") {
+        url.set(github("pufferfish-gg", "Pufferfish"))
+        ref.set(providers.gradleProperty("pufferfishRef"))
 
         withStandardPatcher {
-            baseName("Airplane")
+            baseName("Pufferfish")
 
             remapRepo.set("https://maven.fabricmc.net/")
             decompileRepo.set("https://files.minecraftforge.net/maven/")

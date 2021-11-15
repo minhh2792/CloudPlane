@@ -37,7 +37,7 @@ index 2b654e6adfe331a5fa68c1aea7d6d6cea1f3567d..a49976d2f01ddea695b4bcb4ad3d9168
              try (FileInputStream inputStream = new FileInputStream(oldConfigFile)) {
                  oldConfig = new AIR(inputStream);
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 01ed08c3c7496f40d420c67ed8f66fd6dcfd6695..dfe5e7fd9511c953c7ae931f19269c62bc76ad2e 100644
+index 20e37cdd709ff177d3c2a73939f77b15e2458c41..78b2ecd2d13ff9636ef1c6f15eaeb86cd6a45170 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -251,7 +251,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -47,8 +47,8 @@ index 01ed08c3c7496f40d420c67ed8f66fd6dcfd6695..dfe5e7fd9511c953c7ae931f19269c62
 -        gg.airplane.AirplaneConfig.load(); // Airplane - config
 +        gg.airplane.AirplaneConfig.load((java.io.File) options.valueOf("airplane-settings")); // Airplane - config // CloudPlane - allow changing airplane config file
          gg.airplane.commands.AirplaneCommands.init(); // Airplane - command
- 
-         this.setPvpAllowed(dedicatedserverproperties.pvp);
+         gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish
+         gg.pufferfish.pufferfish.PufferfishCommand.init(); // Pufferfish
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
 index 2d0246648d5044f5f1da43e629a0ef3af5e94860..26f3276b7c81d5b554cf32efe65a4d63ce39f698 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
