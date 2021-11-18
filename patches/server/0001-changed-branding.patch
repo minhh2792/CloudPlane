@@ -79,10 +79,10 @@ index ece77f5ea4b14bbed7c070131b3251ea86764538..142b724d039419f6ef4faee9ae8e73f8
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 525a0f932618b55372fa0dfa99dfa85b69c220cd..393f6b341a2f4708a17e826928b5ceb3135073d0 100644
+index 7ecf3a41f8a8069b87ffdd9eac36a2bc9f255970..55f79abf233fc29725738e8d042b5f5491a72951 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1746,7 +1746,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1749,7 +1749,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      public String getServerModName() {
          // Airplane start
          String purpurName = net.pl3x.purpur.PurpurConfig.serverModName;
@@ -105,7 +105,7 @@ index 5ef03a4645064b388642ddc64236e7f05ed9f8da..9917cd779809d4bba3525731ca1fcc77
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 72d69a2916f645067ac5d895db26f89d96db994c..edfe904427c5eb2cd9b8cfdf1a68a8188814b774 100644
+index d68872771c5d29afc19bf7cd74e970c714267b87..77b3f96f820d079a40dbce6e9cfaeabd5c54a222 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 @@ -394,7 +394,7 @@ public final class CraftMagicNumbers implements UnsafeValues {

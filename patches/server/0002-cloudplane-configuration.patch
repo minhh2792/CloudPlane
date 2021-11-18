@@ -17,10 +17,10 @@ index 0dde919a6e48664f687181967b8f180f8646b662..9c5d76577d15d1b637e10c724e610c4b
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 393f6b341a2f4708a17e826928b5ceb3135073d0..bc94b07d66948699b9f63d125f502c1fbc325562 100644
+index 55f79abf233fc29725738e8d042b5f5491a72951..df7e35fa0bbc8def7bf8e71879063ad949c1a7b5 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -731,6 +731,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -734,6 +734,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
          // Paper end
  
@@ -48,7 +48,7 @@ index 16dd108b4ec98d82e12fc968d8213b95b0a6952f..20e37cdd709ff177d3c2a73939f77b15
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 7a0462425f62ce1fb197fa2670e102286ef4c865..5464807752ad912057e40053266985491253f206 100644
+index 317b907d5e50974229b5973b61369e0380db06e2..09990c3cd02926cbd5218ddb4dd78e00eb351bc5 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -169,6 +169,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
