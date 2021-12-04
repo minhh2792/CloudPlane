@@ -44,7 +44,7 @@ jobs:
         run: ./gradlew applyPatches -Dpaperweight.debug=true
 
       - name: Build Paperclip Jar
-        run: ./gradlew paperclipJar -Dpaperweight.debug=true
+        run: ./gradlew createReobfPaperclipJar -Dpaperweight.debug=true
 
       - name: Upload Paperclip Jar
         uses: actions/upload-artifact@v2
