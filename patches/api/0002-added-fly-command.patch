@@ -5,10 +5,10 @@ Subject: [PATCH] added fly command
 
 
 diff --git a/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
-index 2469125af21a9f344bae968d77ca7a70f81aad60..8df71e6ece094482f2a1268da4af9c3a3ce41a17 100644
+index b84ac9da6cd911c791bd624a17d5edbfdfbc2e95..23cf9352dacfe5d7dd367aba2432f290a5f0f54a 100644
 --- a/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
 +++ b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
-@@ -14,6 +14,8 @@ public class CloudPlanePermissions {
+@@ -13,6 +13,8 @@ public class CloudPlanePermissions {
          Permission cloudplane = DefaultPermissions.registerPermission(ROOT, "Gives the user the ability to use alle CloudPlane utilities and commands", PermissionDefault.FALSE);
  
          Permission commands = DefaultPermissions.registerPermission(PREFIX + "command", "Allows the user to use all CloudPlane commands", PermissionDefault.FALSE, cloudplane);

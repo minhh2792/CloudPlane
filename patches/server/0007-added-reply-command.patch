@@ -22,19 +22,19 @@ index 1326e7d09e25b19b6f8a3911b3a3944514d77173..43c95115a14401d128026bf7ef623f0a
  
          return targets.size();
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 8102ee4cc9f936de20a0cb6875ada524800f28f7..e7c9de76eb29936b6e6cc0a09e0e7bf04d1d16a8 100644
+index 2c00a766130a7f682fc6c4c74321e10637ca7932..62d36c43934e87eed40a819ad36cf1c00c533b7a 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -185,6 +185,7 @@ public abstract class Player extends LivingEntity {
-     public boolean isCritical = false; // Purpur
-     public boolean flyingFallDamage = false; // Purpur
-     public boolean canPortalInstant = false; // Purpur
-+    public Player replyTarget; // CloudPlane - reply command
+@@ -190,6 +190,7 @@ public abstract class Player extends LivingEntity {
+         return (CraftHumanEntity) super.getBukkitEntity();
+     }
+     // CraftBukkit end
++    @Nullable public Player replyTarget; // CloudPlane - reply command
  
-     // CraftBukkit start
-     public boolean fauxSleeping;
+     public Player(Level world, BlockPos pos, float yaw, GameProfile profile) {
+         super(EntityType.PLAYER, world);
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 4627e50daa929bf0b97d03d53401070a951cfe4c..e184d6ce39d86f2a33aaacd90062f61d8c6b7f3a 100644
+index c9122bab8b791d3a1fdfd9e23dad44eb334fbb6c..490b31ffc84d6af69fed7666766eb6d54675b5d9 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -64,6 +64,7 @@ public class CloudPlaneConfig {
@@ -47,11 +47,12 @@ index 4627e50daa929bf0b97d03d53401070a951cfe4c..e184d6ce39d86f2a33aaacd90062f61d
      }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java b/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..2e25f8006e6a800eb4d0a3a4af3a607efa91fa55
+index 0000000000000000000000000000000000000000..a74efad770ed123dbabaec5727f72e51705c51a0
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/ReplyCommand.java
-@@ -0,0 +1,42 @@
+@@ -0,0 +1,43 @@
 +package tk.booky.cloudplane.commands;
++// Created by booky10 in CloudPlane (15:08 04.12.21)
 +
 +import com.mojang.brigadier.CommandDispatcher;
 +import com.mojang.brigadier.exceptions.CommandSyntaxException;

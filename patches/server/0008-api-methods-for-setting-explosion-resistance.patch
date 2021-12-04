@@ -5,12 +5,12 @@ Subject: [PATCH] api methods for setting explosion resistance
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index a2a4145b2ec826e09ad359700031583297d6612d..728f7891dd64571e78260aa8cbf9147330829a80 100644
+index 1831588b275f11aff37573fead835f6ddabfece1..c932a40960c1561930310db848503defd3933592 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-@@ -72,7 +72,7 @@ public abstract class BlockBehaviour {
+@@ -71,7 +71,7 @@ public abstract class BlockBehaviour {
      protected static final Direction[] UPDATE_SHAPE_ORDER = new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.DOWN, Direction.UP};
-     public final Material material; // Purpur - protected -> public
+     protected final Material material;
      public final boolean hasCollision;
 -    protected final float explosionResistance;
 +    public float explosionResistance; // CloudPlane - protected final -> public
@@ -18,13 +18,13 @@ index a2a4145b2ec826e09ad359700031583297d6612d..728f7891dd64571e78260aa8cbf91473
      protected final SoundType soundType;
      protected final float friction;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 59f8794ef2cb3f84d906602df5beb6ec8dfe84f8..4fd498b0c70d4ed2d67383134bce70cc00bff0e5 100644
+index b9b3763ed2511e26f069ebe3fb9a6e27020a480c..840f5817b2d2b2d23865716489459be0449ffe8f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2774,4 +2774,16 @@ public final class CraftServer implements Server {
-         return getServer().lagging;
+@@ -2714,4 +2714,16 @@ public final class CraftServer implements Server {
      }
-     // Purpur end
+ 
+     // Paper end
 +
 +    // CloudPlane start
 +    @Override

@@ -5,12 +5,12 @@ Subject: [PATCH] added configurable sleep message
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 5787558d17d8fbb912b317f90e1a45f3c75678f5..81543805b71c9b3710a0c8fd24faa9efbfc41554 100644
+index 93f81178eb667cc9f1bbc231140b917e09a5bee0..8018198a5e1f4447d49be7e6bbd340632c6ff1b9 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -735,6 +735,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
-             if (this.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE)) {
-                 this.stopWeather();
+@@ -597,6 +597,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
+             if (this.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE) && this.isRaining()) {
+                 this.resetWeatherCycle();
              }
 +            // CloudPlane start - configurable sleeping over message
 +            if (!org.apache.commons.lang3.StringUtils.isEmpty(tk.booky.cloudplane.CloudPlaneConfig.sleepMessage)) {

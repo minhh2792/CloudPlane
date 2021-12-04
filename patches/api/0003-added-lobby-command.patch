@@ -5,10 +5,10 @@ Subject: [PATCH] added lobby command
 
 
 diff --git a/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
-index 8df71e6ece094482f2a1268da4af9c3a3ce41a17..9de706abfe8ac6fbe11d7c9f94ba3d63cfbd1d19 100644
+index 23cf9352dacfe5d7dd367aba2432f290a5f0f54a..b06efb2e6abc3c16868a7103f19e96c1e536cf57 100644
 --- a/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
 +++ b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
-@@ -16,6 +16,8 @@ public class CloudPlanePermissions {
+@@ -15,6 +15,8 @@ public class CloudPlanePermissions {
          Permission commands = DefaultPermissions.registerPermission(PREFIX + "command", "Allows the user to use all CloudPlane commands", PermissionDefault.FALSE, cloudplane);
          DefaultPermissions.registerPermission(PREFIX + "command.fly", "Allows the user to use the fly command on himself", PermissionDefault.OP, commands);
          DefaultPermissions.registerPermission(PREFIX + "command.fly.other", "Allows the user to use the fly command on others", PermissionDefault.OP, commands);

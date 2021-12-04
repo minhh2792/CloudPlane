@@ -5,7 +5,7 @@ Subject: [PATCH] added lobby command
 
 
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 41577145f2d37635401fcc8355061ff604139b62..b9e475f40a6cf91d19271ce2371fb3c84b5de6f5 100644
+index 6a2cbb90489ad54d76031863c8e53b3355dc4a2e..cbaa05db877de6353365c1ff95d1879ea44ffcd4 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -63,6 +63,7 @@ public class CloudPlaneConfig {
@@ -28,10 +28,10 @@ index 41577145f2d37635401fcc8355061ff604139b62..b9e475f40a6cf91d19271ce2371fb3c8
  }
 diff --git a/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java b/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..f94d5ac26faa231ae6b69d40726ef8486172895e
+index 0000000000000000000000000000000000000000..a2a7556170c30b26a919face2db0733b99fbee6d
 --- /dev/null
 +++ b/src/main/java/tk/booky/cloudplane/commands/LobbyCommand.java
-@@ -0,0 +1,64 @@
+@@ -0,0 +1,65 @@
 +package tk.booky.cloudplane.commands;
 +
 +import com.mojang.brigadier.CommandDispatcher;
@@ -43,6 +43,7 @@ index 0000000000000000000000000000000000000000..f94d5ac26faa231ae6b69d40726ef848
 +import net.minecraft.commands.Commands;
 +import net.minecraft.commands.arguments.EntityArgument;
 +import net.minecraft.network.FriendlyByteBuf;
++import net.minecraft.network.chat.TextComponent;
 +import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
 +import net.minecraft.resources.ResourceLocation;
 +import net.minecraft.server.level.ServerPlayer;
@@ -89,7 +90,7 @@ index 0000000000000000000000000000000000000000..f94d5ac26faa231ae6b69d40726ef848
 +
 +    private int execute(CommandSourceStack sender, Collection<ServerPlayer> targets) {
 +        for (ServerPlayer player : targets) {
-+            sender.sendSuccess("You were sent to the lobby", true);
++            sender.sendSuccess(new TextComponent("You were sent to the lobby"), true);
 +            player.connection.send(PACKET);
 +        }
 +

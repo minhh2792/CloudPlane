@@ -1,0 +1,106 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <boooky10@gmail.com>
+Date: Fri, 29 Oct 2021 19:24:00 +0200
+Subject: [PATCH] port bungeeguard forwarding
+
+https://github.com/lucko/BungeeGuard/
+https://spigotmc.org/resources/79601/
+
+diff --git a/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
+index 150050fb343ef6119204b7d5220207765a6937bc..7cd5af2883e3ba805e37c4c6141ac115f8a49adc 100644
+--- a/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
+@@ -18,6 +18,7 @@ import java.util.HashMap;
+ 
+ public class ServerHandshakePacketListenerImpl implements ServerHandshakePacketListener {
+ 
++    public static final java.lang.reflect.Type PROPERTY_LIST_TYPE = new com.google.common.reflect.TypeToken<java.util.List<com.mojang.authlib.properties.Property>>(){}.getType(); // CloudPlane - port bungeeguard forwarding
+     // Spigot start
+     private static final com.google.gson.Gson gson = new com.google.gson.Gson();
+     static final java.util.regex.Pattern HOST_PATTERN = java.util.regex.Pattern.compile("[0-9a-f\\.:]{0,45}");
+@@ -120,6 +121,61 @@ public class ServerHandshakePacketListenerImpl implements ServerHandshakePacketL
+                     // Don't try and handle default logic if it's been handled by the event.
+                     if (!handledByEvent && proxyLogicEnabled) {
+                         // Paper end
++                        // CloudPlane start - port bungeeguard forwarding
++                        if (tk.booky.cloudplane.CloudPlaneConfig.bungeeGuardEnabled) {
++                            if (packet.hostName.length() > 2500) {
++                                connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                                connection.disconnect(TextComponent.EMPTY);
++                                return;
++                            }
++
++                            String[] hostSplit = packet.hostName.split("\00");
++                            if (hostSplit.length != 4) {
++                                connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                                connection.disconnect(TextComponent.EMPTY);
++                                return;
++                            }
++
++                            java.util.List<com.mojang.authlib.properties.Property> properties = gson.fromJson(hostSplit[3], PROPERTY_LIST_TYPE);
++                            if (properties.isEmpty()) {
++                                connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                                connection.disconnect(TextComponent.EMPTY);
++                                return;
++                            }
++
++                            String bungeeGuardToken = null;
++                            for (java.util.Iterator<com.mojang.authlib.properties.Property> iterator = properties.iterator(); iterator.hasNext(); ) {
++                                com.mojang.authlib.properties.Property property = iterator.next();
++                                if (property.getName().equals("bungeeguard-token")) {
++                                    if (bungeeGuardToken != null) {
++                                        connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                                        connection.disconnect(TextComponent.EMPTY);
++                                        return;
++                                    }
++
++                                    bungeeGuardToken = property.getValue();
++                                    iterator.remove();
++                                }
++                            }
++
++                            if (bungeeGuardToken == null) {
++                                connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                                connection.disconnect(TextComponent.EMPTY);
++                                return;
++                            }
++
++                            if (!tk.booky.cloudplane.CloudPlaneConfig.bungeeGuardTokens.contains(bungeeGuardToken)) {
++                                connection.send(new ClientboundLoginDisconnectPacket(TextComponent.EMPTY));
++                                connection.disconnect(TextComponent.EMPTY);
++                                return;
++                            }
++
++                            packet.hostName = hostSplit[0];
++                            connection.address = new java.net.InetSocketAddress(hostSplit[1], connection.address instanceof java.net.InetSocketAddress ? ((java.net.InetSocketAddress) connection.address).getPort() : 0);
++                            connection.spoofedUUID = com.mojang.util.UUIDTypeAdapter.fromString(hostSplit[2]);;
++                            connection.spoofedProfile = properties.toArray(com.mojang.authlib.properties.Property[]::new);
++                        } else {
++                            // CloudPlane end
+                     // if (org.spigotmc.SpigotConfig.bungee) { // Paper - comment out, we check above!
+                         if ( ( split.length == 3 || split.length == 4 ) && ( ServerHandshakePacketListenerImpl.BYPASS_HOSTCHECK || ServerHandshakePacketListenerImpl.HOST_PATTERN.matcher( split[1] ).matches() ) ) { // Paper
+                             // Paper start - Unix domain socket support
+@@ -139,6 +195,7 @@ public class ServerHandshakePacketListenerImpl implements ServerHandshakePacketL
+                         {
+                             connection.spoofedProfile = ServerHandshakePacketListenerImpl.gson.fromJson(split[3], com.mojang.authlib.properties.Property[].class);
+                         }
++                        } // CloudPlane - port bungeeguard forwarding
+                     } else if ( ( split.length == 3 || split.length == 4 ) && ( ServerHandshakePacketListenerImpl.HOST_PATTERN.matcher( split[1] ).matches() ) ) {
+                         TranslatableComponent chatmessage = new TranslatableComponent("Unknown data in login hostname, did you forget to enable BungeeCord in spigot.yml?");
+                         this.connection.send(new ClientboundLoginDisconnectPacket(chatmessage));
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+index af5a9fa3593576ca9294d5efb81315d3e550ee15..44c7c284be84669b1bd96a51344d4d1435402e1e 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+@@ -164,4 +164,11 @@ public class CloudPlaneConfig {
+     private static void debugVersion() {
+         debugVersion = getBoolean("settings.debug-version", debugVersion);
+     }
++
++    public static boolean bungeeGuardEnabled = false;
++    public static Set<String> bungeeGuardTokens = java.util.Collections.emptySet();
++    private static void bungeeGuard() {
++        bungeeGuardEnabled = getBoolean("settings.bungee-guard.enabled", bungeeGuardEnabled);
++        bungeeGuardTokens = new java.util.HashSet<>(getList("settings.bungee-guard.tokens", new java.util.ArrayList<>(bungeeGuardTokens)));
++    }
+ }

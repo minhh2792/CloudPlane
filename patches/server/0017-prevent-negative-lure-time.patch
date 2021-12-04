@@ -6,10 +6,10 @@ Subject: [PATCH] prevent negative lure time
 Idea took from https://github.com/PaperMC/Paper/issues/6824.
 
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
-index dc7968c3bcf72af22fffbc85b058ac5820f06453..4f461e722ac62b477619fe04182d771e531e73dc 100644
+index 1037d0a0cdd4fd7aa99a958ee969759c5883fdc0..9389bc654d786dbbab8405d2340bf8f29c521240 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
-@@ -408,6 +408,7 @@ public class FishingHook extends Projectile {
+@@ -407,6 +407,7 @@ public class FishingHook extends Projectile {
                  // CraftBukkit start - logic to modify fishing wait time
                  this.timeUntilLured = Mth.nextInt(this.random, this.minWaitTime, this.maxWaitTime);
                  this.timeUntilLured -= (this.applyLure) ? this.lureSpeed * 20 * 5 : 0;

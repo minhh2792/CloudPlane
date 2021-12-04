@@ -5,12 +5,12 @@ Subject: [PATCH] added optional version in debug view
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index dc9aae9a781c782e9d3da201777a7546705df8d6..710d54e777ad8ce69e979eed3e1b3174c65dfcd0 100644
+index 4d34494bd020886fdf21e65bbd38f16a917df5ea..5a6e694c88168bf91ed9a046081839742c9441d8 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -269,7 +269,7 @@ public abstract class PlayerList {
          // Spigot - view distance
-         playerconnection.send(new ClientboundLoginPacket(player.getId(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), worlddata.isHardcore(), this.server.levelKeys(), this.registryHolder, worldserver1.dimensionType(), worldserver1.dimension(), this.getMaxPlayers(), worldserver1.getChunkSource().chunkMap.playerChunkManager.getLoadDistance(), flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat())); // Paper - no-tick view distance // Paper - replace old player chunk management
+         playerconnection.send(new ClientboundLoginPacket(player.getId(), worlddata.isHardcore(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), this.server.levelKeys(), this.registryHolder, worldserver1.dimensionType(), worldserver1.dimension(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), this.getMaxPlayers(), worldserver1.spigotConfig.viewDistance, worldserver1.spigotConfig.simulationDistance, flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat()));
          player.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
 -        playerconnection.send(new ClientboundCustomPayloadPacket(ClientboundCustomPayloadPacket.BRAND, (new FriendlyByteBuf(Unpooled.buffer())).writeUtf(this.getServer().getServerModName())));
 +        playerconnection.send(new ClientboundCustomPayloadPacket(ClientboundCustomPayloadPacket.BRAND, (new FriendlyByteBuf(Unpooled.buffer())).writeUtf(tk.booky.cloudplane.CloudPlaneConfig.debugVersion ? getServer().server.serverVersion : this.getServer().getServerModName()))); // CloudPlane
@@ -18,23 +18,23 @@ index dc9aae9a781c782e9d3da201777a7546705df8d6..710d54e777ad8ce69e979eed3e1b3174
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index e91f5f3a998cdb111ed6fa6be1ca683fdc5975fa..e95778e59407093724814c8679f1902c6961c1fe 100644
+index 840f5817b2d2b2d23865716489459be0449ffe8f..6abb3d316df8a20b0c9d75ebcda555eb4fe670c5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -252,7 +252,7 @@ import javax.annotation.Nonnull; // Paper
+@@ -254,7 +254,7 @@ import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
-     private final String serverName = "CloudPlane"; // Paper // Airplane // Pufferfish // CloudPlane
+     private final String serverName = "CloudPlane"; // Paper // Pufferfish // CloudPlane
 -    private final String serverVersion;
 +    public final String serverVersion; // CloudPlane - private --> public
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
      private final ServicesManager servicesManager = new SimpleServicesManager();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index e2314ac489eb7c3895879db0437d8d966944fda6..33a1c39023806b5fb8eb96be2f9ffa42367a2d37 100644
+index 4fb9bd0162d5fb38a354c367506c5448885c92f9..0b75a9b00382a76842035c53d071ff300023bd4f 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -174,4 +174,9 @@ public class CloudPlaneConfig {
+@@ -157,4 +157,9 @@ public class CloudPlaneConfig {
              localizeItems = getBoolean("settings.adventure.localize-items", localizeItems);
          }
      }

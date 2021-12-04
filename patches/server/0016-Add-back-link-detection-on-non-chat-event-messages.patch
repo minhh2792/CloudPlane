@@ -5,10 +5,10 @@ Subject: [PATCH] Add back link detection on non-chat event messages
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 710d54e777ad8ce69e979eed3e1b3174c65dfcd0..c43af6db5947b771f971e5c514d38bb0ab84f52c 100644
+index 5a6e694c88168bf91ed9a046081839742c9441d8..bc28f32482bebf07bf1257c711ef9ed7b753c29f 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1469,6 +1469,7 @@ public abstract class PlayerList {
+@@ -1376,6 +1376,7 @@ public abstract class PlayerList {
      public void broadcastMessage(Component message, ChatType type, UUID sender) {
          this.server.sendMessage(message, sender);
          Iterator iterator = this.players.iterator();
@@ -17,10 +17,10 @@ index 710d54e777ad8ce69e979eed3e1b3174c65dfcd0..c43af6db5947b771f971e5c514d38bb0
          while (iterator.hasNext()) {
              ServerPlayer entityplayer = (ServerPlayer) iterator.next();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index 33a1c39023806b5fb8eb96be2f9ffa42367a2d37..cac3c3e0776ce50641d7ccfa33273e2c3afab820 100644
+index 0b75a9b00382a76842035c53d071ff300023bd4f..af5a9fa3593576ca9294d5efb81315d3e550ee15 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-@@ -165,6 +165,7 @@ public class CloudPlaneConfig {
+@@ -148,6 +148,7 @@ public class CloudPlaneConfig {
      }
  
      public static boolean localizeItems = false;
@@ -28,7 +28,7 @@ index 33a1c39023806b5fb8eb96be2f9ffa42367a2d37..cac3c3e0776ce50641d7ccfa33273e2c
      private static void adventure() {
          if (version == 2) {
              localizeItems = getBoolean("settings.localize.items", localizeItems);
-@@ -172,6 +173,7 @@ public class CloudPlaneConfig {
+@@ -155,6 +156,7 @@ public class CloudPlaneConfig {
              set("settings.localize", null);
          } else {
              localizeItems = getBoolean("settings.adventure.localize-items", localizeItems);

@@ -5,10 +5,10 @@ Subject: [PATCH] added tempban command
 
 
 diff --git a/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
-index 0d2a8f9e4a4228964798274d28121fe0ca3645bf..1919f94f9732ddf7e466534cbdb3255c65795596 100644
+index 66c44e391be3b82f110b1ea7d486a3bbd9c80731..4d6446e8b41357222f8ec6002a0428f5820f5cb1 100644
 --- a/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
 +++ b/src/main/java/org/bukkit/util/permissions/CloudPlanePermissions.java
-@@ -19,6 +19,7 @@ public class CloudPlanePermissions {
+@@ -18,6 +18,7 @@ public class CloudPlanePermissions {
          DefaultPermissions.registerPermission(PREFIX + "command.lobby", "Allows the user to use the lobby command on himself", PermissionDefault.TRUE, commands);
          DefaultPermissions.registerPermission(PREFIX + "command.lobby.other", "Allows the user to use the lobby command on others", PermissionDefault.OP, commands);
          DefaultPermissions.registerPermission(PREFIX + "command.reply", "Allows the user to use the reply command", PermissionDefault.TRUE, commands);

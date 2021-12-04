@@ -5,12 +5,12 @@ Subject: [PATCH] Expose tracked entities
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 7740a4d7652d23460017ca2abfc3dcd838ce9e99..4860473774bc92d5649a20b2a7518e6b79a74a6e 100644
+index 862b4fccd741cb9de7a00a45f9999a7f9fe7a157..ea046b203a1a0b5d492ff97ffc4aa8b9cb4ecede 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -2285,7 +2285,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2253,7 +2253,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
  
-         public final ServerEntity serverEntity; // Purpur -> package -> public
+         final ServerEntity serverEntity;
          final Entity entity;
 -        private final int range;
 +        public final int range; // CloudPlane - private --> public
@@ -18,13 +18,13 @@ index 7740a4d7652d23460017ca2abfc3dcd838ce9e99..4860473774bc92d5649a20b2a7518e6b
          public final Set<ServerPlayerConnection> seenBy = new ReferenceOpenHashSet<>(); // Paper - optimise map impl
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index a1638cc6b58541651c2e452e72ae5e382d387ab7..99a0c5f2dead3a8167a99ac708a9bdcd5f00f1d3 100644
+index 7061d2f0af1b7f475566d65b68f59c655fe22507..bea7a2fc6aa76bf2aa2510e4adc2ca31654312ce 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2674,4 +2674,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
-         return getHandle().flyingFallDamage;
+@@ -2563,4 +2563,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+         return this.spigot;
      }
-     // Purpur end
+     // Spigot end
 +
 +    // CloudPlane start - expose tracked entities
 +    @Override

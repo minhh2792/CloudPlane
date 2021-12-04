@@ -5,10 +5,10 @@ Subject: [PATCH] added tempban command
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 71705517943f62ae85a9298cf484bb7c78438267..e0dc1aa46703ed1d761bfcae2b81064785f52bfb 100644
+index 25b787d1b22e495fb6756e4ee909776ed8699492..4d34494bd020886fdf21e65bbd38f16a917df5ea 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -129,7 +129,7 @@ public abstract class PlayerList {
+@@ -128,7 +128,7 @@ public abstract class PlayerList {
      public static final File WHITELIST_FILE = new File("whitelist.json");
      private static final Logger LOGGER = LogManager.getLogger();
      private static final int SEND_PLAYER_INFO_INTERVAL = 600;
@@ -18,7 +18,7 @@ index 71705517943f62ae85a9298cf484bb7c78438267..e0dc1aa46703ed1d761bfcae2b810647
      public final List<ServerPlayer> players = new java.util.concurrent.CopyOnWriteArrayList(); // CraftBukkit - ArrayList -> CopyOnWriteArrayList: Iterator safety
      private final Map<UUID, ServerPlayer> playersByUUID = Maps.newHashMap();
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index e184d6ce39d86f2a33aaacd90062f61d8c6b7f3a..44ef2aa3a3cd13ff347a37cd031533915837c99b 100644
+index 490b31ffc84d6af69fed7666766eb6d54675b5d9..2cdc4cc69184197346015093be6aca8be07b9a35 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -65,6 +65,7 @@ public class CloudPlaneConfig {

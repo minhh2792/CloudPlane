@@ -5,7 +5,7 @@ Subject: [PATCH] added invisible item frames
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
-index 90f1ecd97eef93316f61bf5d761d33c313e1a077..751a63750d05021fdb188a9a59c0030f4dc23d66 100644
+index 30159f4f387b61b50589fad61f91c9e5a4adaf12..fc124230f19a09bf4b02ed59360e24bf2aa52074 100644
 --- a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
 +++ b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
 @@ -187,6 +187,12 @@ public class ItemFrame extends HangingEntity {
@@ -21,7 +21,7 @@ index 90f1ecd97eef93316f61bf5d761d33c313e1a077..751a63750d05021fdb188a9a59c0030f
              }
  
              return true;
-@@ -434,6 +440,12 @@ public class ItemFrame extends HangingEntity {
+@@ -428,6 +434,12 @@ public class ItemFrame extends HangingEntity {
                          }
                      }
  
@@ -35,7 +35,7 @@ index 90f1ecd97eef93316f61bf5d761d33c313e1a077..751a63750d05021fdb188a9a59c0030f
                      if (!player.getAbilities().instabuild) {
                          itemstack.shrink(1);
 diff --git a/src/main/java/net/minecraft/world/item/HangingEntityItem.java b/src/main/java/net/minecraft/world/item/HangingEntityItem.java
-index 8cdede6a9698d6c99b4f08edc2a3403fec854f66..1d38fe546cf48dc35ef22c35b33365ba2fce7e66 100644
+index 0284201b0bb0f5c9a4a2393cf0d83e8e21262df3..1e3fd7321efb392fc4543188922805aecc0b2a7e 100644
 --- a/src/main/java/net/minecraft/world/item/HangingEntityItem.java
 +++ b/src/main/java/net/minecraft/world/item/HangingEntityItem.java
 @@ -46,6 +46,14 @@ public class HangingEntityItem extends Item {
@@ -45,8 +45,8 @@ index 8cdede6a9698d6c99b4f08edc2a3403fec854f66..1d38fe546cf48dc35ef22c35b33365ba
 +                // CloudPlane start - invisible item frames
 +                if (itemstack.tag != null && !itemstack.tag.isEmpty()) {
 +                    if (itemstack.tag.getInt("CustomModelData") == 1) {
-+                        object.setGlowingTag(true);
-+                        object.noCulling = true;
++                        ((ItemFrame) object).setGlowingTag(true);
++                        ((ItemFrame) object).noCulling = true;
 +                    }
 +                }
 +                // CloudPlane end
@@ -54,7 +54,7 @@ index 8cdede6a9698d6c99b4f08edc2a3403fec854f66..1d38fe546cf48dc35ef22c35b33365ba
                  if (this.type != EntityType.GLOW_ITEM_FRAME) {
                      return InteractionResult.sidedSuccess(world.isClientSide);
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
-index b9e475f40a6cf91d19271ce2371fb3c84b5de6f5..4627e50daa929bf0b97d03d53401070a951cfe4c 100644
+index cbaa05db877de6353365c1ff95d1879ea44ffcd4..c9122bab8b791d3a1fdfd9e23dad44eb334fbb6c 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 +++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 @@ -71,6 +71,7 @@ public class CloudPlaneConfig {
