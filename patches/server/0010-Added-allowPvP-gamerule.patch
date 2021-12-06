@@ -1,14 +1,14 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Fri, 9 Jul 2021 11:28:12 +0200
-Subject: [PATCH] added allowPvP gamerule
+Subject: [PATCH] Added allowPvP gamerule
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 2bbb547e9f96984b50554e5783fc9ad2601eb52b..45a83b3daf5383d875a80ecd99ec8679cd442297 100644
+index 3d973c5a62a2985a472c89c0a64aa7edc395aba2..9d3914c5d3745ac4f077264049cb0ca78744f119 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -3083,7 +3083,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, i
+@@ -3165,7 +3165,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, i
      }
  
      public boolean isInvulnerableTo(DamageSource damageSource) {

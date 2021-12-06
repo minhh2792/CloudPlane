@@ -1,15 +1,15 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Thu, 1 Jul 2021 21:58:19 +0200
-Subject: [PATCH] added invisible item frames
+Subject: [PATCH] Added invisible item frames
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
-index 30159f4f387b61b50589fad61f91c9e5a4adaf12..fc124230f19a09bf4b02ed59360e24bf2aa52074 100644
+index 0f8513ee6f56148cf63f4cd6a60acb7f70280ff1..7a092fdd820d17e8e0f8b56809dfb3e0708ed007 100644
 --- a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
 +++ b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
-@@ -187,6 +187,12 @@ public class ItemFrame extends HangingEntity {
-                 // CraftBukkit end
+@@ -195,6 +195,12 @@ public class ItemFrame extends HangingEntity {
+                 // Paper end
                  this.dropItem(source.getEntity(), false);
                  this.playSound(this.getRemoveItemSound(), 1.0F, 1.0F);
 +                // CloudPlane start - invisible item frames
@@ -21,19 +21,19 @@ index 30159f4f387b61b50589fad61f91c9e5a4adaf12..fc124230f19a09bf4b02ed59360e24bf
              }
  
              return true;
-@@ -428,6 +434,12 @@ public class ItemFrame extends HangingEntity {
-                         }
-                     }
- 
+@@ -441,6 +447,12 @@ public class ItemFrame extends HangingEntity {
+                     this.setItem(ItemStack.fromBukkitCopy(event.getItemStack()));
+                     // this.setItem(itemstack);
+                     // Paper end
 +                    // CloudPlane start - invisible item frames
 +                    if (noCulling) {
 +                        setGlowingTag(false);
 +                        setInvisible(true);
 +                    }
 +                    // CloudPlane end
-                     this.setItem(itemstack);
                      if (!player.getAbilities().instabuild) {
                          itemstack.shrink(1);
+                     }
 diff --git a/src/main/java/net/minecraft/world/item/HangingEntityItem.java b/src/main/java/net/minecraft/world/item/HangingEntityItem.java
 index 0284201b0bb0f5c9a4a2393cf0d83e8e21262df3..1e3fd7321efb392fc4543188922805aecc0b2a7e 100644
 --- a/src/main/java/net/minecraft/world/item/HangingEntityItem.java

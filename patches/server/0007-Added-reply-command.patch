@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Fri, 2 Jul 2021 13:34:31 +0200
-Subject: [PATCH] added reply command
+Subject: [PATCH] Added reply command
 
 
 diff --git a/src/main/java/net/minecraft/server/commands/MsgCommand.java b/src/main/java/net/minecraft/server/commands/MsgCommand.java

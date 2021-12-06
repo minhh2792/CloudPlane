@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Sun, 12 Sep 2021 12:50:09 +0200
-Subject: [PATCH] allow changing pufferfish config file
+Subject: [PATCH] Allow changing pufferfish config file location
 
 
 diff --git a/src/main/java/gg/pufferfish/pufferfish/PufferfishCommand.java b/src/main/java/gg/pufferfish/pufferfish/PufferfishCommand.java

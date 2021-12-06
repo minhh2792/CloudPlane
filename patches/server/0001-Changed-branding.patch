@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Fri, 25 Jun 2021 20:37:53 +0200
-Subject: [PATCH] changed branding
+Subject: [PATCH] Changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index bc42301d161b49eead1d5408183bb04d7f617153..01fdb63a0f87e38dcfd2ebfa31fb911d8a04f3ca 100644
+index 900f78dee1fa3470f3623317b322f967c4d394e0..02f2d47ef71c06380cf705c90464d265c5d591ea 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,7 +18,7 @@ repositories {
@@ -91,7 +91,7 @@ index 1e7ae166a1d53fce28297e2eaebd11ec28a57a55..8f0db119a9e8e28673e38b44bc3354b4
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index d42aa5c6a5bdb00893a134946ec07ec513e53991..dbde0934230f8301424317399d71fcb0242c7430 100644
+index 70007282d5fbb243d1d76d46713e3dcbc2411677..6d231cd5e6fddc4223ca72be23a61ca6316457cb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -253,7 +253,7 @@ import javax.annotation.Nullable; // Paper

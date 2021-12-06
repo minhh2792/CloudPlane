@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Mon, 5 Jul 2021 19:52:09 +0200
-Subject: [PATCH] added tempban command
+Subject: [PATCH] Added tempban command
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 25b787d1b22e495fb6756e4ee909776ed8699492..4d34494bd020886fdf21e65bbd38f16a917df5ea 100644
+index 042be2cf60a9d01698808d84f2e537a5eb952079..737c79a386d77b987c8f461a78204503ca3f1e9e 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -128,7 +128,7 @@ public abstract class PlayerList {

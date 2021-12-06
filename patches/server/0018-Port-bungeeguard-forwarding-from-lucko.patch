@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Fri, 29 Oct 2021 19:24:00 +0200
-Subject: [PATCH] port bungeeguard forwarding
+Subject: [PATCH] Port bungeeguard forwarding from lucko
 
 https://github.com/lucko/BungeeGuard/
 https://spigotmc.org/resources/79601/

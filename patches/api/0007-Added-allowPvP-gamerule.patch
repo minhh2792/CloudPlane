@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Fri, 9 Jul 2021 13:02:30 +0200
-Subject: [PATCH] added allowPvP gamerule
+Subject: [PATCH] Added allowPvP gamerule
 
 
 diff --git a/src/main/java/org/bukkit/GameRule.java b/src/main/java/org/bukkit/GameRule.java

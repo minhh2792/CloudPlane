@@ -1,14 +1,14 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Fri, 2 Jul 2021 13:49:02 +0200
-Subject: [PATCH] api methods for setting explosion resistance
+Subject: [PATCH] Added API methods for setting explosion resistance
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index eb0aa2a2a9def0270341ee15d8a7a0629a67a823..fe872f76e00255b4199732b279894e30f4bb2962 100644
+index b7c45aa5d5f79fd16e59401acfa9c2bed0a5d78c..575189f224c2113e831bf8973bae8e20ea58d2e3 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2120,4 +2120,14 @@ public final class Bukkit {
+@@ -2138,4 +2138,14 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
@@ -24,10 +24,10 @@ index eb0aa2a2a9def0270341ee15d8a7a0629a67a823..fe872f76e00255b4199732b279894e30
 +    // CloudPlane end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index a20082d7875a310caa8f70dadefe8673d10e5a9b..850d244d07e1c0470946d63abf046634bb79c11c 100644
+index e5782bd5fe13639a9d5a29c22a72dedd8f785011..1e26c453ab5acce59a2799d3b71c2d85e1cea6c7 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1844,4 +1844,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1860,4 +1860,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      io.papermc.paper.datapack.DatapackManager getDatapackManager();
      // Paper end

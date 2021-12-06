@@ -1,11 +1,12 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Tue, 24 Aug 2021 20:43:57 +0200
-Subject: [PATCH] added optional version in debug view
+Subject: [PATCH] Added optional version in debug view
 
+This patch sends the server git hash within the 'minecraft:brand' packet.
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 4d34494bd020886fdf21e65bbd38f16a917df5ea..5a6e694c88168bf91ed9a046081839742c9441d8 100644
+index 737c79a386d77b987c8f461a78204503ca3f1e9e..f8eddd29729f0f6ab3598d3a12bb36589735a4bd 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -269,7 +269,7 @@ public abstract class PlayerList {
@@ -18,7 +19,7 @@ index 4d34494bd020886fdf21e65bbd38f16a917df5ea..5a6e694c88168bf91ed9a04608183974
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 840f5817b2d2b2d23865716489459be0449ffe8f..6abb3d316df8a20b0c9d75ebcda555eb4fe670c5 100644
+index f17e1376dc27cb8bfa87ec9c9648a102717c81d2..49806d4968512cae865db5e7fc15b874a3efb4fd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -254,7 +254,7 @@ import javax.annotation.Nonnull; // Paper

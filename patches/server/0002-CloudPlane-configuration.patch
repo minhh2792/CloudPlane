@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Sun, 27 Jun 2021 20:30:37 +0200
-Subject: [PATCH] cloudplane configuration
+Subject: [PATCH] CloudPlane configuration
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
@@ -48,7 +48,7 @@ index aae2dadabedb075fd1bc712f0226882b85f4551d..78d6cbd75ace5dbff500bc96f7b75cb2
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 1fd3c3e1be3fda17b5759b7de719ce2d03da676c..93eb5f038a176cb9773cd78cc93b5839fff63093 100644
+index 90aa1d75b5c23e5ee27ceae9f6ef90de913a6601..bb606d8eea8afc05fac705a1e45c640dd7eb381f 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -167,6 +167,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -68,7 +68,7 @@ index 1fd3c3e1be3fda17b5759b7de719ce2d03da676c..93eb5f038a176cb9773cd78cc93b5839
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
          this.ticksPerAnimalSpawns = this.getCraftServer().getTicksPerAnimalSpawns(); // CraftBukkit
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index dbde0934230f8301424317399d71fcb0242c7430..b9b3763ed2511e26f069ebe3fb9a6e27020a480c 100644
+index 6d231cd5e6fddc4223ca72be23a61ca6316457cb..9663e94ad51e34860392d462e5d117112f3959f7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -931,6 +931,7 @@ public final class CraftServer implements Server {
@@ -79,7 +79,7 @@ index dbde0934230f8301424317399d71fcb0242c7430..b9b3763ed2511e26f069ebe3fb9a6e27
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
-@@ -2552,6 +2553,13 @@ public final class CraftServer implements Server {
+@@ -2653,6 +2654,13 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  

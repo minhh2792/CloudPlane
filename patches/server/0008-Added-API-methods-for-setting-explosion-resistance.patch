@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: booky10 <boooky10@gmail.com>
 Date: Fri, 2 Jul 2021 13:49:01 +0200
-Subject: [PATCH] api methods for setting explosion resistance
+Subject: [PATCH] Added API methods for setting explosion resistance
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index 1831588b275f11aff37573fead835f6ddabfece1..c932a40960c1561930310db848503defd3933592 100644
+index 05c46f3b3bce5225b819d86e6e06729a5093e092..0c80af638cc99d02625caa4880033a762b8608b5 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 @@ -71,7 +71,7 @@ public abstract class BlockBehaviour {
@@ -18,10 +18,10 @@ index 1831588b275f11aff37573fead835f6ddabfece1..c932a40960c1561930310db848503def
      protected final SoundType soundType;
      protected final float friction;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b9b3763ed2511e26f069ebe3fb9a6e27020a480c..840f5817b2d2b2d23865716489459be0449ffe8f 100644
+index 9663e94ad51e34860392d462e5d117112f3959f7..f17e1376dc27cb8bfa87ec9c9648a102717c81d2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2714,4 +2714,16 @@ public final class CraftServer implements Server {
+@@ -2815,4 +2815,16 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
