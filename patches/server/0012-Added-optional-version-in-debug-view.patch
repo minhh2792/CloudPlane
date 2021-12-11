@@ -6,7 +6,7 @@ Subject: [PATCH] Added optional version in debug view
 This patch sends the server git hash within the 'minecraft:brand' packet.
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 737c79a386d77b987c8f461a78204503ca3f1e9e..f8eddd29729f0f6ab3598d3a12bb36589735a4bd 100644
+index 146f36e24cf2d1c875ffbacc541f93cb0bd15108..13147eae60452518bb7218c060b6825bbb973061 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -269,7 +269,7 @@ public abstract class PlayerList {
@@ -19,13 +19,13 @@ index 737c79a386d77b987c8f461a78204503ca3f1e9e..f8eddd29729f0f6ab3598d3a12bb3658
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index f17e1376dc27cb8bfa87ec9c9648a102717c81d2..49806d4968512cae865db5e7fc15b874a3efb4fd 100644
+index 9444256f266e4584f98beebecda882958e991c51..5fea0ba2a7450f65b37d2a483fa4dd6592f65e4a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -254,7 +254,7 @@ import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
-     private final String serverName = "CloudPlane"; // Paper // Pufferfish // CloudPlane
+     private final String serverName = "CloudPlane"; // Paper // Purpur // Pufferfish // CloudPlane
 -    private final String serverVersion;
 +    public final String serverVersion; // CloudPlane - private --> public
      private final String bukkitVersion = Versioning.getBukkitVersion();

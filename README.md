@@ -17,4 +17,4 @@ cd CloudPlane # Change to the directory you cloned the repository to
 ./gradlew createReobfPaperclipJar # Create the reobfuscated paperclip jar
 ```
 
-The output file named `CloudPlane-paperclip-1.18-R0.1-SNAPSHOT-reobf.jar` can now be found in `build/libs`.
+The output file named `CloudPlane-paperclip-1.18.1-R0.1-SNAPSHOT-reobf.jar` can now be found in `build/libs`.

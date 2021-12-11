@@ -33,10 +33,10 @@ index 42783a321b489aeed7d23a2e5cae2ee44394bbd9..3856610a0a1979ac90ecc891d46df9ff
  		if (configFile.exists()) {
  			try {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 78d6cbd75ace5dbff500bc96f7b75cb230679c69..8a934e87d15a285e91a0f6e2f3c72dd48fb159c2 100644
+index 56a84abd4ad90441a4dbd6bd8442b97127f2340d..9f29d7d004e8928e6ff32b3e371db0613422a85f 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -240,7 +240,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -249,7 +249,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
@@ -46,10 +46,10 @@ index 78d6cbd75ace5dbff500bc96f7b75cb230679c69..8a934e87d15a285e91a0f6e2f3c72dd4
  
          this.setPvpAllowed(dedicatedserverproperties.pvp);
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 4805e04d3a90c46a0da0ff0e024f891ab697aa26..1870b3c8a821cac212ecc20429fc277e1cf01f64 100644
+index 7e117784ce76bf9dc1c708f31372d945a919e727..82e4bb05e95c3720520eaf512acd4d281a33e987 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -161,6 +161,12 @@ public class Main {
+@@ -167,6 +167,12 @@ public class Main {
                          .ofType(File.class)
                          .defaultsTo(new File("cloudplane.yml"))
                          .describedAs("Yml file");

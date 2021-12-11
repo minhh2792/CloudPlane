@@ -5,13 +5,13 @@ Subject: [PATCH] Added API methods for setting explosion resistance
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index b7c45aa5d5f79fd16e59401acfa9c2bed0a5d78c..575189f224c2113e831bf8973bae8e20ea58d2e3 100644
+index 5bfdc308b5133c0cbe7cccfa26bd2135ccd4603b..37d8bf24d3743c69509a7f74780597510b8e47ea 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2138,4 +2138,14 @@ public final class Bukkit {
-     public static Server.Spigot spigot() {
-         return server.spigot();
+@@ -2177,4 +2177,14 @@ public final class Bukkit {
+         server.removeFuel(material);
      }
+     // Purpur end
 +
 +    // CloudPlane start
 +    public static float getExplosionResistance(@NotNull Material material) {
@@ -24,13 +24,13 @@ index b7c45aa5d5f79fd16e59401acfa9c2bed0a5d78c..575189f224c2113e831bf8973bae8e20
 +    // CloudPlane end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index e5782bd5fe13639a9d5a29c22a72dedd8f785011..1e26c453ab5acce59a2799d3b71c2d85e1cea6c7 100644
+index 39f294e239ddc6a99dbd38fc01948b2cdd5631d5..f89b77ee299c598bc15ec80ff0094cf2aa53d22d 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1860,4 +1860,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
-     @NotNull
-     io.papermc.paper.datapack.DatapackManager getDatapackManager();
-     // Paper end
+@@ -1906,4 +1906,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+      */
+     public void removeFuel(@NotNull Material material);
+     // Purpur end
 +
 +    // CloudPlane start
 +    float getExplosionResistance(@NotNull Material material);

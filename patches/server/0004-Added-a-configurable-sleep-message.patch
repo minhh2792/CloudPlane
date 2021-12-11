@@ -5,10 +5,10 @@ Subject: [PATCH] Added a configurable sleep message
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 93f81178eb667cc9f1bbc231140b917e09a5bee0..8018198a5e1f4447d49be7e6bbd340632c6ff1b9 100644
+index e2b90d28a93e394e52672b1061a508020eb0bdff..4e14a81c9b9f398ca28ed9645b1415e457b38010 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -597,6 +597,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -625,6 +625,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
              if (this.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE) && this.isRaining()) {
                  this.resetWeatherCycle();
              }

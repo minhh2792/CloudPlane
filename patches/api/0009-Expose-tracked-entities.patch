@@ -5,13 +5,13 @@ Subject: [PATCH] Expose tracked entities
 
 
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index f5ded992672dde910cd4e1be50c238b142157ff8..173596bc717c766641f80d78c05613653c58b5ce 100644
+index 1964d44571b442649f7e9f1d4aa5d284d32c93de..6f423bf2158bf4e9166487b03bf484ad8b8d369d 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -2366,4 +2366,14 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
-     @Override
-     Spigot spigot();
-     // Spigot end
+@@ -2516,4 +2516,14 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      */
+     public boolean hasFlyingFallDamage();
+     // Purpur end
 +
 +    // CloudPlane start - expose tracked entities
 +    /**
