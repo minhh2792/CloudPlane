@@ -8,10 +8,10 @@ It can be called using the API (Bukkit#reloadBukkit(), Bukkit#reloadProperties()
 or as a command using /reload <bukkit|properties>.
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5fea0ba2a7450f65b37d2a483fa4dd6592f65e4a..3112bd02f298b821a9e979955f3cac6c68b6e81f 100644
+index 2ad0bb3bc4b1ed86585f1116504c4c24b495efa4..754531d47c86c4db4bddbbc8294db7a8f77e2f5a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2867,5 +2867,64 @@ public final class CraftServer implements Server {
+@@ -2819,5 +2819,64 @@ public final class CraftServer implements Server {
      public void setExplosionResistance(org.bukkit.Material material, float explosionResistance) {
          CraftMagicNumbers.getBlock(material).explosionResistance = explosionResistance;
      }

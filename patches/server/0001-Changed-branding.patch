@@ -5,110 +5,110 @@ Subject: [PATCH] Changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 4226e15f7c95208443b087bd34ddbe8d0b406e3f..35888a9a00012d5cf551b5264f7ef8ded34c93ef 100644
+index 0ccb1848e4b717d2d16c02c955e78a3e48b65dfa..a0e04e83a12ae7e85309ef17fd196d3631ea7926 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -19,7 +19,7 @@ repositories {
+@@ -18,7 +18,7 @@ repositories {
+ }
  
  dependencies {
-     // Purpur start
--    implementation(project(":pufferfish-api")) // Pufferfish
-+    implementation(project(":CloudPlane-API")) // Pufferfish // CloudPlane
+-    implementation(project(":pufferfish-api")) // Pufferfish // Paper
++    implementation(project(":CloudPlane-API")) // CloudPlane // Pufferfish // Paper
+     // Pufferfish start
      implementation("io.papermc.paper:paper-mojangapi:1.18-R0.1-SNAPSHOT") {
          exclude("io.papermc.paper", "paper-api")
-     }
-@@ -82,7 +82,7 @@ tasks.jar {
+@@ -80,7 +80,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
--            "Implementation-Version" to "git-Pufferfish-$implementationVersion", // Purpur // Pufferfish
-+            "Implementation-Version" to "git-CloudPlane-$implementationVersion", // Purpur // Pufferfish // CloudPlane
+-            "Implementation-Version" to "git-Pufferfish-$implementationVersion", // Pufferfish
++            "Implementation-Version" to "git-CloudPlane-$implementationVersion", // Pufferfish // CloudPlane
              "Implementation-Vendor" to date, // Paper
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 59e19424203f61166674d0385c837f73cab25df1..79fc3f3e869e273fd9958a54c07f1d713776e7a2 100644
+index 26bde1c22363ddbdbe4127d14bae54e17b0d7393..cd6b49ed5ba7b796f634898eade3de40ef7f24d2 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
-@@ -232,7 +232,8 @@ public class TimingsExport extends Thread {
+@@ -228,7 +228,8 @@ public class TimingsExport extends Thread {
              pair("spigot", mapAsJSON(Bukkit.spigot().getSpigotConfig(), null)),
-             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)),
-             pair("purpur", mapAsJSON(Bukkit.spigot().getPurpurConfig(), null)), // Pufferfish
+             pair("bukkit", mapAsJSON(Bukkit.spigot().getBukkitConfig(), null)),
+             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Pufferfish
 -            pair("pufferfish", mapAsJSON(gg.pufferfish.pufferfish.PufferfishConfig.getConfigCopy(), null)) // Pufferfish
 +            pair("pufferfish", mapAsJSON(gg.pufferfish.pufferfish.PufferfishConfig.getConfigCopy(), null)), // Pufferfish // CloudPlane
 +            pair("cloudplane", mapAsJSON(Bukkit.spigot().getCloudPlaneConfig(), null)) // CloudPlane
-             // Purpur end
          ));
  
+         new TimingsExport(listeners, parent, history).start();
 diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
-index c5e58f54444173594d61a7aaa1e7acacf1f30651..a5e0987d4579b553df2f6162469ae4381c31e729 100644
+index f2fe6ea3719ff8b2913b7a3a939d7a5b75cb8b28..c5f3d465b40525d2e8c8c8bab1c204e286877683 100644
 --- a/src/main/java/com/destroystokyo/paper/Metrics.java
 +++ b/src/main/java/com/destroystokyo/paper/Metrics.java
 @@ -593,7 +593,7 @@ public class Metrics {
              boolean logFailedRequests = config.getBoolean("logFailedRequests", false);
              // Only start Metrics, if it's enabled in the config
              if (config.getBoolean("enabled", true)) {
--                Metrics metrics = new Metrics("Pufferfish", serverUUID, logFailedRequests, Bukkit.getLogger()); // Purpur // Pufferfish
-+                Metrics metrics = new Metrics("CloudPlane", serverUUID, logFailedRequests, Bukkit.getLogger()); // Purpur // Pufferfish // CloudPlane
+-                Metrics metrics = new Metrics("Pufferfish", serverUUID, logFailedRequests, Bukkit.getLogger()); // Pufferfish
++                Metrics metrics = new Metrics("CloudPlane", serverUUID, logFailedRequests, Bukkit.getLogger()); // Pufferfish // CloudPlane
+ 
                  metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
                      String minecraftVersion = Bukkit.getVersion();
-                     minecraftVersion = minecraftVersion.substring(minecraftVersion.indexOf("MC: ") + 4, minecraftVersion.length() - 1);
-@@ -602,7 +602,7 @@ public class Metrics {
+@@ -603,7 +603,7 @@ public class Metrics {
  
                  metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
-                 metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : (PaperConfig.isProxyOnlineMode() ? "bungee" : "offline"))); // Purpur
--                metrics.addCustomChart(new Metrics.SimplePie("pufferfish_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Purpur // Pufferfish
-+                metrics.addCustomChart(new Metrics.SimplePie("cloudplane_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Purpur // Pufferfish // CloudPlane
+                 metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : "offline"));
+-                metrics.addCustomChart(new Metrics.SimplePie("pufferfish_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown"));
++                metrics.addCustomChart(new Metrics.SimplePie("cloudplane_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // CloudPlane
  
                  metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
                      Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-index 3054fe189b0cf771697c896f7def32892edc4925..0f41e555aa790a9ab71145b430c8d1fedba83403 100644
+index ece77f5ea4b14bbed7c070131b3251ea86764538..d81697a54abf664fb0d714185036d099159852c9 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
-@@ -19,7 +19,7 @@ import java.util.stream.StreamSupport;
- 
+@@ -20,7 +20,7 @@ import java.util.stream.StreamSupport;
  public class PaperVersionFetcher implements VersionFetcher {
      private static final java.util.regex.Pattern VER_PATTERN = java.util.regex.Pattern.compile("^([0-9\\.]*)\\-.*R"); // R is an anchor, will always give '-R' at end
--    private static final String DOWNLOAD_PAGE = "https://purpurmc.org/downloads/"; // Purpur
-+    private static final String DOWNLOAD_PAGE = "https://github.com/CloudCraftProjects/CloudPlane/actions/"; // Purpur // CloudPlane
+     private static final String GITHUB_BRANCH_NAME = "master";
+-    private static final String DOWNLOAD_PAGE = "https://papermc.io/downloads";
++    private static final String DOWNLOAD_PAGE = "https://github.com/CloudCraftProjects/CloudPlane/actions/"; // CloudPlane
      private static @Nullable String mcVer;
  
      @Override
-@@ -30,8 +30,8 @@ public class PaperVersionFetcher implements VersionFetcher {
+@@ -31,8 +31,8 @@ public class PaperVersionFetcher implements VersionFetcher {
      @Nonnull
      @Override
      public Component getVersionMessage(@Nonnull String serverVersion) {
--        String[] parts = serverVersion.substring("git-Purpur-".length()).split("[-\\s]"); // Purpur
--        final Component updateMessage = getUpdateStatusMessage("PurpurMC/Purpur", "ver/" + getMinecraftVersion(), parts[0]); // Purpur
-+        String[] parts = serverVersion.substring("git-CloudPlane-".length()).split("[-\\s]"); // Purpur // CloudPlane
-+        final Component updateMessage = getUpdateStatusMessage("CloudCraftProjects/CloudPlane", "master", parts[0]); // Purpur // CloudPlane
+-        String[] parts = serverVersion.substring("git-Paper-".length()).split("[-\\s]");
+-        final Component updateMessage = getUpdateStatusMessage("PaperMC/Paper", GITHUB_BRANCH_NAME, parts[0]);
++        String[] parts = serverVersion.substring("git-CloudPlane-".length()).split("[-\\s]"); // CloudPlane
++        final Component updateMessage = getUpdateStatusMessage("CloudCraftProjects/CloudPlane", GITHUB_BRANCH_NAME, parts[0]); // CloudPlane
          final Component history = getHistory();
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1e36322d1c2449939dba93eb99bba0a83e3c4a1d..5b4498c68b8d2d41a704ecdabe559f48fb5f7d1e 100644
+index 1e7ae166a1d53fce28297e2eaebd11ec28a57a55..8f0db119a9e8e28673e38b44bc3354b423b648aa 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1738,7 +1738,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1711,7 +1711,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+ 
+     @DontObfuscate
      public String getServerModName() {
-         // Pufferfish Start
-         String purpurName = org.purpurmc.purpur.PurpurConfig.serverModName;
--        return purpurName.equals("Purpur") ? "Pufferfish" : purpurName; // Pufferfish - Pufferfish // Purpur - Purpur > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
-+        return purpurName.equals("Purpur") ? "CloudPlane" : purpurName; // CloudPlane - CloudPlane > // Pufferfish - Pufferfish > // Purpur - Purpur > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
-         // Pufferfish end
+-        return "Pufferfish"; // Pufferfish - Pufferfish > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
++        return "CloudPlane"; // CloudPlane - CloudPlane > // Pufferfish - Pufferfish > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
      }
  
+     public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index f908ee7a95ac7dd5b1691d708a8fb56f529791a3..aa2019947df7525c256271eb760a95a5d870249c 100644
+index 629af8db1547ead263c3d7aef8dfa44afbc985e8..7c3c610cc41843347e7a1f3e767e033ef34e137d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -253,7 +253,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
--    private final String serverName = "Pufferfish"; // Paper // Purpur // Pufferfish
-+    private final String serverName = "CloudPlane"; // Paper // Purpur // Pufferfish // CloudPlane
+-    private final String serverName = "Pufferfish"; // Paper // Pufferfish
++    private final String serverName = "CloudPlane"; // Paper // Pufferfish // CloudPlane
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
@@ -126,15 +126,15 @@ index cfa4b75b042e2a82e10e5dc95d4c71d39f5a8d60..738b1cb40726edc6d26e373195ae6fe9
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index 0040e9d7e315bd7257960ba557c56db81688729e..2ee8e1a21ebe4ad501bb6b065e630bf033602003 100644
+index 80553face9c70c2a3d897681e7761df85b22d464..a06410b95db3d8f87905d619d2e7116f712dde8f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -11,7 +11,7 @@ public final class Versioning {
      public static String getBukkitVersion() {
          String result = "Unknown-Version";
  
--        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/gg.pufferfish.pufferfish/pufferfish-api/pom.properties"); // Purpur // Pufferfish
-+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/tk.booky.cloudplane/CloudPlane-API/pom.properties"); // Purpur // Pufferfish // CloudPlane
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/gg.pufferfish.pufferfish/pufferfish-api/pom.properties"); // Pufferfish
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/tk.booky.cloudplane/CloudPlane-API/pom.properties"); // Pufferfish // CloudPlane
          Properties properties = new Properties();
  
          if (stream != null) {

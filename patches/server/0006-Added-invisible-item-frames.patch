@@ -5,7 +5,7 @@ Subject: [PATCH] Added invisible item frames
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
-index e4c8b622cf3c7c57ada4c2e20a4b4a0f0b17de12..6717e10defbfb7857c24d30ffa9df07b1e630a51 100644
+index 0f8513ee6f56148cf63f4cd6a60acb7f70280ff1..7a092fdd820d17e8e0f8b56809dfb3e0708ed007 100644
 --- a/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
 +++ b/src/main/java/net/minecraft/world/entity/decoration/ItemFrame.java
 @@ -195,6 +195,12 @@ public class ItemFrame extends HangingEntity {
@@ -21,7 +21,7 @@ index e4c8b622cf3c7c57ada4c2e20a4b4a0f0b17de12..6717e10defbfb7857c24d30ffa9df07b
              }
  
              return true;
-@@ -447,6 +453,12 @@ public class ItemFrame extends HangingEntity {
+@@ -441,6 +447,12 @@ public class ItemFrame extends HangingEntity {
                      this.setItem(ItemStack.fromBukkitCopy(event.getItemStack()));
                      // this.setItem(itemstack);
                      // Paper end
@@ -35,7 +35,7 @@ index e4c8b622cf3c7c57ada4c2e20a4b4a0f0b17de12..6717e10defbfb7857c24d30ffa9df07b
                          itemstack.shrink(1);
                      }
 diff --git a/src/main/java/net/minecraft/world/item/HangingEntityItem.java b/src/main/java/net/minecraft/world/item/HangingEntityItem.java
-index 1f46a2be362ed5f60a7ca75916fe7bd491e90db7..320023b51ebb0ec12c2dece66cc84acd3ab6015d 100644
+index 0284201b0bb0f5c9a4a2393cf0d83e8e21262df3..1e3fd7321efb392fc4543188922805aecc0b2a7e 100644
 --- a/src/main/java/net/minecraft/world/item/HangingEntityItem.java
 +++ b/src/main/java/net/minecraft/world/item/HangingEntityItem.java
 @@ -46,6 +46,14 @@ public class HangingEntityItem extends Item {

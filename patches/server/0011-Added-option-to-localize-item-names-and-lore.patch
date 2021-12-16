@@ -5,10 +5,10 @@ Subject: [PATCH] Added option to localize item names and lore
 
 
 diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-index 26c5c3c6e7c51ad6ccc9bac05e2af4972658179d..bf96c3b75a65cbd90a8aa306f9d716e8c8d1a3b4 100644
+index f763a3ea5796737304e0c1f41349622e1d7adadf..4415a42ec5fb57448adf90bba4a9b13bbe6a0687 100644
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-@@ -379,4 +379,38 @@ public final class PaperAdventure {
+@@ -378,4 +378,38 @@ public final class PaperAdventure {
      public static @Nullable ChatFormatting asVanilla(TextColor color) {
          return ChatFormatting.getByHexValue(color.value());
      }
@@ -61,10 +61,10 @@ index dbd8b9b09b82c1b75e8be9dc7416d9f0863c8c87..e9c60af6cc132998adb24f2d478acbab
          return true;
      }
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index a9885f92e0a3494b27376a7a01edbd0e22a31708..e0bcde3fe3f7d43fbb41f322c46295aa98a11f2d 100644
+index 7b23535a680d2a8534dcb8dd87770f66fb982c13..f041208d49ef7ed5342dc5033e7a8c3129a5fcf0 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -275,7 +275,7 @@ public class ServerPlayer extends Player {
+@@ -271,7 +271,7 @@ public class ServerPlayer extends Player {
          this.containerSynchronizer = new ContainerSynchronizer() {
              @Override
              public void sendInitialData(AbstractContainerMenu handler, NonNullList<ItemStack> stacks, ItemStack cursorStack, int[] properties) {
@@ -73,7 +73,7 @@ index a9885f92e0a3494b27376a7a01edbd0e22a31708..e0bcde3fe3f7d43fbb41f322c46295aa
  
                  for (int i = 0; i < properties.length; ++i) {
                      this.broadcastDataValue(handler, i, properties[i]);
-@@ -285,12 +285,12 @@ public class ServerPlayer extends Player {
+@@ -281,12 +281,12 @@ public class ServerPlayer extends Player {
  
              @Override
              public void sendSlotChange(AbstractContainerMenu handler, int slot, ItemStack stack) {
@@ -89,10 +89,10 @@ index a9885f92e0a3494b27376a7a01edbd0e22a31708..e0bcde3fe3f7d43fbb41f322c46295aa
  
              @Override
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 4e150be71829e402ad1e1ed3b3fdf6cd6c5b8ea4..c2e402b90a98b10ff587ab1d6de159b93d7cd244 100644
+index 0f7f811510188f2b37443c5d2378a138dbf43b32..5027ce254ce1a04a9ddfd22c315520a92008175f 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -991,8 +991,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -953,8 +953,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
          }
          this.player.getInventory().pickSlot(packet.getSlot()); // Paper - Diff above if changed
          // Paper end
@@ -103,7 +103,7 @@ index 4e150be71829e402ad1e1ed3b3fdf6cd6c5b8ea4..c2e402b90a98b10ff587ab1d6de159b9
          this.player.connection.send(new ClientboundSetCarriedItemPacket(this.player.getInventory().selected));
      }
  
-@@ -2939,19 +2939,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2855,19 +2855,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                                  case PLACE_SOME:
                                  case PLACE_ONE:
                                  case SWAP_WITH_CURSOR:
@@ -127,7 +127,7 @@ index 4e150be71829e402ad1e1ed3b3fdf6cd6c5b8ea4..c2e402b90a98b10ff587ab1d6de159b9
                                      break;
                                  // Nothing
                                  case NOTHING:
-@@ -3071,7 +3071,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2987,7 +2987,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  case DENY:
                      // Reset the slot
                      if (packet.getSlotNum() >= 0) {
@@ -180,10 +180,10 @@ index 8e22678d6b6eca79450bb74445edcb8344a0a009..51c5085b51686a1c78c37e0dc357914e
      }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 58c250e3b7606319f422e2d716de66d916ea4b9a..b57403a16e3c8f8d7d7d8bf232313478138ed6bb 100644
+index c6cd4a5790384811f3171ce740afb9459f3d6fc0..4568b69b32c394d1df61b885b85b90db79ef3405 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2468,7 +2468,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2417,7 +2417,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          final int stateId = getHandle().containerMenu.getStateId();
          connection.send(new net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket(0, stateId, slot, item));
          connection.send(new net.minecraft.network.protocol.game.ClientboundOpenBookPacket(net.minecraft.world.InteractionHand.MAIN_HAND));

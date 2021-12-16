@@ -22,17 +22,17 @@ index 1326e7d09e25b19b6f8a3911b3a3944514d77173..43c95115a14401d128026bf7ef623f0a
  
          return targets.size();
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index d03b2609762ef31a1d15d1fbd739cb747adc7118..a6ba83b9e63b3ba8708c366eb73ce340acb889a7 100644
+index 2c00a766130a7f682fc6c4c74321e10637ca7932..62d36c43934e87eed40a819ad36cf1c00c533b7a 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -192,6 +192,7 @@ public abstract class Player extends LivingEntity {
+@@ -190,6 +190,7 @@ public abstract class Player extends LivingEntity {
          return (CraftHumanEntity) super.getBukkitEntity();
      }
      // CraftBukkit end
 +    @Nullable public Player replyTarget; // CloudPlane - reply command
  
-     // Purpur start
-     public int burpCooldown = 0;
+     public Player(Level world, BlockPos pos, float yaw, GameProfile profile) {
+         super(EntityType.PLAYER, world);
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 index c9122bab8b791d3a1fdfd9e23dad44eb334fbb6c..490b31ffc84d6af69fed7666766eb6d54675b5d9 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java

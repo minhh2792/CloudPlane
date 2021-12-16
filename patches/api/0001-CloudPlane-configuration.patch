@@ -5,12 +5,12 @@ Subject: [PATCH] CloudPlane configuration
 
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index d8cf62e42dcff4414dcd5c1979a89a32a975da44..39f294e239ddc6a99dbd38fc01948b2cdd5631d5 100644
+index 6996a61534bbdd34729f1dcd988ae2666bfad2c4..e5782bd5fe13639a9d5a29c22a72dedd8f785011 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1758,6 +1758,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1743,6 +1743,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
-         // Purpur end
+         // Paper end
  
 +        // CloudPlane start
 +        @NotNull
@@ -50,14 +50,15 @@ index 0000000000000000000000000000000000000000..b84ac9da6cd911c791bd624a17d5edbf
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/util/permissions/DefaultPermissions.java b/src/main/java/org/bukkit/util/permissions/DefaultPermissions.java
-index 10627d2a11251a8cb01bbc3f6242d66f3505a16e..c6f880ea3b7be70335d790e642acb5265cf955b8 100644
+index e1a4ddf2c07cdd242fa8054a0152522fe4039e85..fb11d829206608e280498dbe09836a0b5badab1a 100644
 --- a/src/main/java/org/bukkit/util/permissions/DefaultPermissions.java
 +++ b/src/main/java/org/bukkit/util/permissions/DefaultPermissions.java
-@@ -90,6 +90,7 @@ public final class DefaultPermissions {
+@@ -89,6 +89,8 @@ public final class DefaultPermissions {
+         CommandPermissions.registerPermissions(parent);
          BroadcastPermissions.registerPermissions(parent);
  
-         PurpurPermissions.registerPermissions(); // Purpur
 +        CloudPlanePermissions.registerPermissions(); // CloudPlane
- 
++
          parent.recalculatePermissibles();
      }
+ }

@@ -5,10 +5,10 @@ Subject: [PATCH] Add back link detection on non-chat event messages
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 13147eae60452518bb7218c060b6825bbb973061..c0ae682e2d184a4571daad1f09e4bdad64ba113b 100644
+index f8eddd29729f0f6ab3598d3a12bb36589735a4bd..fb9713131ed72b0adb5e1f0546a73deb13dc1a3f 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1438,6 +1438,7 @@ public abstract class PlayerList {
+@@ -1376,6 +1376,7 @@ public abstract class PlayerList {
      public void broadcastMessage(Component message, ChatType type, UUID sender) {
          this.server.sendMessage(message, sender);
          Iterator iterator = this.players.iterator();

@@ -5,12 +5,12 @@ Subject: [PATCH] Added API methods for setting explosion resistance
 
 
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index b2dd2a211bdd1441eae67dd6bd93691964e07620..2a26804eb75d7595dc4a01a5f61b4e907fb7f59b 100644
+index 05c46f3b3bce5225b819d86e6e06729a5093e092..0c80af638cc99d02625caa4880033a762b8608b5 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 @@ -71,7 +71,7 @@ public abstract class BlockBehaviour {
      protected static final Direction[] UPDATE_SHAPE_ORDER = new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.DOWN, Direction.UP};
-     public final Material material; // Purpur - protected -> public
+     protected final Material material;
      public final boolean hasCollision;
 -    protected final float explosionResistance;
 +    public float explosionResistance; // CloudPlane - protected final -> public
@@ -18,13 +18,13 @@ index b2dd2a211bdd1441eae67dd6bd93691964e07620..2a26804eb75d7595dc4a01a5f61b4e90
      protected final SoundType soundType;
      protected final float friction;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ad143f05893fc6e5a60182501e939228675c9dc5..9444256f266e4584f98beebecda882958e991c51 100644
+index f1bd9ab21d717c7086a04215ee24159220e668dd..280ae71fd0ba17a4e12a83f105f4f9d00dcbae64 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2856,4 +2856,16 @@ public final class CraftServer implements Server {
-         return getServer().lagging;
+@@ -2808,4 +2808,16 @@ public final class CraftServer implements Server {
      }
-     // Purpur end
+ 
+     // Paper end
 +
 +    // CloudPlane start
 +    @Override
