@@ -1,0 +1,37 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <boooky10@gmail.com>
+Date: Thu, 16 Dec 2021 22:04:05 +0100
+Subject: [PATCH] Added option to disable tps catchup
+
+Took + modified from https://github.com/PurpurMC/Purpur/.
+
+Co-authored-by: William Blake Galbreath <blake.galbreath@gmail.com>
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 86b816c71ca75eac314816f50e0b87e5a6d9a0ef..59e40772cf5cc4a3e25ec752abae40aeeaa6ab46 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1267,7 +1267,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+                     this.tickServer(this::haveTime);
+                     this.profiler.popPush("nextTickWait");
+                     this.mayHaveDelayedTasks = true;
++                    if (tk.booky.cloudplane.CloudPlaneConfig.tpsCatchup) // CloudPlane
+                     this.delayedTasksMaxNextTickTime = Math.max(Util.getMillis() + 50L, this.nextTickTime);
++                    else this.delayedTasksMaxNextTickTime = this.nextTickTime = curTime / 1_000_000L + 50L; // CloudPlane
+                     this.waitUntilNextTick();
+                     this.profiler.pop();
+                     this.endMetricsRecordingTick();
+diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+index 44c7c284be84669b1bd96a51344d4d1435402e1e..12988f14063df2bd5e2b93cc692b6627de3d3da9 100644
+--- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
++++ b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
+@@ -171,4 +171,9 @@ public class CloudPlaneConfig {
+         bungeeGuardEnabled = getBoolean("settings.bungee-guard.enabled", bungeeGuardEnabled);
+         bungeeGuardTokens = new java.util.HashSet<>(getList("settings.bungee-guard.tokens", new java.util.ArrayList<>(bungeeGuardTokens)));
+     }
++
++    public static boolean tpsCatchup = true;
++    private static void tpsCatchup() {
++        tpsCatchup = getBoolean("settings.tps-catchup", tpsCatchup);
++    }
+ }
