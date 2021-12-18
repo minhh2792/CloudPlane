@@ -5,7 +5,7 @@ Subject: [PATCH] Changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 0ccb1848e4b717d2d16c02c955e78a3e48b65dfa..a0e04e83a12ae7e85309ef17fd196d3631ea7926 100644
+index 6ab5780bfd7aab71968ea8ba55187a5cce8c4c2c..4330a2ed507f408c7b2c278985ab354406baa55a 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,7 +18,7 @@ repositories {
@@ -15,7 +15,7 @@ index 0ccb1848e4b717d2d16c02c955e78a3e48b65dfa..a0e04e83a12ae7e85309ef17fd196d36
 -    implementation(project(":pufferfish-api")) // Pufferfish // Paper
 +    implementation(project(":CloudPlane-API")) // CloudPlane // Pufferfish // Paper
      // Pufferfish start
-     implementation("io.papermc.paper:paper-mojangapi:1.18-R0.1-SNAPSHOT") {
+     implementation("io.papermc.paper:paper-mojangapi:1.18.1-R0.1-SNAPSHOT") {
          exclude("io.papermc.paper", "paper-api")
 @@ -80,7 +80,7 @@ tasks.jar {
          attributes(
