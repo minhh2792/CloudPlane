@@ -5,7 +5,7 @@ Subject: [PATCH] CloudPlane configuration
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index f6b73f8c6638ddf79e45042f5c8902ea1f271f5c..e8d31cdc5c6d7ca22cc1bafdba4a8cf931c0ec83 100644
+index 78603232b62549427401f9d5217d083405cb2659..e83dee6094773dec0fcdbaa0f4a15605a482d98f 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -205,6 +205,7 @@ public class Commands {
@@ -69,10 +69,10 @@ index 90aa1d75b5c23e5ee27ceae9f6ef90de913a6601..a032e62b5f1c67a87bbe010e873034e3
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
          this.ticksPerAnimalSpawns = this.getCraftServer().getTicksPerAnimalSpawns(); // CraftBukkit
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 7c3c610cc41843347e7a1f3e767e033ef34e137d..f1bd9ab21d717c7086a04215ee24159220e668dd 100644
+index 4e5996a4534428d7e032283ab5fd61e987400a5f..e46f5ecd6a2ae951eb73e754642d38f30e6f52c4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -931,6 +931,7 @@ public final class CraftServer implements Server {
+@@ -952,6 +952,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -80,7 +80,7 @@ index 7c3c610cc41843347e7a1f3e767e033ef34e137d..f1bd9ab21d717c7086a04215ee241592
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
-@@ -2646,6 +2647,13 @@ public final class CraftServer implements Server {
+@@ -2667,6 +2668,13 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  

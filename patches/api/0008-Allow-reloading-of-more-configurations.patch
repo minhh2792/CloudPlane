@@ -8,10 +8,10 @@ It can be called using the API (Bukkit#reloadBukkit(), Bukkit#reloadProperties()
 or as a command using /reload <bukkit|properties>.
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 575189f224c2113e831bf8973bae8e20ea58d2e3..392556eceaebade8dfddbc921f4ea8c06879944d 100644
+index 4afc5b79f67e22810eb636753664acea46094f4d..e4ee6f484f2acfdd1ce27fa59df3e55b7fee3df2 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2147,5 +2147,13 @@ public final class Bukkit {
+@@ -2190,5 +2190,13 @@ public final class Bukkit {
      public static void setExplosionResistance(@NotNull Material material, float explosionResistance) {
          server.setExplosionResistance(material, explosionResistance);
      }
@@ -26,10 +26,10 @@ index 575189f224c2113e831bf8973bae8e20ea58d2e3..392556eceaebade8dfddbc921f4ea8c0
      // CloudPlane end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 1e26c453ab5acce59a2799d3b71c2d85e1cea6c7..9b7fcc2db183e807fb2165f58d173762388f00b2 100644
+index 98b2808a9959eb53dacbdbbf5792f583b3f838ac..30368c031a86fabcc8c2a3d648ff4352c36797f5 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1865,5 +1865,9 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1900,5 +1900,9 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      float getExplosionResistance(@NotNull Material material);
  
      void setExplosionResistance(@NotNull Material material, float explosionResistance);

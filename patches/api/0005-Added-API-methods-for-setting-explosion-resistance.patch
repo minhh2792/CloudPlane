@@ -5,10 +5,10 @@ Subject: [PATCH] Added API methods for setting explosion resistance
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index b7c45aa5d5f79fd16e59401acfa9c2bed0a5d78c..575189f224c2113e831bf8973bae8e20ea58d2e3 100644
+index 53c4e5ca208ee17c7c244e416c537c7b63edf194..4afc5b79f67e22810eb636753664acea46094f4d 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2138,4 +2138,14 @@ public final class Bukkit {
+@@ -2181,4 +2181,14 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
@@ -24,10 +24,10 @@ index b7c45aa5d5f79fd16e59401acfa9c2bed0a5d78c..575189f224c2113e831bf8973bae8e20
 +    // CloudPlane end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index e5782bd5fe13639a9d5a29c22a72dedd8f785011..1e26c453ab5acce59a2799d3b71c2d85e1cea6c7 100644
+index 86c3aef52623ae929b4293887db4f94cc46a58c9..98b2808a9959eb53dacbdbbf5792f583b3f838ac 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1860,4 +1860,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1895,4 +1895,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      io.papermc.paper.datapack.DatapackManager getDatapackManager();
      // Paper end

@@ -18,10 +18,10 @@ index 05c46f3b3bce5225b819d86e6e06729a5093e092..0c80af638cc99d02625caa4880033a76
      protected final SoundType soundType;
      protected final float friction;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index f1bd9ab21d717c7086a04215ee24159220e668dd..280ae71fd0ba17a4e12a83f105f4f9d00dcbae64 100644
+index e46f5ecd6a2ae951eb73e754642d38f30e6f52c4..320abd6dbbd7b3cb9f41ad3f50290c79cd4d38a8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2808,4 +2808,16 @@ public final class CraftServer implements Server {
+@@ -2829,4 +2829,16 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
