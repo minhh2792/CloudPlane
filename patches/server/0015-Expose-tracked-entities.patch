@@ -5,10 +5,10 @@ Subject: [PATCH] Expose tracked entities
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index ff52a502c2e0f93d42aa20f2c34cc5414c97b11a..e55faf4bea1cf89e2b4eeb3990c80efdc122beb3 100644
+index d2b103d94fd020295624da2eeb07653f585b586c..91e3e5dd283f674d50f3ee1ff1e43058152ab06e 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -2211,7 +2211,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -2230,7 +2230,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
  
          final ServerEntity serverEntity;
          final Entity entity;
