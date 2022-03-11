@@ -5,10 +5,10 @@ Subject: [PATCH] CloudPlane configuration
 
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index e48af3822e9f118399c3a1c9358c56efae12e0da..86c3aef52623ae929b4293887db4f94cc46a58c9 100644
+index f63587cfa651a3893d2efa3730dc80f271d56b1c..e902a266a39528d6eea98b98e1ba4b38f5732690 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1778,6 +1778,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1886,6 +1886,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
          // Paper end
  

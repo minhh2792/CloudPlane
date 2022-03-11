@@ -5,10 +5,10 @@ Subject: [PATCH] Expose tracked entities
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index d2b103d94fd020295624da2eeb07653f585b586c..91e3e5dd283f674d50f3ee1ff1e43058152ab06e 100644
+index d13b53c5497cece27ce06d43401e4f3b85652ceb..01af7b6fc00366818b8c73a2490fdc0fa52ba8fd 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -2230,7 +2230,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -2243,7 +2243,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
  
          final ServerEntity serverEntity;
          final Entity entity;
@@ -18,10 +18,10 @@ index d2b103d94fd020295624da2eeb07653f585b586c..91e3e5dd283f674d50f3ee1ff1e43058
          public final Set<ServerPlayerConnection> seenBy = new ReferenceOpenHashSet<>(); // Paper - optimise map impl
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 557f594cf619379dac1389ca483d7046a7c689e2..e8716200a7a28b9ba218e9c5db8657c7c1ca8c4a 100644
+index 603e9234294c01f1cde4bfc0b0053e69b99861d9..23953857622a2483d59d8f68243d80ff1d40d2f9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2609,4 +2609,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -2714,4 +2714,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          return this.spigot;
      }
      // Spigot end

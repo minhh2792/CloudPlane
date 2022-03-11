@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: booky10 <boooky10@gmail.com>
+Date: Fri, 2 Jul 2021 13:49:01 +0200
+Subject: [PATCH] Allow plugins using nms to set explosion resistance
+
+
+diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
+index 61590f2f04a797235299f1bd6b78a08f5bfe4a33..c95094e1ed55fa90445850f8d58fa1d3516fd491 100644
+--- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
++++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
+@@ -73,7 +73,7 @@ public abstract class BlockBehaviour {
+     protected static final Direction[] UPDATE_SHAPE_ORDER = new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH, Direction.DOWN, Direction.UP};
+     protected final Material material;
+     public final boolean hasCollision;
+-    protected final float explosionResistance;
++    public float explosionResistance; // CloudPlane - protected final -> public
+     protected final boolean isRandomlyTicking;
+     protected final SoundType soundType;
+     protected final float friction;

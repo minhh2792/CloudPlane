@@ -22,10 +22,10 @@ index 1326e7d09e25b19b6f8a3911b3a3944514d77173..43c95115a14401d128026bf7ef623f0a
  
          return targets.size();
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 2c00a766130a7f682fc6c4c74321e10637ca7932..62d36c43934e87eed40a819ad36cf1c00c533b7a 100644
+index 9c767096ca950d55d6002282c7a3fe2884bcd630..a5a7be216bd6c1c8cb4daf4d65b7c04a814aa58a 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
-@@ -190,6 +190,7 @@ public abstract class Player extends LivingEntity {
+@@ -191,6 +191,7 @@ public abstract class Player extends LivingEntity {
          return (CraftHumanEntity) super.getBukkitEntity();
      }
      // CraftBukkit end

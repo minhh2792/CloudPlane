@@ -8,14 +8,15 @@ It can be called using the API (Bukkit#reloadBukkit(), Bukkit#reloadProperties()
 or as a command using /reload <bukkit|properties>.
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 4afc5b79f67e22810eb636753664acea46094f4d..e4ee6f484f2acfdd1ce27fa59df3e55b7fee3df2 100644
+index 944f9b87a11472ac6d7e328acc00bf09f899e648..cd94479b13142d861c8c573fe05bc3c5fa56302d 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2190,5 +2190,13 @@ public final class Bukkit {
-     public static void setExplosionResistance(@NotNull Material material, float explosionResistance) {
-         server.setExplosionResistance(material, explosionResistance);
+@@ -2312,4 +2312,14 @@ public final class Bukkit {
+     public static Server.Spigot spigot() {
+         return server.spigot();
      }
 +
++    // CloudPlane start
 +    public static void reloadBukkit() {
 +        server.reloadBukkit();
 +    }
@@ -23,21 +24,22 @@ index 4afc5b79f67e22810eb636753664acea46094f4d..e4ee6f484f2acfdd1ce27fa59df3e55b
 +    public static void reloadProperties() {
 +        server.reloadProperties();
 +    }
-     // CloudPlane end
++    // CloudPlane end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 98b2808a9959eb53dacbdbbf5792f583b3f838ac..30368c031a86fabcc8c2a3d648ff4352c36797f5 100644
+index e902a266a39528d6eea98b98e1ba4b38f5732690..1c92001383abdabf38994cd46a7c2c096763ba18 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1900,5 +1900,9 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
-     float getExplosionResistance(@NotNull Material material);
- 
-     void setExplosionResistance(@NotNull Material material, float explosionResistance);
+@@ -2010,4 +2010,10 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+      */
+     @NotNull org.bukkit.potion.PotionBrewer getPotionBrewer();
+     // Paper end
 +
++    // CloudPlane start
 +    void reloadBukkit();
 +
 +    void reloadProperties();
-     // CloudPlane end
++    // CloudPlane end
  }
 diff --git a/src/main/java/org/bukkit/command/defaults/ReloadCommand.java b/src/main/java/org/bukkit/command/defaults/ReloadCommand.java
 index 0c7ba0718de2b93d013968ca0fec34ffd423990f..74a7dc3c27324508625147f339223775c82982d9 100644

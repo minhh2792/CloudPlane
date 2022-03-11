@@ -5,7 +5,7 @@ Subject: [PATCH] Changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 0f194168f5fca8eb768bca3ce953f28097fed578..1a4db4529308515645aa933dd484d9af869c102b 100644
+index 5b10c880ac9daa66badf199bddd2653a0f7c0c08..79c81fc9595fb7521e62542a1a046414f422f580 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,7 +18,7 @@ repositories {
@@ -15,9 +15,9 @@ index 0f194168f5fca8eb768bca3ce953f28097fed578..1a4db4529308515645aa933dd484d9af
 -    implementation(project(":pufferfish-api")) // Pufferfish // Paper
 +    implementation(project(":CloudPlane-API")) // CloudPlane // Pufferfish // Paper
      // Pufferfish start
-     implementation("io.papermc.paper:paper-mojangapi:1.18.1-R0.1-SNAPSHOT") {
+     implementation("io.papermc.paper:paper-mojangapi:1.18.2-R0.1-SNAPSHOT") {
          exclude("io.papermc.paper", "paper-api")
-@@ -80,7 +80,7 @@ tasks.jar {
+@@ -87,7 +87,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",
@@ -27,10 +27,10 @@ index 0f194168f5fca8eb768bca3ce953f28097fed578..1a4db4529308515645aa933dd484d9af
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 26bde1c22363ddbdbe4127d14bae54e17b0d7393..cd6b49ed5ba7b796f634898eade3de40ef7f24d2 100644
+index d3bb2a3ead944a89330bbced6812df73d174d061..10eb6bde554cff2667598d1b2eaeb268c0dc1963 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
-@@ -228,7 +228,8 @@ public class TimingsExport extends Thread {
+@@ -232,7 +232,8 @@ public class TimingsExport extends Thread {
              pair("spigot", mapAsJSON(Bukkit.spigot().getSpigotConfig(), null)),
              pair("bukkit", mapAsJSON(Bukkit.spigot().getBukkitConfig(), null)),
              pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Pufferfish
@@ -87,10 +87,10 @@ index ece77f5ea4b14bbed7c070131b3251ea86764538..d81697a54abf664fb0d714185036d099
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1e7ae166a1d53fce28297e2eaebd11ec28a57a55..8f0db119a9e8e28673e38b44bc3354b423b648aa 100644
+index 56f437b0e1ad5b167cdcbaaaf83b49d27e37b904..a796e5a605e59c4793694f3e4b6c585d6968f5ab 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1711,7 +1711,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1699,7 +1699,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -100,10 +100,10 @@ index 1e7ae166a1d53fce28297e2eaebd11ec28a57a55..8f0db119a9e8e28673e38b44bc3354b4
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 041ebfefca8f944f457a269f0e0b450b21949e73..4e5996a4534428d7e032283ab5fd61e987400a5f 100644
+index f266ee28bae60cf938bf2769df71af7ffd3e5bfe..58d1cffd9fd48588d92b39c939135b32e6eec182 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -254,7 +254,7 @@ import javax.annotation.Nullable; // Paper
+@@ -248,7 +248,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
@@ -113,10 +113,10 @@ index 041ebfefca8f944f457a269f0e0b450b21949e73..4e5996a4534428d7e032283ab5fd61e9
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 98d396658bd7547e6b6f850529cab216e83c6c62..f0d2a305f53c014ef5a7f84528bd0e5806f67a51 100644
+index 7e06f263cf618b82f77101ef86d819d5dc37a24e..3f450f7c5a3cd9ef15ee564e264de64d28579ca6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -421,7 +421,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -430,7 +430,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
  
      @Override
      public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {

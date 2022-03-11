@@ -4,207 +4,40 @@ Date: Sun, 22 Aug 2021 20:30:16 +0200
 Subject: [PATCH] Added option to localize item names and lore
 
 
-diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-index 3661ac5e3bfdebb2911cb1b118942b9fc7884140..3d1ad42360bbc4f8def391f3c56d240cb87f3f03 100644
---- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-+++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-@@ -358,4 +358,38 @@ public final class PaperAdventure {
-     public static @Nullable ChatFormatting asVanilla(final TextColor color) {
-         return ChatFormatting.getByHexValue(color.value());
-     }
+diff --git a/src/main/java/net/minecraft/network/FriendlyByteBuf.java b/src/main/java/net/minecraft/network/FriendlyByteBuf.java
+index 896a4237f871d46cf39b0721e909c2cc3b5fc728..06c4e66cc2582391147a8202ef2c3370a165b21b 100644
+--- a/src/main/java/net/minecraft/network/FriendlyByteBuf.java
++++ b/src/main/java/net/minecraft/network/FriendlyByteBuf.java
+@@ -508,6 +508,29 @@ public class FriendlyByteBuf extends ByteBuf {
+                     }
+                 }
+                 // Paper end
 +
-+    // CloudPlane start - localize item names and lore
-+    public static @Nullable ItemStack renderNMSItem(@Nullable ItemStack stack, @NotNull Locale locale) {
-+        if (tk.booky.cloudplane.CloudPlaneConfig.localizeItems && stack != null && stack != ItemStack.EMPTY) {
-+            CompoundTag display = (stack = stack.copy()).getTagElement("display");
-+            if (display != null) {
-+                if (display.contains("Name", 8)) {
-+                    if (GSON.deserialize(display.getString("Name")) instanceof TranslatableComponent component) {
-+                        display.putString("Name", asJsonString(component, locale));
-+                    }
-+                }
++                // CloudPlane start
++                if (nbttagcompound != null && tk.booky.cloudplane.CloudPlaneConfig.localizeItems) {
++                    CompoundTag display = nbttagcompound.getCompound("display");
++                    if (display != null) {
++                        String name = display.getString("Name");
++                        if (!name.isEmpty()) {
++                            try {
++                                net.kyori.adventure.text.Component nameComponent = io.papermc.paper.adventure.PaperAdventure.GSON.deserialize(name);
++                                display.putString("Name", io.papermc.paper.adventure.PaperAdventure.asJsonString(nameComponent, adventure$locale));
++                            } catch (com.google.gson.JsonSyntaxException ignored) {}
++                        }
 +
-+                if (display.contains("Lore", 9)) {
-+                    ListTag lore = display.getList("Lore", 8);
-+                    for (int i = 0; i < lore.size(); i++) {
-+                        if (GSON.deserialize(lore.getString(i)) instanceof TranslatableComponent component) {
-+                            lore.set(i, StringTag.valueOf(asJsonString(component, locale)));
++                        net.minecraft.nbt.ListTag lore = display.getList("Lore", net.minecraft.nbt.Tag.TAG_STRING);
++                        for (int i = 0; i < lore.size(); i++) {
++                            try {
++                                net.kyori.adventure.text.Component loreComponent = io.papermc.paper.adventure.PaperAdventure.GSON.deserialize(lore.getString(i));
++                                lore.set(i, net.minecraft.nbt.StringTag.valueOf(io.papermc.paper.adventure.PaperAdventure.asJsonString(loreComponent, adventure$locale)));
++                            } catch (com.google.gson.JsonSyntaxException ignored) {}
 +                        }
 +                    }
 +                }
-+            }
-+        }
-+        return stack;
-+    }
-+
-+    public static net.minecraft.core.@Nullable NonNullList<ItemStack> renderNMSItems(net.minecraft.core.@Nullable NonNullList<ItemStack> stacks, @NotNull Locale locale) {
-+        if (tk.booky.cloudplane.CloudPlaneConfig.localizeItems && stacks != null) {
-+            for (int i = 0; i < stacks.size(); i++) {
-+                stacks.set(i, renderNMSItem(stacks.get(i), locale));
-+            }
-+        }
-+        return stacks;
-+    }
-+    // CloudPlane end
- }
-diff --git a/src/main/java/net/minecraft/network/protocol/game/ClientboundContainerSetContentPacket.java b/src/main/java/net/minecraft/network/protocol/game/ClientboundContainerSetContentPacket.java
-index dbd8b9b09b82c1b75e8be9dc7416d9f0863c8c87..e9c60af6cc132998adb24f2d478acbab20a5d077 100644
---- a/src/main/java/net/minecraft/network/protocol/game/ClientboundContainerSetContentPacket.java
-+++ b/src/main/java/net/minecraft/network/protocol/game/ClientboundContainerSetContentPacket.java
-@@ -35,7 +35,7 @@ public class ClientboundContainerSetContentPacket implements Packet<ClientGamePa
-     @Override
-     public boolean packetTooLarge(net.minecraft.network.Connection manager) {
-         for (int i = 0 ; i < this.items.size() ; i++) {
--            manager.send(new ClientboundContainerSetSlotPacket(this.containerId, this.stateId, i, this.items.get(i)));
-+            manager.send(new ClientboundContainerSetSlotPacket(this.containerId, this.stateId, i, io.papermc.paper.adventure.PaperAdventure.renderNMSItem(this.items.get(i), manager.getPlayer().adventure$locale))); // CloudPlane - localize item names and lore
-         }
-         return true;
-     }
-diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 7b23535a680d2a8534dcb8dd87770f66fb982c13..f041208d49ef7ed5342dc5033e7a8c3129a5fcf0 100644
---- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
-+++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -271,7 +271,7 @@ public class ServerPlayer extends Player {
-         this.containerSynchronizer = new ContainerSynchronizer() {
-             @Override
-             public void sendInitialData(AbstractContainerMenu handler, NonNullList<ItemStack> stacks, ItemStack cursorStack, int[] properties) {
--                ServerPlayer.this.connection.send(new ClientboundContainerSetContentPacket(handler.containerId, handler.incrementStateId(), stacks, cursorStack));
-+                ServerPlayer.this.connection.send(new ClientboundContainerSetContentPacket(handler.containerId, handler.incrementStateId(), io.papermc.paper.adventure.PaperAdventure.renderNMSItems(stacks, adventure$locale), io.papermc.paper.adventure.PaperAdventure.renderNMSItem(cursorStack, adventure$locale))); // CloudPlane - localize item names and lore
- 
-                 for (int i = 0; i < properties.length; ++i) {
-                     this.broadcastDataValue(handler, i, properties[i]);
-@@ -281,12 +281,12 @@ public class ServerPlayer extends Player {
- 
-             @Override
-             public void sendSlotChange(AbstractContainerMenu handler, int slot, ItemStack stack) {
--                ServerPlayer.this.connection.send(new ClientboundContainerSetSlotPacket(handler.containerId, handler.incrementStateId(), slot, stack));
-+                ServerPlayer.this.connection.send(new ClientboundContainerSetSlotPacket(handler.containerId, handler.incrementStateId(), slot, io.papermc.paper.adventure.PaperAdventure.renderNMSItem(stack, adventure$locale))); // CloudPlane - localize item names and lore
++                // CloudPlane end
              }
  
-             @Override
-             public void sendCarriedChange(AbstractContainerMenu handler, ItemStack stack) {
--                ServerPlayer.this.connection.send(new ClientboundContainerSetSlotPacket(-1, handler.incrementStateId(), -1, stack));
-+                ServerPlayer.this.connection.send(new ClientboundContainerSetSlotPacket(-1, handler.incrementStateId(), -1, io.papermc.paper.adventure.PaperAdventure.renderNMSItem(stack, adventure$locale))); // CloudPlane - localize item names and lore
-             }
- 
-             @Override
-diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 889a4804eaa128e2f79a4ea48b8aa796336576d1..d32433ad9c531dff5358bbd88c9cc99a30a1cc32 100644
---- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-+++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -967,8 +967,8 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
-         }
-         this.player.getInventory().pickSlot(packet.getSlot()); // Paper - Diff above if changed
-         // Paper end
--        this.player.connection.send(new ClientboundContainerSetSlotPacket(-2, 0, this.player.getInventory().selected, this.player.getInventory().getItem(this.player.getInventory().selected)));
--        this.player.connection.send(new ClientboundContainerSetSlotPacket(-2, 0, packet.getSlot(), this.player.getInventory().getItem(packet.getSlot())));
-+        this.player.connection.send(new ClientboundContainerSetSlotPacket(-2, 0, this.player.getInventory().selected, io.papermc.paper.adventure.PaperAdventure.renderNMSItem(this.player.getInventory().getItem(this.player.getInventory().selected), player.adventure$locale))); // CloudPlane - localize item names and lore
-+        this.player.connection.send(new ClientboundContainerSetSlotPacket(-2, 0, packet.getSlot(), io.papermc.paper.adventure.PaperAdventure.renderNMSItem(this.player.getInventory().getItem(packet.getSlot()), player.adventure$locale))); // CloudPlane - localize item names and lore
-         this.player.connection.send(new ClientboundSetCarriedItemPacket(this.player.getInventory().selected));
-     }
- 
-@@ -2872,19 +2872,19 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
-                                 case PLACE_SOME:
-                                 case PLACE_ONE:
-                                 case SWAP_WITH_CURSOR:
--                                    this.player.connection.send(new ClientboundContainerSetSlotPacket(-1, -1, this.player.inventoryMenu.incrementStateId(), this.player.containerMenu.getCarried()));
--                                    this.player.connection.send(new ClientboundContainerSetSlotPacket(this.player.containerMenu.containerId, this.player.inventoryMenu.incrementStateId(), packet.getSlotNum(), this.player.containerMenu.getSlot(packet.getSlotNum()).getItem()));
-+                                    this.player.connection.send(new ClientboundContainerSetSlotPacket(-1, -1, this.player.inventoryMenu.incrementStateId(), io.papermc.paper.adventure.PaperAdventure.renderNMSItem(this.player.containerMenu.getCarried(), player.adventure$locale))); // CloudPlane - localize item names and lore
-+                                    this.player.connection.send(new ClientboundContainerSetSlotPacket(this.player.containerMenu.containerId, this.player.inventoryMenu.incrementStateId(), packet.getSlotNum(), io.papermc.paper.adventure.PaperAdventure.renderNMSItem(this.player.containerMenu.getSlot(packet.getSlotNum()).getItem(), player.adventure$locale))); // CloudPlane - localize item names and lore
-                                     break;
-                                 // Modified clicked only
-                                 case DROP_ALL_SLOT:
-                                 case DROP_ONE_SLOT:
--                                    this.player.connection.send(new ClientboundContainerSetSlotPacket(this.player.containerMenu.containerId, this.player.inventoryMenu.incrementStateId(), packet.getSlotNum(), this.player.containerMenu.getSlot(packet.getSlotNum()).getItem()));
-+                                    this.player.connection.send(new ClientboundContainerSetSlotPacket(this.player.containerMenu.containerId, this.player.inventoryMenu.incrementStateId(), packet.getSlotNum(), io.papermc.paper.adventure.PaperAdventure.renderNMSItem(this.player.containerMenu.getSlot(packet.getSlotNum()).getItem(), player.adventure$locale))); // CloudPlane - localize item names and lore
-                                     break;
-                                 // Modified cursor only
-                                 case DROP_ALL_CURSOR:
-                                 case DROP_ONE_CURSOR:
-                                 case CLONE_STACK:
--                                    this.player.connection.send(new ClientboundContainerSetSlotPacket(-1, -1, this.player.inventoryMenu.incrementStateId(), this.player.containerMenu.getCarried()));
-+                                    this.player.connection.send(new ClientboundContainerSetSlotPacket(-1, -1, this.player.inventoryMenu.incrementStateId(), io.papermc.paper.adventure.PaperAdventure.renderNMSItem(this.player.containerMenu.getCarried(), player.adventure$locale))); // CloudPlane - localize item names and lore
-                                     break;
-                                 // Nothing
-                                 case NOTHING:
-@@ -3004,7 +3004,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
-                 case DENY:
-                     // Reset the slot
-                     if (packet.getSlotNum() >= 0) {
--                        this.player.connection.send(new ClientboundContainerSetSlotPacket(this.player.inventoryMenu.containerId, this.player.inventoryMenu.incrementStateId(), packet.getSlotNum(), this.player.inventoryMenu.getSlot(packet.getSlotNum()).getItem()));
-+                        this.player.connection.send(new ClientboundContainerSetSlotPacket(this.player.inventoryMenu.containerId, this.player.inventoryMenu.incrementStateId(), packet.getSlotNum(), io.papermc.paper.adventure.PaperAdventure.renderNMSItem(this.player.inventoryMenu.getSlot(packet.getSlotNum()).getItem(), player.adventure$locale))); // CloudPlane - localize item names and lore
-                         this.player.connection.send(new ClientboundContainerSetSlotPacket(-1, this.player.inventoryMenu.incrementStateId(), -1, ItemStack.EMPTY));
-                     }
-                     return;
-diff --git a/src/main/java/net/minecraft/world/entity/player/Inventory.java b/src/main/java/net/minecraft/world/entity/player/Inventory.java
-index 15dc5e9f426f78af0f3f92435a641a89ef2f134c..2f2a9d36d3040c39c861ec6ed53538733c5d12cf 100644
---- a/src/main/java/net/minecraft/world/entity/player/Inventory.java
-+++ b/src/main/java/net/minecraft/world/entity/player/Inventory.java
-@@ -413,7 +413,7 @@ public class Inventory implements Container, Nameable {
-                     int j = stack.getMaxStackSize() - this.getItem(i).getCount();
- 
-                     if (this.add(i, stack.split(j)) && notifiesClient && this.player instanceof ServerPlayer) {
--                        ((ServerPlayer) this.player).connection.send(new ClientboundContainerSetSlotPacket(-2, 0, i, this.getItem(i)));
-+                        ((ServerPlayer) this.player).connection.send(new ClientboundContainerSetSlotPacket(-2, 0, i, io.papermc.paper.adventure.PaperAdventure.renderNMSItem(this.getItem(i), ((ServerPlayer) player).adventure$locale))); // CloudPlane - localize item names and lore
-                     }
-                     continue;
-                 }
-diff --git a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-index 1f4d3a48553a467bcbd4799735d1950c9c2dbe23..b3757fc78f533140bb772bcb738c8468b808cb64 100644
---- a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-+++ b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-@@ -575,10 +575,10 @@ public abstract class AbstractContainerMenu {
-                     slot.setChanged();
-                     // CraftBukkit start - Make sure the client has the right slot contents
-                     if (player instanceof ServerPlayer && slot.getMaxStackSize() != 64) {
--                        ((ServerPlayer) player).connection.send(new ClientboundContainerSetSlotPacket(this.containerId, this.incrementStateId(), slot.index, slot.getItem()));
-+                        ((ServerPlayer) player).connection.send(new ClientboundContainerSetSlotPacket(this.containerId, this.incrementStateId(), slot.index, io.papermc.paper.adventure.PaperAdventure.renderNMSItem(slot.getItem(), ((ServerPlayer) player).adventure$locale))); // CloudPlane - localize item names and lore
-                         // Updating a crafting inventory makes the client reset the result slot, have to send it again
-                         if (this.getBukkitView().getType() == InventoryType.WORKBENCH || this.getBukkitView().getType() == InventoryType.CRAFTING) {
--                            ((ServerPlayer) player).connection.send(new ClientboundContainerSetSlotPacket(this.containerId, this.incrementStateId(), 0, this.getSlot(0).getItem()));
-+                            ((ServerPlayer) player).connection.send(new ClientboundContainerSetSlotPacket(this.containerId, this.incrementStateId(), 0, io.papermc.paper.adventure.PaperAdventure.renderNMSItem(this.getSlot(0).getItem(), ((ServerPlayer) player).adventure$locale))); // CloudPlane - localize item names and lore
-                         }
-                     }
-                     // CraftBukkit end
-diff --git a/src/main/java/net/minecraft/world/inventory/CraftingMenu.java b/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
-index 8e22678d6b6eca79450bb74445edcb8344a0a009..51c5085b51686a1c78c37e0dc357914ecffa0c5f 100644
---- a/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
-+++ b/src/main/java/net/minecraft/world/inventory/CraftingMenu.java
-@@ -88,7 +88,7 @@ public class CraftingMenu extends RecipeBookMenu<CraftingContainer> {
- 
-             resultInventory.setItem(0, itemstack);
-             handler.setRemoteSlot(0, itemstack);
--            entityplayer.connection.send(new ClientboundContainerSetSlotPacket(handler.containerId, handler.incrementStateId(), 0, itemstack));
-+            entityplayer.connection.send(new ClientboundContainerSetSlotPacket(handler.containerId, handler.incrementStateId(), 0, io.papermc.paper.adventure.PaperAdventure.renderNMSItem(itemstack, ((ServerPlayer) player).adventure$locale))); // CloudPlane - localize item names and lore
-         }
-     }
- 
-diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 8de4ad9f2120d22b78202981624abd1d2fc70148..557f594cf619379dac1389ca483d7046a7c689e2 100644
---- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-+++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -2449,7 +2449,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
-         final int stateId = getHandle().containerMenu.getStateId();
-         connection.send(new net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket(0, stateId, slot, item));
-         connection.send(new net.minecraft.network.protocol.game.ClientboundOpenBookPacket(net.minecraft.world.InteractionHand.MAIN_HAND));
--        connection.send(new net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket(0, stateId, slot, inventory.getSelected()));
-+        connection.send(new net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket(0, stateId, slot, io.papermc.paper.adventure.PaperAdventure.renderNMSItem(inventory.getSelected(), locale()))); // CloudPlane - localize item names and lore
-     }
- 
-     @Override
-diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventoryPlayer.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventoryPlayer.java
-index d6a228473ca6f425757683a4b17b035a53ab117f..fbecdbcf59eaaa559a077ae8311c1d90baa5889b 100644
---- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventoryPlayer.java
-+++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventoryPlayer.java
-@@ -110,7 +110,7 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
-         } else if (index > 35) {
-             index = 8 - (index - 36);
-         }
--        player.connection.send(new ClientboundContainerSetSlotPacket(player.inventoryMenu.containerId, player.inventoryMenu.incrementStateId(), index, CraftItemStack.asNMSCopy(item)));
-+        player.connection.send(new ClientboundContainerSetSlotPacket(player.inventoryMenu.containerId, player.inventoryMenu.incrementStateId(), index, io.papermc.paper.adventure.PaperAdventure.renderNMSItem(CraftItemStack.asNMSCopy(item), player.adventure$locale))); // CloudPlane - localize item names and lore
-     }
- 
-     @Override
+             this.writeNbt(nbttagcompound);
 diff --git a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java b/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java
 index 2cdc4cc69184197346015093be6aca8be07b9a35..4fb9bd0162d5fb38a354c367506c5448885c92f9 100644
 --- a/src/main/java/tk/booky/cloudplane/CloudPlaneConfig.java

@@ -5,12 +5,12 @@ Subject: [PATCH] Added tempban command
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 042be2cf60a9d01698808d84f2e537a5eb952079..737c79a386d77b987c8f461a78204503ca3f1e9e 100644
+index 02dc93c394d37c9a84aa4a58d80615c403c54fb9..89789963e094522096288ad24c1861646f2cdeff 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -128,7 +128,7 @@ public abstract class PlayerList {
      public static final File WHITELIST_FILE = new File("whitelist.json");
-     private static final Logger LOGGER = LogManager.getLogger();
+     private static final Logger LOGGER = LogUtils.getLogger();
      private static final int SEND_PLAYER_INFO_INTERVAL = 600;
 -    private static final SimpleDateFormat BAN_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 +    public static final SimpleDateFormat BAN_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z"); // CloudPlane - private --> public

@@ -7,7 +7,7 @@ https://github.com/lucko/BungeeGuard/
 https://spigotmc.org/resources/79601/
 
 diff --git a/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
-index 150050fb343ef6119204b7d5220207765a6937bc..7cd5af2883e3ba805e37c4c6141ac115f8a49adc 100644
+index e8a79277f3e57bc82d67ada6543c7f8665311bd3..a77465107e46ed8553a03c4e6a3fa326ef7acf8e 100644
 --- a/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerHandshakePacketListenerImpl.java
 @@ -18,6 +18,7 @@ import java.util.HashMap;

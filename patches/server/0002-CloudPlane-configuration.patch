@@ -5,10 +5,10 @@ Subject: [PATCH] CloudPlane configuration
 
 
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index 78603232b62549427401f9d5217d083405cb2659..e83dee6094773dec0fcdbaa0f4a15605a482d98f 100644
+index b66afde6851ceaeccb84aea00cdc333dfbf3d4b0..9c0a5f76da83be02c147c8c1e7aa35414c2a7ea9 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
-@@ -205,6 +205,7 @@ public class Commands {
+@@ -207,6 +207,7 @@ public class Commands {
              SetPlayerIdleTimeoutCommand.register(this.dispatcher);
              StopCommand.register(this.dispatcher);
              WhitelistCommand.register(this.dispatcher);
@@ -17,10 +17,10 @@ index 78603232b62549427401f9d5217d083405cb2659..e83dee6094773dec0fcdbaa0f4a15605
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 8f0db119a9e8e28673e38b44bc3354b423b648aa..86b816c71ca75eac314816f50e0b87e5a6d9a0ef 100644
+index a796e5a605e59c4793694f3e4b6c585d6968f5ab..4c7df49093196e81da53ac39f3f007e32a552169 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -726,6 +726,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -665,6 +665,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
          // Paper end
  
@@ -29,10 +29,10 @@ index 8f0db119a9e8e28673e38b44bc3354b423b648aa..86b816c71ca75eac314816f50e0b87e5
          this.server.getPluginManager().callEvent(new ServerLoadEvent(ServerLoadEvent.LoadType.STARTUP));
          this.connection.acceptConnections();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index aae2dadabedb075fd1bc712f0226882b85f4551d..78d6cbd75ace5dbff500bc96f7b75cb230679c69 100644
+index 27e90ca03275a42271bbe97ee1a63a355b098ede..a4c9180037973b73c06340cb0d93093bb1401184 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -228,6 +228,14 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -231,6 +231,14 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          }
          thread.start(); // Paper - start console thread after MinecraftServer.console & PaperConfig are initialized
          com.destroystokyo.paper.PaperConfig.registerCommands();
@@ -48,10 +48,10 @@ index aae2dadabedb075fd1bc712f0226882b85f4551d..78d6cbd75ace5dbff500bc96f7b75cb2
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 90aa1d75b5c23e5ee27ceae9f6ef90de913a6601..a032e62b5f1c67a87bbe010e873034e3919d04b9 100644
+index 8026e8ca528071bf80fecb5e96370d1d2ae799db..54dc423bc0fb99dd5d47f119f84d03a38420be6f 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -169,6 +169,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -164,6 +164,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      public final com.destroystokyo.paper.PaperWorldConfig paperConfig; // Paper
      public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
  
@@ -60,19 +60,19 @@ index 90aa1d75b5c23e5ee27ceae9f6ef90de913a6601..a032e62b5f1c67a87bbe010e873034e3
      public final co.aikar.timings.WorldTimingsHandler timings; // Paper
      public static BlockPos lastPhysicsProblem; // Spigot
      private org.spigotmc.TickLimiter entityLimiter;
-@@ -320,6 +322,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
-     protected Level(WritableLevelData worlddatamutable, ResourceKey<Level> resourcekey, final DimensionType dimensionmanager, Supplier<ProfilerFiller> supplier, boolean flag, boolean flag1, long i, org.bukkit.generator.ChunkGenerator gen, org.bukkit.generator.BiomeProvider biomeProvider, org.bukkit.World.Environment env, java.util.concurrent.Executor executor) { // Paper - Async-Anti-Xray - Pass executor
+@@ -273,6 +275,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+     protected Level(WritableLevelData worlddatamutable, ResourceKey<Level> resourcekey, Holder<DimensionType> holder, Supplier<ProfilerFiller> supplier, boolean flag, boolean flag1, long i, org.bukkit.generator.ChunkGenerator gen, org.bukkit.generator.BiomeProvider biomeProvider, org.bukkit.World.Environment env, java.util.concurrent.Executor executor) { // Paper - Async-Anti-Xray - Pass executor
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), this.spigotConfig); // Paper
 +        this.cloudplaneConfig = new tk.booky.cloudplane.CloudPlaneWorldConfig((((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()), env); // CloudPlane
          this.generator = gen;
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
-         this.ticksPerAnimalSpawns = this.getCraftServer().getTicksPerAnimalSpawns(); // CraftBukkit
+ 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4e5996a4534428d7e032283ab5fd61e987400a5f..e46f5ecd6a2ae951eb73e754642d38f30e6f52c4 100644
+index 58d1cffd9fd48588d92b39c939135b32e6eec182..f1f4a7d7676e5be5bf801c36247674b6940e3d36 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -952,6 +952,7 @@ public final class CraftServer implements Server {
+@@ -955,6 +955,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -80,7 +80,7 @@ index 4e5996a4534428d7e032283ab5fd61e987400a5f..e46f5ecd6a2ae951eb73e754642d38f3
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
-@@ -2667,6 +2668,13 @@ public final class CraftServer implements Server {
+@@ -2699,6 +2700,13 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  
@@ -95,7 +95,7 @@ index 4e5996a4534428d7e032283ab5fd61e987400a5f..e46f5ecd6a2ae951eb73e754642d38f3
          public void restart() {
              org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 55bae3efbc630be6d40d415509de4c3e744a5004..80fed163a79f2a5bce026642a35b1bc5357f8377 100644
+index afcc80d1f79d1743b0940c69858eacec88fec889..8818d26950b9f562d5326fe241657f28a28b7f50 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -153,6 +153,14 @@ public class Main {
