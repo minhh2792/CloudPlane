@@ -8,10 +8,10 @@ Took + modified from https://github.com/PurpurMC/Purpur/.
 Co-authored-by: William Blake Galbreath <blake.galbreath@gmail.com>
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4c7df49093196e81da53ac39f3f007e32a552169..28da546b55dfb12df6c47f36d00d41a8184a83fa 100644
+index a06c65edede7afb891518f28874f398b563ee367..c1c17b913bd76e8fd3cad080cfd6fbb15c173b83 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1230,7 +1230,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1228,7 +1228,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                      this.tickServer(this::haveTime);
                      this.profiler.popPush("nextTickWait");
                      this.mayHaveDelayedTasks = true;

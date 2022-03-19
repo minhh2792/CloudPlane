@@ -17,10 +17,10 @@ index b66afde6851ceaeccb84aea00cdc333dfbf3d4b0..9c0a5f76da83be02c147c8c1e7aa3541
  
          if (environment.includeIntegrated) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a796e5a605e59c4793694f3e4b6c585d6968f5ab..4c7df49093196e81da53ac39f3f007e32a552169 100644
+index 836b296fee24aae75adafbd4a4bd73656c69414b..a06c65edede7afb891518f28874f398b563ee367 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -665,6 +665,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -663,6 +663,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
          // Paper end
  
@@ -69,7 +69,7 @@ index 8026e8ca528071bf80fecb5e96370d1d2ae799db..54dc423bc0fb99dd5d47f119f84d03a3
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 58d1cffd9fd48588d92b39c939135b32e6eec182..f1f4a7d7676e5be5bf801c36247674b6940e3d36 100644
+index 3c84154f443c3d9a35ca926d93002301de355b49..40742ac4002c2d6d44ded5946c61ff3bae2e81aa 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -955,6 +955,7 @@ public final class CraftServer implements Server {
@@ -95,7 +95,7 @@ index 58d1cffd9fd48588d92b39c939135b32e6eec182..f1f4a7d7676e5be5bf801c36247674b6
          public void restart() {
              org.spigotmc.RestartCommand.restart();
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index afcc80d1f79d1743b0940c69858eacec88fec889..8818d26950b9f562d5326fe241657f28a28b7f50 100644
+index fbe68bd4739d9a0e7d9bc4c3d5ba8ecfd2d13954..3d84ad2bd0fe42b00b00b2bc53145d442dd4f7ca 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -153,6 +153,14 @@ public class Main {

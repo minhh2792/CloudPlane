@@ -5,7 +5,7 @@ Subject: [PATCH] Changed branding
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 5b10c880ac9daa66badf199bddd2653a0f7c0c08..79c81fc9595fb7521e62542a1a046414f422f580 100644
+index b2bade12a76ef354a2d0c2e054cbf818751f71b3..4492198714c8a77b46e0b4c34b36f2be2c8e8440 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,7 +18,7 @@ repositories {
@@ -27,10 +27,10 @@ index 5b10c880ac9daa66badf199bddd2653a0f7c0c08..79c81fc9595fb7521e62542a1a046414
              "Specification-Title" to "Bukkit",
              "Specification-Version" to project.version,
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index d3bb2a3ead944a89330bbced6812df73d174d061..10eb6bde554cff2667598d1b2eaeb268c0dc1963 100644
+index a5e4467382422df6cff2b9f61f44feabfe7084f3..b12b6fb07f58291e4cb7ff7f6b2767c2e7294756 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
-@@ -232,7 +232,8 @@ public class TimingsExport extends Thread {
+@@ -239,7 +239,8 @@ public class TimingsExport extends Thread {
              pair("spigot", mapAsJSON(Bukkit.spigot().getSpigotConfig(), null)),
              pair("bukkit", mapAsJSON(Bukkit.spigot().getBukkitConfig(), null)),
              pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Pufferfish
@@ -87,10 +87,10 @@ index ece77f5ea4b14bbed7c070131b3251ea86764538..d81697a54abf664fb0d714185036d099
  
          return history != null ? TextComponent.ofChildren(updateMessage, Component.newline(), history) : updateMessage;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 56f437b0e1ad5b167cdcbaaaf83b49d27e37b904..a796e5a605e59c4793694f3e4b6c585d6968f5ab 100644
+index 371b0f95b23d67c9913875a3dd7888e722551f18..836b296fee24aae75adafbd4a4bd73656c69414b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1699,7 +1699,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1695,7 +1695,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -100,7 +100,7 @@ index 56f437b0e1ad5b167cdcbaaaf83b49d27e37b904..a796e5a605e59c4793694f3e4b6c585d
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index f266ee28bae60cf938bf2769df71af7ffd3e5bfe..58d1cffd9fd48588d92b39c939135b32e6eec182 100644
+index ce52ad3145148f6f20ba18b735cf9191382cda7a..3c84154f443c3d9a35ca926d93002301de355b49 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -248,7 +248,7 @@ import javax.annotation.Nullable; // Paper
